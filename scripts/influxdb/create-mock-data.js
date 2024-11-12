@@ -20,7 +20,6 @@ const mockDataList = []
 
 const query = async () => {
 	for await (const { values, tableMeta } of queryApi.iterateRows(influxQuery)) {
-		console.log(tableMeta)
 		const o = tableMeta.toObject(values)
 		mockDataList.push(o)
 	}

@@ -1,25 +1,21 @@
 import { readFileSync } from 'fs'
 
-const mockDataList = readFileSync('../data/influx-db-data.json').toString('utf-8')
+const rawMockData = readFileSync(`${__dirname}/../data/influx-db-data.json`).toString('utf-8')
+const mockDataList: any[] = JSON.parse(rawMockData)
 
 for (const mockData of mockDataList) {
 	Object.freeze(mockData)
 }
 Object.freeze(mockDataList)
 
-export class InfluxDB {
-	getQueryApi() {
-		return {
-			iterateRows(_: string) {
-				return {
-					values: mockDataList,
-					tableMeta: {
-						toObject: (values: string[]) => {
-							return values
-						},
-					},
-				}
-			},
-		}
+export const createMockQueryApi = () => {
+	return {
+		iterateRows: (_: string) =>
+			mockDataList.map((o) => ({
+				values: Object.keys(o),
+				tableMeta: {
+					toObject: (_: any) => o,
+				},
+			})),
 	}
 }
