@@ -22,8 +22,8 @@ When creating tests, try using `Should <expected-behavior> when <condition>` con
 
 To run the environment, you will need to install the followed programs:
 
--   [Node.js]()
--   [Docker]()
+-   [Node.js](https://nodejs.org/en)
+-   [Docker](https://www.docker.com/)
 
 After installation execute the following commands
 
