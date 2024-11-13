@@ -1,5 +1,5 @@
 {
 	"$schema": "https://json.schemastore.org/mocharc.json",
-	"require": ["tsx", "global-jsdom/register"],
+	"require": ["tsx", "global-jsdom/register", "tests/setup.js"],
 	"parallel": true
 }
