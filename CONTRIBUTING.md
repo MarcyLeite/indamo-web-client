@@ -22,8 +22,8 @@ When creating tests, try using `Should <expected-behavior> when <condition>` con
 
 To run the environment, you will need to install the followed programs:
 
--   [Node.js](https://nodejs.org/en)
--   [Docker](https://www.docker.com/)
+- [Node.js](https://nodejs.org/en)
+- [Docker](https://www.docker.com/)
 
 After installation execute the following commands
 
@@ -37,8 +37,8 @@ This will install node dependecies, execute database containers and populate the
 
 ### 📜 Scripts
 
--   start: starts dev servers and open page in browser;
--   build: creates dist folter with builded page;
--   test: executes tests.
+- start: starts dev servers and open page in browser;
+- build: creates dist folter with builded page;
+- test: executes tests.
 
 To run scripts, use `npm run <script-name>`

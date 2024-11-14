@@ -5,11 +5,11 @@ This Web Client uses [React](https://react.dev/) and [Three.js](https://threejs.
 
 ## Features
 
--   3D model display that reflects data colloring components using colormap;
--   Views for differents dataset highlight;
--   Editor mode for fast and dynamic view and component configuration;
--   Player and Historical Time Mode for easy timeseries data navegation;
--   Live Time Mode for most recently data.
+- 3D model display that reflects data colloring components using colormap;
+- Views for differents dataset highlight;
+- Editor mode for fast and dynamic view and component configuration;
+- Player and Historical Time Mode for easy timeseries data navegation;
+- Live Time Mode for most recently data.
 
 ## Contributing
 
