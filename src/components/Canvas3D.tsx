@@ -1,6 +1,6 @@
 import { Canvas } from '@react-three/fiber'
 import { Group, Object3DEventMap, WebGLRenderer, WebGLRendererParameters } from 'three'
-
+import { OrbitControls } from '@react-three/drei'
 type Props = {
 	scene: Group<Object3DEventMap>
 	renderer?: Partial<WebGLRenderer> | WebGLRendererParameters
@@ -11,14 +11,10 @@ const Canvas3D = ({ renderer, scene }: Props) => {
 	return (
 		<Canvas gl={renderer}>
 			<ambientLight intensity={Math.PI / 2}></ambientLight>
-			<spotLight
-				position={[10, 10, 10]}
-				angle={0.15}
-				penumbra={1}
-				decay={0}
-				intensity={Math.PI}
-			/>
+			<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
 			<pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+			<OrbitControls></OrbitControls>
+
 			<primitive object={scene}></primitive>
 		</Canvas>
 	)
