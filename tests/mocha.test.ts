@@ -1,4 +1,3 @@
-import 'chai/register-should'
 import { describe, test } from 'mocha'
 
 describe('Mocha integration', () => {
