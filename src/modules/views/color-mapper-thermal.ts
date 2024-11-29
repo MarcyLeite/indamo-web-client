@@ -1,3 +1,5 @@
+import { hueToHSL } from '../../utils/color-converter'
+
 export type ColorMapThermalConfig = {
 	type: 'thermal'
 	min: number
@@ -7,9 +9,6 @@ export type ColorMapThermalConfig = {
 const HUE_MIN = 0,
 	HUE_MAX = 240
 
-const SATURATION = 100,
-	LIGHTNESS = 50
-
 export const createThermalColorMapper = ({ min, max }: ColorMapThermalConfig) => {
 	const getHueValue = (value: number) => {
 		const rawHueValue = (HUE_MAX * (value - min)) / (max - min)
@@ -18,7 +17,7 @@ export const createThermalColorMapper = ({ min, max }: ColorMapThermalConfig) =>
 		return Math.abs(hueValue - HUE_MAX)
 	}
 	const getColor = (value: number) => {
-		return `hsl(${getHueValue(value)}, ${SATURATION}, ${LIGHTNESS})`
+		return hueToHSL(getHueValue(value))
 	}
 
 	return { type: 'thermal', getColor }

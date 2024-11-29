@@ -1,4 +1,4 @@
-import { valueToHSL } from '../../../tests/utils/color-converter'
+import { hueToHSL } from '../../utils/color-converter'
 import { IndamoData } from '../../Indamo'
 import { createView, ViewConfig } from './factory'
 
@@ -51,8 +51,8 @@ describe('View Module: Factory', () => {
 	it('Should generate a color map', () => {
 		const colorMap = view.createPaintMap(indamoDataList)
 		colorMap.should.have.property('0')
-		colorMap[0].should.equal(valueToHSL(0))
+		colorMap[0].should.equal(hueToHSL(0))
 		colorMap.should.have.property('1')
-		colorMap[1].should.equal(valueToHSL(240))
+		colorMap[1].should.equal(hueToHSL(240))
 	})
 })
