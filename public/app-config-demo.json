@@ -3,37 +3,41 @@
 		{
 			"id": "thermal-demo",
 			"display": "Thermal Demo",
-			"colorMap": "thermal",
-			"componentConfigList": [
+			"colorMap": {
+				"type": "thermal",
+				"min": 0,
+				"max": 100
+			},
+			"components": [
 				{
 					"id": 16,
 					"display": "Left Eye",
-					"measurementList": ["A"]
+					"dataIndexers": ["A"]
 				},
 				{
 					"id": 17,
 					"display": "Right Eye",
-					"measurementList": ["A"]
+					"dataIndexers": ["A"]
 				},
 				{
 					"id": 19,
 					"display": "Left Arm",
-					"measurementList": ["B"]
+					"dataIndexers": ["B"]
 				},
 				{
 					"id": 21,
 					"display": "Right Arm",
-					"measurementList": ["B"]
+					"dataIndexers": ["B"]
 				},
 				{
 					"id": 20,
 					"display": "Left Hand",
-					"measurementList": ["C"]
+					"dataIndexers": ["C"]
 				},
 				{
 					"id": 22,
 					"display": "Right Hand",
-					"measurementList": ["C"]
+					"dataIndexers": ["C"]
 				}
 			]
 		}
