@@ -40,7 +40,7 @@ describe('View Module: View Controller', () => {
 
 	const renderControllerHook = () => renderHook(() => useViewController(configList))
 
-	it.only('Should create hook', async () => {
+	it('Should create hook', async () => {
 		const { result } = renderControllerHook()
 		should.equal(result.current.view, null)
 	})
