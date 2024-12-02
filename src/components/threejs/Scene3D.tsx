@@ -2,10 +2,14 @@ import { Canvas } from '@react-three/fiber'
 import SceneAmbiant from './SceneAmbiant'
 import { OrbitControls } from '@react-three/drei'
 import { PropsWithChildren } from 'react'
+import { IndamoMode } from '../../modules/modes/controller'
 
-const Scene3D = ({ children }: PropsWithChildren) => {
+type Props = PropsWithChildren<{
+	mode: IndamoMode
+}>
+const Scene3D = ({ children, mode }: Props) => {
 	return (
-		<Canvas>
+		<Canvas className={mode === 'editor' ? 'bg-editor' : ''}>
 			<SceneAmbiant />
 			<OrbitControls />
 			{children}
