@@ -8,6 +8,7 @@ import { ViewConfig } from '../modules/views/factory'
 import { createViewController } from '../modules/views/controller'
 import InteractableObject, { PaintMap } from './threejs/InteractableObject'
 import Hud from './hud/Hud'
+import { useModeController } from '../modules/modes/controller'
 
 // FIXME type does not belong here. Maybe When creating move to a related database connection.
 export type IndamoData = {
@@ -26,6 +27,7 @@ const Indamo = () => {
 	const model = useLoader(GLTFLoader, 'snowman.glb')
 	const [config, setConfig] = useState<IndamoConfig | null>(null)
 	const [paintMap, setPaintMap] = useState<PaintMap>({})
+	const modeController = useModeController()
 
 	const fetchViewConfig = async () => {
 		const response = await axios.get('http://localhost:5173/app-config-demo.json')
@@ -70,10 +72,10 @@ const Indamo = () => {
 
 	return (
 		<div className="indamo">
-			<Scene3D>
+			<Scene3D mode={modeController.mode}>
 				<InteractableObject object3d={model.scene} paintMap={paintMap}></InteractableObject>
 			</Scene3D>
-			<Hud />
+			<Hud modeController={modeController} />
 		</div>
 	)
 }
