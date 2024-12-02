@@ -12,6 +12,8 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@mdi/js": "^7.4.47",
+		"@mdi/react": "^1.6.1",
 		"@react-three/drei": "^9.116.0",
 		"@react-three/fiber": "^8.17.10",
 		"@stylistic/eslint-plugin-jsx": "^2.10.1",

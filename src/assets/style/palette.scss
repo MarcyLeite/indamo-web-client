@@ -1,0 +1,15 @@
+$colors: (
+	'text': #ffffff,
+	'bg': #ffffff,
+	'panel': #222222,
+);
+
+@mixin main {
+	@for $i from 0 through 16 {
+		--space-#{$i}: #{$i * 4}px;
+	}
+
+	@each $index, $color in $colors {
+		--color-#{$index}: #{$color};
+	}
+}
