@@ -1,5 +1,5 @@
 import { PaintMap } from '../../components/threejs/InteractableObject'
-import { IndamoData } from '../../Indamo'
+import { IndamoData } from '../../components/Indamo'
 import { ColorMapThermalConfig, createThermalColorMapper } from './color-mapper-thermal'
 
 export type ComponentViewConfig = {

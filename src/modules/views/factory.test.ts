@@ -1,5 +1,5 @@
 import { hueToHSL } from '../../utils/color-converter'
-import { IndamoData } from '../../Indamo'
+import { IndamoData } from '../../components/Indamo'
 import { createView, ViewConfig } from './factory'
 
 describe('View Module: Factory', () => {
