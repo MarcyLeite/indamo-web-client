@@ -1,0 +1,13 @@
+@mixin main {
+	.p-absolute {
+		position: absolute;
+	}
+
+	.p-relative {
+		position: relative;
+	}
+
+	.top-0 {
+		top: 0;
+	}
+}

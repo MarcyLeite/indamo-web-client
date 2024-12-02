@@ -1,0 +1,21 @@
+@use '../palette';
+@use 'sass:map';
+
+@mixin main {
+	color: #{map.get(palette.$colors, 'text')};
+	background: #{map.get(palette.$colors, 'bg')};
+	@each $index, $color in palette.$colors {
+		.text-#{$index} {
+			color: $color;
+		}
+		.bg-#{$index} {
+			background: $color;
+
+			&.hover {
+				&:hover {
+					background-color: color-mix(in srgb, $color, map.get(palette.$colors, 'text') 10%);
+				}
+			}
+		}
+	}
+}

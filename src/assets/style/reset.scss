@@ -1,0 +1,7 @@
+@mixin main {
+	button {
+		all: unset;
+		display: flex;
+		cursor: pointer;
+	}
+}
