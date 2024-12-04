@@ -1,13 +1,15 @@
 @use 'palette';
-@use 'composition/index' as c;
+@use 'composition/index' as composition;
 @use 'reset';
 @use 'container';
+@use 'components/index' as components;
 
 .indamo {
 	@include reset.main;
 	@include palette.main;
-	@include c.main;
+	@include composition.main;
 	@include container.main;
+	@include components.main;
 
 	position: relative;
 	width: 100%;

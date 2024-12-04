@@ -1,0 +1,14 @@
+@mixin main {
+	.i-overlay-element {
+		position: absolute;
+	}
+
+	.i-overlay-top-left {
+		top: 0;
+		left: 0;
+	}
+	.i-overlay-top-right {
+		top: 0;
+		right: 0;
+	}
+}

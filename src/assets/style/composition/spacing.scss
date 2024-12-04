@@ -12,7 +12,6 @@
 	$modes: (
 		'm': 'margin',
 		'p': 'padding',
-		'g': 'gap',
 	);
 	$directions: (
 		't': 'top',
@@ -42,6 +41,10 @@
 				#{$mode-attr}-top: #{$space};
 				#{$mode-attr}-bottom: #{$space};
 			}
+		}
+
+		.ga-#{$i} {
+			gap: #{$space};
 		}
 	}
 }

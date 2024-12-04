@@ -2,4 +2,23 @@
 	.d-flex {
 		display: flex;
 	}
+
+	.flex-column {
+		flex-direction: column;
+	}
+
+	.justify-baseline {
+		justify-content: baseline;
+	}
+
+	.justify-center {
+		justify-content: center;
+	}
+
+	.align-baseline {
+		align-items: baseline;
+	}
+	.align-center {
+		align-items: center;
+	}
 }
