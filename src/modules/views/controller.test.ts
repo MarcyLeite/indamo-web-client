@@ -42,14 +42,14 @@ describe('View Module: View Controller', () => {
 
 	it('Should create hook', async () => {
 		const { result } = renderControllerHook()
-		should.equal(result.current.view, null)
+		result.current.view.id.should.equal('default')
 	})
 
 	it('Should hook change selected view', () => {
 		const { result } = renderControllerHook()
 
 		act(() => {
-			result.current.change('foo')
+			result.current.setView('foo')
 		})
 
 		should.exist(result.current.view)

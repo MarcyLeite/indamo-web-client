@@ -1,6 +1,17 @@
 import { useCallback, useState } from 'react'
 import { createView, View, ViewConfig } from './factory'
 
+const defaultViewConfig: ViewConfig = {
+	id: 'default',
+	display: '-',
+	colorMap: {
+		type: 'thermal',
+		min: 0,
+		max: 0,
+	},
+	components: [],
+}
+
 export const createViewController = (viewConfigList: ViewConfig[]) => {
 	const viewList: View[] = []
 	const usedIdList: string[] = []
@@ -24,16 +35,18 @@ export const createViewController = (viewConfigList: ViewConfig[]) => {
 }
 
 export const useViewController = (viewConfigList: ViewConfig[]) => {
-	const controller = createViewController(viewConfigList)
-	const [view, setView] = useState<View | null>(null)
+	const controller = createViewController([defaultViewConfig, ...viewConfigList])
+	const [view, setView] = useState<View>(controller.getViewById('default')!)
 
-	const change = useCallback(
+	const setViewById = useCallback(
 		(id: string) => {
-			const _view = controller.getViewById(id) ?? null
-			setView(_view)
+			const view = controller.getViewById(id) ?? null
+			if (!view) return
+
+			setView(view)
 		},
 		[controller]
 	)
 
-	return { view, change } as const
+	return { view, setView: setViewById } as const
 }

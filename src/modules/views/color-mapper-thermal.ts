@@ -20,7 +20,7 @@ export const createThermalColorMapper = ({ min, max }: ColorMapThermalConfig) =>
 		return hueToHSL(getHueValue(value))
 	}
 
-	return { type: 'thermal', getColor }
+	return { type: 'thermal' as const, getColor }
 }
 
 export type ThermalColorMapper = ReturnType<typeof createThermalColorMapper>

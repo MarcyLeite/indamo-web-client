@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 import Scene3D from './threejs/Scene3D'
 import { ViewConfig } from '../modules/views/factory'
-import { createViewController } from '../modules/views/controller'
+import { useViewController } from '../modules/views/controller'
 import InteractableObject, { PaintMap } from './threejs/InteractableObject'
 import Hud from './hud/Hud'
 import { useModeController } from '../modules/modes/controller'
@@ -25,8 +25,11 @@ export type IndamoConfig = {
 
 const Indamo = () => {
 	const model = useLoader(GLTFLoader, 'snowman.glb')
-	const [config, setConfig] = useState<IndamoConfig | null>(null)
+	const [config, setConfig] = useState<IndamoConfig>({
+		views: [],
+	})
 	const [paintMap, setPaintMap] = useState<PaintMap>({})
+	const { view, setView } = useViewController([])
 	const modeController = useModeController()
 
 	const fetchViewConfig = async () => {
@@ -40,9 +43,11 @@ const Indamo = () => {
 
 	useEffect(() => {
 		if (!config) return
-		const viewController = createViewController(config.views)
-		const view = viewController.getViewById('thermal-demo')
 
+		setView('thermal-demo')
+	}, [config, setView])
+
+	useEffect(() => {
 		const _paintMap = view!.createPaintMap({
 			A: {
 				measurement: 'A',
@@ -68,14 +73,14 @@ const Indamo = () => {
 		})
 
 		setPaintMap(_paintMap)
-	}, [config])
+	}, [view])
 
 	return (
 		<div className="indamo">
 			<Scene3D mode={modeController.mode}>
 				<InteractableObject object3d={model.scene} paintMap={paintMap}></InteractableObject>
 			</Scene3D>
-			<Hud modeController={modeController} />
+			<Hud view={view} viewConfigList={config?.views} modeController={modeController} />
 		</div>
 	)
 }
