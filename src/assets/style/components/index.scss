@@ -1,0 +1,5 @@
+@use 'IOverlay';
+
+@mixin main {
+	@include IOverlay.main;
+}

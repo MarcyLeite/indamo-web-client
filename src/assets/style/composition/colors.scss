@@ -13,7 +13,7 @@
 
 			&.hover {
 				&:hover {
-					background-color: color-mix(in srgb, $color, map.get(palette.$colors, 'text') 10%);
+					background-color: color-mix(in srgb, $color, map.get(palette.$colors, 'light') 10%);
 				}
 			}
 		}
