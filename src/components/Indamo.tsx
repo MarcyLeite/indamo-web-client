@@ -9,6 +9,8 @@ import { useViewController } from '../modules/views/controller'
 import InteractableObject, { PaintMap } from './threejs/InteractableObject'
 import Hud from './hud/Hud'
 import { useModeController } from '../modules/modes/controller'
+import { Object3D } from 'three'
+import SceneEffects from './threejs/SceneEffects'
 
 // FIXME type does not belong here. Maybe When creating move to a related database connection.
 export type IndamoData = {
@@ -28,9 +30,11 @@ const Indamo = () => {
 	const [config, setConfig] = useState<IndamoConfig>({
 		views: [],
 	})
-	const [paintMap, setPaintMap] = useState<PaintMap>({})
-	const viewController = useViewController(config.views)
 	const modeController = useModeController()
+	const viewController = useViewController(config.views)
+
+	const [paintMap, setPaintMap] = useState<PaintMap>({})
+	const [selectedObject, setSelectedObject] = useState<Object3D | null>(null)
 
 	const fetchViewConfig = async () => {
 		const response = await axios.get('http://localhost:5173/app-config-demo.json')
@@ -76,11 +80,13 @@ const Indamo = () => {
 	return (
 		<div className="indamo">
 			<Scene3D mode={modeController.mode}>
+				<SceneEffects selectedObject={selectedObject}></SceneEffects>
 				<InteractableObject
 					mode={modeController.mode}
-					view={viewController.view}
+					view={viewController.view?.id ?? null}
 					object3d={model.scene}
 					paintMap={paintMap}
+					onUpdateSelected={setSelectedObject}
 				></InteractableObject>
 			</Scene3D>
 			<Hud
