@@ -44,8 +44,16 @@ const EditorView = ({ view, viewConfigList, onSave }: Props) => {
 				<span>View</span>
 			</div>
 			<div className="d-flex flex-column">
-				<textarea value={viewConfig.id} onChange={onChangeCallback('id')} />
-				<textarea value={viewConfig.display} onChange={onChangeCallback('display')} />
+				<textarea
+					title="View editor ID input"
+					value={viewConfig.id}
+					onChange={onChangeCallback('id')}
+				/>
+				<textarea
+					title="View editor display input"
+					value={viewConfig.display}
+					onChange={onChangeCallback('display')}
+				/>
 				<select>
 					<option>thermal</option>
 				</select>
