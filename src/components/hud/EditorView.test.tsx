@@ -1,9 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen, render } from '@testing-library/react'
 import EditorViewForm from './EditorView'
 import { createView, View, ViewConfig } from '../../modules/views/factory'
 import { SinonSpy } from 'sinon'
 
-describe('Editor View Form', () => {
+describe('Editor View', () => {
 	const mockViewConfig: ViewConfig = {
 		id: 'foo',
 		display: 'Foo',
@@ -29,10 +29,9 @@ describe('Editor View Form', () => {
 		const call = spy.getCall(0)
 		const updatedView: View = call.args[0]
 
+		updatedView.should.not.equal(mockViewConfig)
 		updatedView.id.should.equal(id)
 		updatedView.display.should.equal(display)
-		mockViewConfig.id.should.equal(mockViewConfig.id)
-		mockViewConfig.display.should.equal(mockViewConfig.display)
 	}
 
 	beforeEach(() => {
@@ -47,6 +46,7 @@ describe('Editor View Form', () => {
 				onEdit={spyEdit}
 			/>
 		)
+
 		idInput = screen.queryByDisplayValue(mockViewConfig.id)
 		displayInput = screen.queryByDisplayValue(mockViewConfig.display)
 		viewTypeSelect = screen.queryByDisplayValue('thermal')

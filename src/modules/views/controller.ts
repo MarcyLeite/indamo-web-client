@@ -1,23 +1,9 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { createView, View, ViewConfig } from './factory'
-
-const defaultViewConfig: ViewConfig = {
-	id: 'default',
-	display: '-',
-	colorMap: {
-		type: 'thermal',
-		min: 0,
-		max: 0,
-	},
-	components: [],
-}
 
 export const createViewController = (viewConfigList: ViewConfig[]) => {
 	const viewList: View[] = []
 	const usedIdList: string[] = []
-
-	if (viewConfigList.length === 0)
-		throw new Error('View Configuration: App must have at least one view')
 
 	for (const viewConfig of viewConfigList) {
 		if (usedIdList.includes(viewConfig.id))
@@ -35,18 +21,23 @@ export const createViewController = (viewConfigList: ViewConfig[]) => {
 }
 
 export const useViewController = (viewConfigList: ViewConfig[]) => {
-	const controller = createViewController([defaultViewConfig, ...viewConfigList])
-	const [view, setView] = useState<View>(controller.getViewById('default')!)
+	const [controller, setController] = useState(createViewController(viewConfigList))
+	const [view, setView] = useState<View | null>(null)
 
 	const setViewById = useCallback(
 		(id: string) => {
-			const view = controller.getViewById(id) ?? null
+			const view = controller.getViewById(id)
 			if (!view) return
-
 			setView(view)
 		},
 		[controller]
 	)
+
+	useEffect(() => {
+		const controller = createViewController(viewConfigList)
+		setView(null)
+		setController(controller)
+	}, [viewConfigList])
 
 	return { view, setView: setViewById } as const
 }
