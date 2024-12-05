@@ -1,13 +1,11 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import { View, ViewConfig } from '../../modules/views/factory'
 import IButton from '../IButton'
-import { mdiPlus } from '@mdi/js'
 
 type Props = {
 	view: View | null
 	viewConfigList: ViewConfig[]
-	onAdd: (view: ViewConfig) => void
-	onEdit: (view: ViewConfig) => void
+	onSave: (view: ViewConfig) => void
 }
 
 const emptyViewConfig: ViewConfig = {
@@ -21,26 +19,20 @@ const emptyViewConfig: ViewConfig = {
 	components: [],
 }
 
-const EditorView = ({ view, viewConfigList, onAdd, onEdit }: Props) => {
+const EditorView = ({ view, viewConfigList, onSave }: Props) => {
 	const [viewConfig, setViewConfig] = useState(emptyViewConfig)
-	const [isAdd, setIsAdd] = useState(false)
 
 	const updateViewConfig = () => {
 		setViewConfig(structuredClone(emptyViewConfig))
 
-		if (!view || isAdd) return
+		if (!view) return
 
 		const viewConfig = viewConfigList.find((config) => config.id === view.id)
 		if (!viewConfig) return
 		setViewConfig(structuredClone(viewConfig))
 	}
 
-	const save = () => {
-		if (isAdd) onAdd(viewConfig)
-		else onEdit(viewConfig)
-	}
-
-	useEffect(updateViewConfig, [view, isAdd, viewConfigList])
+	useEffect(updateViewConfig, [view, viewConfigList])
 
 	const onChangeCallback = (property: Exclude<keyof ViewConfig, 'colorMap' | 'components'>) => {
 		return (e: ChangeEvent<HTMLTextAreaElement>) => (viewConfig[property] = e.target.value)
@@ -50,7 +42,6 @@ const EditorView = ({ view, viewConfigList, onAdd, onEdit }: Props) => {
 		<div className="text-light d-flex flex-column ga-4">
 			<div className="d-flex align-center ga-4">
 				<span>View</span>
-				<IButton title="Add view" icon={mdiPlus} onClick={() => setIsAdd(!isAdd)}></IButton>
 			</div>
 			<div className="d-flex flex-column">
 				<textarea value={viewConfig.id} onChange={onChangeCallback('id')} />
@@ -60,7 +51,7 @@ const EditorView = ({ view, viewConfigList, onAdd, onEdit }: Props) => {
 				</select>
 			</div>
 			<div>
-				<IButton onClick={save}>Save</IButton>
+				<IButton onClick={() => onSave(viewConfig)}>Save</IButton>
 			</div>
 		</div>
 	)

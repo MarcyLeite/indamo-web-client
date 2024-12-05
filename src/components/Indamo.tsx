@@ -29,7 +29,7 @@ const Indamo = () => {
 		views: [],
 	})
 	const [paintMap, setPaintMap] = useState<PaintMap>({})
-	const { view, setView } = useViewController([])
+	const viewController = useViewController(config.views)
 	const modeController = useModeController()
 
 	const fetchViewConfig = async () => {
@@ -42,13 +42,11 @@ const Indamo = () => {
 	}, [])
 
 	useEffect(() => {
-		if (!config) return
-
-		setView('thermal-demo')
-	}, [config, setView])
-
-	useEffect(() => {
-		const _paintMap = view!.createPaintMap({
+		if (!viewController.view) {
+			setPaintMap({})
+			return
+		}
+		const paintMap = viewController.view.createPaintMap({
 			A: {
 				measurement: 'A',
 				source: '',
@@ -72,15 +70,24 @@ const Indamo = () => {
 			},
 		})
 
-		setPaintMap(_paintMap)
-	}, [view])
+		setPaintMap(paintMap)
+	}, [viewController.view])
 
 	return (
 		<div className="indamo">
 			<Scene3D mode={modeController.mode}>
-				<InteractableObject object3d={model.scene} paintMap={paintMap}></InteractableObject>
+				<InteractableObject
+					mode={modeController.mode}
+					view={viewController.view}
+					object3d={model.scene}
+					paintMap={paintMap}
+				></InteractableObject>
 			</Scene3D>
-			<Hud view={view} viewConfigList={config?.views} modeController={modeController} />
+			<Hud
+				viewController={viewController}
+				viewConfigList={config?.views}
+				modeController={modeController}
+			/>
 		</div>
 	)
 }
