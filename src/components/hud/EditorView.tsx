@@ -1,10 +1,10 @@
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { View, ViewConfig } from '../../modules/views/factory'
 import IButton from '../IButton'
 import { mdiPlus } from '@mdi/js'
 
 type Props = {
-	view: View
+	view: View | null
 	viewConfigList: ViewConfig[]
 	onAdd: (view: ViewConfig) => void
 	onEdit: (view: ViewConfig) => void
@@ -22,41 +22,35 @@ const emptyViewConfig: ViewConfig = {
 }
 
 const EditorView = ({ view, viewConfigList, onAdd, onEdit }: Props) => {
-	const [viewConfig, setViewConfig] = useState<ViewConfig>(emptyViewConfig)
-	const [isAdding, setIsAdding] = useState(false)
+	const [viewConfig, setViewConfig] = useState(emptyViewConfig)
+	const [isAdd, setIsAdd] = useState(false)
 
-	const setViewConfigFromSelectedView = useCallback(() => {
-		const selectedViewConfig = viewConfigList.find((viewConfig) => (viewConfig.id = view.id))
-		if (!selectedViewConfig) return
+	const updateViewConfig = () => {
+		setViewConfig(structuredClone(emptyViewConfig))
 
-		setViewConfig(structuredClone(selectedViewConfig))
-	}, [view.id, viewConfigList])
+		if (!view || isAdd) return
 
-	const toggleIsAdding = useCallback(() => {
-		if (isAdding) {
-			setViewConfigFromSelectedView()
-		} else {
-			setViewConfig(emptyViewConfig)
-		}
-		setIsAdding(!isAdding)
-	}, [isAdding, setViewConfigFromSelectedView])
+		const viewConfig = viewConfigList.find((config) => config.id === view.id)
+		if (!viewConfig) return
+		setViewConfig(structuredClone(viewConfig))
+	}
 
-	useEffect(setViewConfigFromSelectedView, [setViewConfigFromSelectedView])
+	const save = () => {
+		if (isAdd) onAdd(viewConfig)
+		else onEdit(viewConfig)
+	}
+
+	useEffect(updateViewConfig, [view, isAdd, viewConfigList])
 
 	const onChangeCallback = (property: Exclude<keyof ViewConfig, 'colorMap' | 'components'>) => {
 		return (e: ChangeEvent<HTMLTextAreaElement>) => (viewConfig[property] = e.target.value)
 	}
 
-	const save = useCallback(() => {
-		if (isAdding) onAdd(viewConfig)
-		else onEdit(viewConfig)
-	}, [isAdding, viewConfig, onAdd, onEdit])
-
 	return (
 		<div className="text-light d-flex flex-column ga-4">
 			<div className="d-flex align-center ga-4">
 				<span>View</span>
-				<IButton title="Add view" icon={mdiPlus} onClick={toggleIsAdding}></IButton>
+				<IButton title="Add view" icon={mdiPlus} onClick={() => setIsAdd(!isAdd)}></IButton>
 			</div>
 			<div className="d-flex flex-column">
 				<textarea value={viewConfig.id} onChange={onChangeCallback('id')} />

@@ -1,5 +1,5 @@
-import { act } from 'react'
-import { renderHook } from '@testing-library/react'
+import { useState } from 'react'
+import { act, renderHook } from '@testing-library/react'
 
 import { ViewConfig } from './factory'
 import { createViewController, useViewController } from './controller'
@@ -38,15 +38,17 @@ describe('View Module: View Controller', () => {
 		should.throw(() => createViewController(configList))
 	})
 
-	const renderControllerHook = () => renderHook(() => useViewController(configList))
+	const renderControllerHook = (list: ViewConfig[]) => renderHook(() => useViewController(list))
 
 	it('Should create hook', async () => {
-		const { result } = renderControllerHook()
-		result.current.view.id.should.equal('default')
+		const { result } = renderControllerHook(configList)
+		should.not.exist(result.current.view)
 	})
 
 	it('Should hook change selected view', () => {
-		const { result } = renderControllerHook()
+		const { result } = renderControllerHook(configList)
+
+		should.not.exist(result.current.view)
 
 		act(() => {
 			result.current.setView('foo')
@@ -54,5 +56,28 @@ describe('View Module: View Controller', () => {
 
 		should.exist(result.current.view)
 		result.current.view!.id.should.equal('foo')
+	})
+
+	it('Should update get function when list gets updated', () => {
+		const { result: listResult } = renderHook(() => useState(configList))
+		const { result, rerender } = renderHook(() => useViewController(listResult.current[0]))
+
+		act(() => {
+			result.current.setView('bar')
+		})
+		should.not.exist(result.current.view)
+
+		const barConfig = Object.assign({}, baseConfig, { id: 'bar' })
+		act(() => {
+			listResult.current[1]([...configList, barConfig])
+		})
+		rerender()
+
+		act(() => {
+			result.current.setView('bar')
+		})
+
+		should.exist(result.current.view)
+		result.current.view!.id.should.equal('bar')
 	})
 })
