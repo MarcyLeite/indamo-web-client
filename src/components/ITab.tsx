@@ -9,13 +9,14 @@ type Props = {
 const ITab = ({ elements, onSelected }: Props) => {
 	const [selectedIndex, setSelectedIndex] = useState(-1)
 	return (
-		<div>
+		<div className="d-flex">
 			{elements.map((content, i) => (
 				<IButton
 					key={i}
 					onClick={() => {
-						setSelectedIndex(i)
-						if (onSelected) onSelected(i)
+						const value = selectedIndex !== i ? i : -1
+						setSelectedIndex(value)
+						if (onSelected) onSelected(value)
 					}}
 					state={selectedIndex === i ? 'selected' : 'enabled'}
 				>

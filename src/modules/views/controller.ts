@@ -26,8 +26,7 @@ export const useViewController = (viewConfigList: ViewConfig[]) => {
 
 	const setViewById = useCallback(
 		(id: string) => {
-			const view = controller.getViewById(id)
-			if (!view) return
+			const view = controller.getViewById(id) ?? null
 			setView(view)
 		},
 		[controller]
@@ -41,3 +40,5 @@ export const useViewController = (viewConfigList: ViewConfig[]) => {
 
 	return { view, setView: setViewById } as const
 }
+
+export type ViewController = ReturnType<typeof useViewController>

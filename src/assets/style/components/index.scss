@@ -1,5 +1,7 @@
 @use 'IOverlay';
+@use 'IButton';
 
 @mixin main {
 	@include IOverlay.main;
+	@include IButton.main;
 }

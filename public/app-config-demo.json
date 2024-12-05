@@ -2,7 +2,7 @@
 	"views": [
 		{
 			"id": "thermal-demo",
-			"display": "Thermal Demo",
+			"display": "Thermal",
 			"colorMap": {
 				"type": "thermal",
 				"min": 0,

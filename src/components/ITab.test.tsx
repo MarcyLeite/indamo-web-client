@@ -36,7 +36,7 @@ describe('Indamo ITab', () => {
 		barButton!.classList.contains('selected').should.equal(false)
 		bazButton!.classList.contains('selected').should.equal(true)
 	})
-	it.only('Should foo tab be selected when pressing baz tab and then foo tab', () => {
+	it('Should foo tab be selected when pressing baz tab and then foo tab', () => {
 		fireEvent.click(bazButton!)
 		fireEvent.click(fooButton!)
 
@@ -46,6 +46,19 @@ describe('Indamo ITab', () => {
 		args[0].should.equal(0)
 
 		fooButton!.classList.contains('selected').should.equal(true)
+		barButton!.classList.contains('selected').should.equal(false)
+		bazButton!.classList.contains('selected').should.equal(false)
+	})
+	it.only('Should no tab be selected when pressing foo tab two times', () => {
+		fireEvent.click(fooButton!)
+		fireEvent.click(fooButton!)
+
+		spy.callCount.should.equal(2)
+		const args = spy.args[1]
+
+		args[0].should.equal(-1)
+
+		fooButton!.classList.contains('selected').should.equal(false)
 		barButton!.classList.contains('selected').should.equal(false)
 		bazButton!.classList.contains('selected').should.equal(false)
 	})
