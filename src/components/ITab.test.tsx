@@ -49,7 +49,7 @@ describe('Indamo ITab', () => {
 		barButton!.classList.contains('selected').should.equal(false)
 		bazButton!.classList.contains('selected').should.equal(false)
 	})
-	it.only('Should no tab be selected when pressing foo tab two times', () => {
+	it('Should no tab be selected when pressing foo tab two times', () => {
 		fireEvent.click(fooButton!)
 		fireEvent.click(fooButton!)
 
