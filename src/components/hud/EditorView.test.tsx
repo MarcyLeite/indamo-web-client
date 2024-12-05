@@ -1,7 +1,6 @@
 import { fireEvent, screen, render } from '@testing-library/react'
 import EditorViewForm from './EditorView'
 import { createView, View, ViewConfig } from '../../modules/views/factory'
-import { SinonSpy } from 'sinon'
 
 describe('Editor View', () => {
 	const mockViewConfig: ViewConfig = {
@@ -16,17 +15,15 @@ describe('Editor View', () => {
 	}
 	const mockView = createView(mockViewConfig)
 
-	let spyAdd = sinon.spy()
-	let spyEdit = sinon.spy()
+	let spySave = sinon.spy()
 
 	let idInput: HTMLInputElement | null = null
 	let displayInput: HTMLInputElement | null = null
 	let viewTypeSelect: HTMLSelectElement | null = null
 	let saveButton: HTMLButtonElement | null = null
-	let addButton: HTMLButtonElement | null = null
 
-	const checkSpyArgs = (spy: SinonSpy, id: string, display: string) => {
-		const call = spy.getCall(0)
+	const checkSpyArgs = (id: string, display: string) => {
+		const call = spySave.getCall(0)
 		const updatedView: View = call.args[0]
 
 		updatedView.should.not.equal(mockViewConfig)
@@ -34,56 +31,51 @@ describe('Editor View', () => {
 		updatedView.display.should.equal(display)
 	}
 
-	beforeEach(() => {
-		spyAdd = sinon.spy()
-		spyEdit = sinon.spy()
+	const updateTest = (view: View | null) => {
+		spySave = sinon.spy()
 
-		render(
-			<EditorViewForm
-				view={mockView}
-				viewConfigList={[mockViewConfig]}
-				onAdd={spyAdd}
-				onEdit={spyEdit}
-			/>
-		)
+		render(<EditorViewForm view={view} viewConfigList={[mockViewConfig]} onSave={spySave} />)
 
-		idInput = screen.queryByDisplayValue(mockViewConfig.id)
-		displayInput = screen.queryByDisplayValue(mockViewConfig.display)
+		idInput = screen.queryByTitle('View editor ID input')
+		displayInput = screen.queryByTitle('View editor display input')
 		viewTypeSelect = screen.queryByDisplayValue('thermal')
-		addButton = screen.queryByTitle('Add view')
 		saveButton = screen.queryByText('Save')
-	})
+	}
 
 	it('Should render components', () => {
+		updateTest(mockView)
+
 		should.exist(idInput)
 		should.exist(displayInput)
 
 		should.exist(viewTypeSelect)
 
-		should.exist(addButton)
 		should.exist(saveButton)
 	})
 
 	it('Should rendered input values be from selected view', () => {
+		updateTest(mockView)
+
 		idInput!.value.should.equal(mockViewConfig.id)
 		displayInput!.value.should.equal(mockViewConfig.display)
 		viewTypeSelect!.value.should.equal(mockViewConfig.colorMap.type)
 	})
 
 	it('Should edit click return changed values', () => {
+		updateTest(mockView)
+
 		fireEvent.change(idInput!, { target: { value: 'bar' } })
 		fireEvent.change(displayInput!, { target: { value: 'Bar' } })
 
 		fireEvent.click(saveButton!)
 
-		spyAdd.callCount.should.equal(0)
-		spyEdit.callCount.should.equal(1)
+		spySave.callCount.should.equal(1)
 
-		checkSpyArgs(spyEdit, 'bar', 'Bar')
+		checkSpyArgs('bar', 'Bar')
 	})
 
 	it('Should add new view', () => {
-		fireEvent.click(addButton!)
+		updateTest(null)
 
 		idInput!.value.should.equal('')
 		displayInput!.value.should.equal('')
@@ -94,9 +86,8 @@ describe('Editor View', () => {
 
 		fireEvent.click(saveButton!)
 
-		spyAdd.callCount.should.equal(1)
-		spyEdit.callCount.should.equal(0)
+		spySave.callCount.should.equal(1)
 
-		checkSpyArgs(spyAdd, 'bar', 'Bar')
+		checkSpyArgs('bar', 'Bar')
 	})
 })
