@@ -37,20 +37,24 @@ const TopLeftPanel = ({
 	)
 }
 
-const TopRightPanel = ({ viewController, viewConfigList }: Props) => {
+const TopRightPanel = ({ viewController, modeController, viewConfigList }: Props) => {
 	return (
 		<div className="bg-panel text-light ma-4 pa-4 rounded-lg">
-			<EditorView
-				view={viewController.view}
-				viewConfigList={viewConfigList}
-				onSave={(config) => {
-					if (viewController.view) {
-						console.log('edit: ' + config.id)
-					} else {
-						console.log('add: ' + config.id)
-					}
-				}}
-			/>
+			{modeController.mode === 'editor' ? (
+				<EditorView
+					view={viewController.view}
+					viewConfigList={viewConfigList}
+					onSave={(config) => {
+						if (viewController.view) {
+							console.log('edit: ' + config.id)
+						} else {
+							console.log('add: ' + config.id)
+						}
+					}}
+				/>
+			) : (
+				<></>
+			)}
 		</div>
 	)
 }
