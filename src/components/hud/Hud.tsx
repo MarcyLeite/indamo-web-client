@@ -4,9 +4,10 @@ import { mdiEye, mdiPencil } from '@mdi/js'
 import { ModeController } from '../../modules/modes/controller'
 import EditorView from './EditorView'
 import { View, ViewConfig } from '../../modules/views/factory'
+import ITab from '../ITab'
 
 type Props = {
-	view: View
+	view: View | null
 	viewConfigList: ViewConfig[]
 	modeController: ModeController
 }
@@ -18,7 +19,8 @@ const TopLeftPanel = ({ modeController: { mode, setMode } }: Props) => {
 	}
 
 	return (
-		<div className="d-flex text-light ma-4">
+		<div className="d-flex ma-4 bg-panel text-light">
+			<ITab elements={['foo', 'bar']} />
 			<IButton icon={mode === 'view' ? mdiEye : mdiPencil} onClick={toggleMode}></IButton>
 		</div>
 	)
