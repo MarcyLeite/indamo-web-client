@@ -34,10 +34,10 @@ describe('Editor View', () => {
 	const updateTest = (view: View | null) => {
 		spySave = sinon.spy()
 
-		render(<EditorViewForm view={view} viewConfigList={[mockViewConfig]} onSave={spySave} />)
+		render(<EditorViewForm view={view} onSave={spySave} />)
 
-		idInput = screen.queryByTitle('View editor ID input')
-		displayInput = screen.queryByTitle('View editor display input')
+		idInput = screen.queryByTitle('Editor view ID input')
+		displayInput = screen.queryByTitle('Editor view display input')
 		viewTypeSelect = screen.queryByDisplayValue('thermal')
 		saveButton = screen.queryByText('Save')
 	}

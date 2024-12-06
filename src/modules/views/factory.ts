@@ -21,12 +21,8 @@ export type ViewConfig = {
 	components: ComponentViewConfig[]
 }
 
-export const createView = ({
-	id,
-	display,
-	colorMap: colorMapConfig,
-	components: componentConfigList,
-}: ViewConfig) => {
+export const createView = (config: ViewConfig) => {
+	const { id, display, colorMap: colorMapConfig, components: componentConfigList } = config
 	const type = colorMapConfig.type
 	const mapper = type === 'thermal' ? createThermalColorMapper(colorMapConfig) : null
 	if (!mapper) throw new Error('View Error: Invalid colorMap config')
@@ -50,7 +46,7 @@ export const createView = ({
 		return paintMap
 	}
 
-	return { id, display, mapper, createPaintMap }
+	return { config, id, display, mapper, createPaintMap }
 }
 
 export type View = ReturnType<typeof createView>
