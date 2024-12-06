@@ -22,6 +22,11 @@ describe('View Module: Factory', () => {
 				display: 'Panel #2',
 				dataIndexers: ['bar'],
 			},
+			{
+				id: 2,
+				display: 'Panel #3',
+				isHidden: true,
+			},
 		],
 	}
 	const view = createView(baseConfig)
@@ -54,5 +59,11 @@ describe('View Module: Factory', () => {
 		colorMap[0].should.equal(hueToHSL(0))
 		colorMap.should.have.property('1')
 		colorMap[1].should.equal(hueToHSL(240))
+	})
+	it('Should color be "hidden" for components with "isHidden: true"', () => {
+		const colorMap = view.createPaintMap({})
+
+		colorMap.should.have.property('2')
+		colorMap[2].should.equal('!hidden')
 	})
 })

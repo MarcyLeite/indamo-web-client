@@ -10,32 +10,36 @@
 			},
 			"components": [
 				{
-					"id": 16,
+					"id": 19,
+					"isHidden": true
+				},
+				{
+					"id": 17,
 					"display": "Left Eye",
 					"dataIndexers": ["A"]
 				},
 				{
-					"id": 17,
+					"id": 18,
 					"display": "Right Eye",
 					"dataIndexers": ["A"]
 				},
 				{
-					"id": 19,
+					"id": 20,
 					"display": "Left Arm",
 					"dataIndexers": ["B"]
 				},
 				{
-					"id": 21,
+					"id": 22,
 					"display": "Right Arm",
 					"dataIndexers": ["B"]
 				},
 				{
-					"id": 20,
+					"id": 21,
 					"display": "Left Hand",
 					"dataIndexers": ["C"]
 				},
 				{
-					"id": 22,
+					"id": 23,
 					"display": "Right Hand",
 					"dataIndexers": ["C"]
 				}

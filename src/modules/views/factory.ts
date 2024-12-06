@@ -1,14 +1,17 @@
-import { PaintMap } from '../../components/threejs/InteractableObject'
 import { IndamoData } from '../../components/Indamo'
 import { ColorMapThermalConfig, createThermalColorMapper } from './color-mapper-thermal'
+
+export type PaintMap = Record<number, string | '!hidden'>
 
 export type ComponentViewConfig = {
 	id: number
 	display?: string
 	isHidden?: boolean
-	dataIndexers: string[]
-	transformLabel?: string
-	transformFunction?: string
+	dataIndexers?: string[]
+	transform?: {
+		label: string
+		function: string
+	}
 }
 
 export type ViewConfig = {
@@ -31,7 +34,16 @@ export const createView = ({
 	const createPaintMap = (indamoDataSet: Record<string, IndamoData>) => {
 		const paintMap: PaintMap = {}
 		for (const componentConfig of componentConfigList) {
+			if (componentConfig.isHidden) {
+				paintMap[componentConfig.id] = '!hidden'
+				continue
+			}
+
+			if (!componentConfig.dataIndexers) continue
+
 			const measuarent = componentConfig.dataIndexers[0]
+			if (indamoDataSet[measuarent]?.eng === undefined) continue
+
 			paintMap[componentConfig.id] = mapper.getColor(indamoDataSet[measuarent].eng)
 		}
 
