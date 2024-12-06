@@ -4,7 +4,6 @@ import IButton from '../IButton'
 
 type Props = {
 	view: View | null
-	viewConfigList: ViewConfig[]
 	onSave: (view: ViewConfig) => void
 }
 
@@ -19,20 +18,17 @@ const emptyViewConfig: ViewConfig = {
 	components: [],
 }
 
-const EditorView = ({ view, viewConfigList, onSave }: Props) => {
+const EditorView = ({ view, onSave }: Props) => {
 	const [viewConfig, setViewConfig] = useState(emptyViewConfig)
 
 	const updateViewConfig = () => {
 		setViewConfig(structuredClone(emptyViewConfig))
 
 		if (!view) return
-
-		const viewConfig = viewConfigList.find((config) => config.id === view.id)
-		if (!viewConfig) return
-		setViewConfig(structuredClone(viewConfig))
+		setViewConfig(structuredClone(view.config))
 	}
 
-	useEffect(updateViewConfig, [view, viewConfigList])
+	useEffect(updateViewConfig, [view])
 
 	const onChangeCallback = (property: Exclude<keyof ViewConfig, 'colorMap' | 'components'>) => {
 		return (e: ChangeEvent<HTMLTextAreaElement>) => (viewConfig[property] = e.target.value)
@@ -45,12 +41,12 @@ const EditorView = ({ view, viewConfigList, onSave }: Props) => {
 			</div>
 			<div className="d-flex flex-column">
 				<textarea
-					title="View editor ID input"
+					title="Editor view ID input"
 					value={viewConfig.id}
 					onChange={onChangeCallback('id')}
 				/>
 				<textarea
-					title="View editor display input"
+					title="Editor view display input"
 					value={viewConfig.display}
 					onChange={onChangeCallback('display')}
 				/>
