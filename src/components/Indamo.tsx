@@ -4,9 +4,9 @@ import { GLTFLoader } from 'three/examples/jsm/Addons.js'
 import { useEffect, useState } from 'react'
 
 import Scene3D from './threejs/Scene3D'
-import { ViewConfig } from '../modules/views/factory'
+import { ColorMap, ViewConfig } from '../modules/views/factory'
 import { useViewController } from '../modules/views/controller'
-import InteractableObject, { PaintMap } from './threejs/InteractableObject'
+import InteractableObject from './threejs/InteractableObject'
 import Hud from './hud/Hud'
 import { useModeController } from '../modules/modes/controller'
 import { Object3D } from 'three'
@@ -33,7 +33,8 @@ const Indamo = () => {
 	const modeController = useModeController()
 	const viewController = useViewController(config.views)
 
-	const [paintMap, setPaintMap] = useState<PaintMap>({})
+	const [hiddenList, setHiddenList] = useState<number[]>([])
+	const [colorList, setColorList] = useState<ColorMap[]>([])
 	const [selectedObject, setSelectedObject] = useState<Object3D | null>(null)
 
 	const fetchViewConfig = async () => {
@@ -47,10 +48,11 @@ const Indamo = () => {
 
 	useEffect(() => {
 		if (!viewController.view) {
-			setPaintMap({})
+			setHiddenList([])
+			setColorList([])
 			return
 		}
-		const paintMap = viewController.view.createPaintMap({
+		const colorList = viewController.view.getColorList({
 			A: {
 				measurement: 'A',
 				source: '',
@@ -74,7 +76,8 @@ const Indamo = () => {
 			},
 		})
 
-		setPaintMap(paintMap)
+		setHiddenList(viewController.view.hiddenComponentList)
+		setColorList(colorList)
 	}, [viewController.view])
 
 	return (
@@ -82,10 +85,9 @@ const Indamo = () => {
 			<Scene3D mode={modeController.mode}>
 				<SceneEffects selectedObject={selectedObject}></SceneEffects>
 				<InteractableObject
-					mode={modeController.mode}
-					view={viewController.view?.id ?? null}
 					object3d={model.scene}
-					paintMap={paintMap}
+					hiddenList={hiddenList}
+					colorList={colorList}
 					onUpdateSelected={setSelectedObject}
 				></InteractableObject>
 			</Scene3D>

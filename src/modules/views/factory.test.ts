@@ -33,7 +33,7 @@ describe('View Module: Factory', () => {
 	it('Should create Thermal View', () => {
 		view.id.should.equal(baseConfig.id)
 		view.display.should.equal(baseConfig.display)
-		view.mapper.type.should.equal('thermal')
+		view.type.should.equal('thermal')
 	})
 
 	const indamoDataList: Record<string, IndamoData> = {
@@ -53,17 +53,16 @@ describe('View Module: Factory', () => {
 		},
 	}
 
-	it('Should generate a color map', () => {
-		const colorMap = view.createPaintMap(indamoDataList)
-		colorMap.should.have.property('0')
-		colorMap[0].should.equal(hueToHSL(0))
-		colorMap.should.have.property('1')
-		colorMap[1].should.equal(hueToHSL(240))
+	it('Should generate component data', () => {
+		const colorList = view.getColorList(indamoDataList)
+		colorList.should.have.length(2)
+		colorList[0].color!.should.equal(hueToHSL(0))
+		colorList[1].color!.should.equal(hueToHSL(240))
 	})
-	it('Should color be "hidden" for components with "isHidden: true"', () => {
-		const colorMap = view.createPaintMap({})
+	it('Should not have color for components with "isHidden: true"', () => {
+		const hiddenComponentList = view.hiddenComponentList
 
-		colorMap.should.have.property('2')
-		colorMap[2].should.equal('!hidden')
+		hiddenComponentList.should.have.length(1)
+		hiddenComponentList[0].should.equal(2)
 	})
 })
