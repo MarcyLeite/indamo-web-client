@@ -1,19 +1,17 @@
 import { useEffect } from 'react'
 import { Object3D } from 'three'
-import { IndamoMode } from '../../modules/modes/controller'
-import { PaintMap } from '../../modules/views/factory'
+import { ColorMap } from '../../modules/views/factory'
 import {
 	resetObject,
 	createTransparentMaterial,
-	updateColorByPaintMap,
+	updateColorByColorList,
 } from '../../utils/object3d-transformers'
 import { IntersectionEvent } from '@react-three/fiber/dist/declarations/src/core/events'
 
 type Props = {
 	object3d: Object3D
-	mode: IndamoMode
-	view: string | null
-	paintMap: PaintMap
+	hiddenList: number[]
+	colorList: ColorMap[]
 	onUpdateSelected?: (object: Object3D) => void
 }
 
@@ -24,15 +22,20 @@ TODO The solution we found to make object invisible will lead to invisible objec
 to be visible on view change. A new solution may be releated with the task of changing the <primitive /> method
 of displaying the model. It' would be nice to add a test for this behavior in the future.
 */
-const InteractableObject = ({ object3d, mode, view, paintMap, onUpdateSelected }: Props) => {
+const InteractableObject = ({ object3d, hiddenList, colorList, onUpdateSelected }: Props) => {
 	useEffect(() => {
 		resetObject(object3d, baseMaterial)
-	}, [view, mode, object3d])
+
+		for (const hidden of hiddenList) {
+			const hiddenObject = object3d.getObjectById(hidden)
+			if (!hiddenObject) continue
+			hiddenObject.visible = false
+		}
+	}, [object3d, hiddenList])
 
 	useEffect(() => {
-		if (mode !== 'view') return
-		updateColorByPaintMap(object3d, paintMap)
-	}, [object3d, mode, paintMap])
+		updateColorByColorList(object3d, colorList)
+	}, [object3d, colorList])
 
 	return (
 		<>

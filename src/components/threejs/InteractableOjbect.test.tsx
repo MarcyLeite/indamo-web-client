@@ -1,8 +1,7 @@
 import { BoxGeometry, Group, Mesh, MeshBasicMaterial } from 'three'
 import InteractableObject from './InteractableObject'
-import { IndamoMode } from '../../modules/modes/controller'
 import { ReactThreeTestInstance } from '@react-three/test-renderer/dist/declarations/src/createTestInstance'
-import { PaintMap } from '../../modules/views/factory'
+import { ColorMap } from '../../modules/views/factory'
 
 describe('Interactable Object', () => {
 	const cubeGroup = new Group()
@@ -20,15 +19,14 @@ describe('Interactable Object', () => {
 
 	let spy = sinon.spy()
 
-	const render = async (paintMap: PaintMap, mode: IndamoMode = 'view') => {
+	const render = async (colorList: ColorMap[], hiddenList: number[] = []) => {
 		spy = sinon.spy()
 
 		const interactableObject = await threeRenderer.create(
 			<InteractableObject
-				mode={mode}
-				view=""
 				object3d={cubeGroup}
-				paintMap={paintMap}
+				hiddenList={hiddenList}
+				colorList={colorList}
 				onUpdateSelected={spy}
 			/>
 		)
@@ -44,31 +42,26 @@ describe('Interactable Object', () => {
 	const getMaterial = (cube: ReactThreeTestInstance) => getCube(cube).material as MeshBasicMaterial
 
 	it('Should paint change cubes default material', async () => {
-		await render({})
+		await render([])
 		getMaterial(sceneCube1!).color.getHexString().should.equal('505050')
 		getMaterial(sceneCube2!).color.getHexString().should.equal('505050')
 	})
 
 	it('Should paint cube with different color accordingly with colorMap', async () => {
-		const paintMap: PaintMap = {}
-		paintMap[cube1.id] = '#FFFFFF'
+		const paintMap: ColorMap[] = [
+			{
+				id: cube1.id,
+				color: '#FFFFFF',
+			},
+		]
 		await render(paintMap)
 
 		getMaterial(sceneCube1!).color.getHexString().should.equal('ffffff')
 		getMaterial(sceneCube2!).color.getHexString().should.equal('505050')
 	})
 
-	it('Should not paint cube if change mode different than "view"', async () => {
-		const paintMap: PaintMap = {}
-
-		paintMap[cube1.id] = '#FFFFFF'
-		await render(paintMap, 'editor')
-
-		getMaterial(sceneCube1!).color.getHexString().should.equal('505050')
-		getMaterial(sceneCube2!).color.getHexString().should.equal('505050')
-	})
 	it('Should call spy on click object', async () => {
-		const renderer = await render({}, 'editor')
+		const renderer = await render([])
 
 		await renderer.fireEvent(sceneGroup!, 'click', {
 			object: sceneCube1!._fiber,
@@ -78,10 +71,7 @@ describe('Interactable Object', () => {
 		spy.args[0][0].should.equal(sceneCube1!._fiber)
 	})
 	it('Should make hidden components invisible', async () => {
-		const paintMap: PaintMap = {}
-		paintMap[cube1.id] = '!hidden'
-
-		await render(paintMap)
+		await render([], [cube1.id])
 		getCube(sceneCube1!).visible.should.equal(false)
 	})
 })

@@ -1,8 +1,6 @@
 import { IndamoData } from '../../components/Indamo'
 import { ColorMapThermalConfig, createThermalColorMapper } from './color-mapper-thermal'
 
-export type PaintMap = Record<number, string | '!hidden'>
-
 export type ComponentViewConfig = {
 	id: number
 	display?: string
@@ -21,32 +19,43 @@ export type ViewConfig = {
 	components: ComponentViewConfig[]
 }
 
+export type IndamoComponentData = {
+	id: number
+	display?: string
+	isHidden?: boolean
+	color?: string
+}
+
+export type ColorMap = { id: number; color: string }
+
 export const createView = (config: ViewConfig) => {
 	const { id, display, colorMap: colorMapConfig, components: componentConfigList } = config
 	const type = colorMapConfig.type
 	const mapper = type === 'thermal' ? createThermalColorMapper(colorMapConfig) : null
 	if (!mapper) throw new Error('View Error: Invalid colorMap config')
 
-	const createPaintMap = (indamoDataSet: Record<string, IndamoData>) => {
-		const paintMap: PaintMap = {}
-		for (const componentConfig of componentConfigList) {
-			if (componentConfig.isHidden) {
-				paintMap[componentConfig.id] = '!hidden'
-				continue
-			}
+	const hiddenComponentList: number[] = componentConfigList
+		.filter((c) => c.isHidden)
+		.map((c) => c.id)
 
-			if (!componentConfig.dataIndexers) continue
+	const getColorList = (inputDataSet: Record<string, IndamoData>) => {
+		const colorList: ColorMap[] = []
+		for (const componentConfig of componentConfigList) {
+			if (componentConfig.isHidden || !componentConfig.dataIndexers) continue
 
 			const measuarent = componentConfig.dataIndexers[0]
-			if (indamoDataSet[measuarent]?.eng === undefined) continue
+			if (inputDataSet[measuarent]?.eng === undefined) continue
 
-			paintMap[componentConfig.id] = mapper.getColor(indamoDataSet[measuarent].eng)
+			colorList.push({
+				id: componentConfig.id,
+				color: mapper.getColor(inputDataSet[measuarent].eng),
+			})
 		}
 
-		return paintMap
+		return colorList
 	}
 
-	return { config, id, display, mapper, createPaintMap }
+	return { type: mapper.type, id, display, hiddenComponentList, getColorList }
 }
 
 export type View = ReturnType<typeof createView>

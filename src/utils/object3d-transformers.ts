@@ -1,5 +1,5 @@
 import { Material, Mesh, Object3D, MeshStandardMaterial } from 'three'
-import { PaintMap } from '../modules/views/factory'
+import { ColorMap } from '../modules/views/factory'
 
 export const createTransparentMaterial = (color: string) => {
 	return new MeshStandardMaterial({
@@ -11,8 +11,8 @@ export const createTransparentMaterial = (color: string) => {
 	})
 }
 
-export const updateColorByPaintMap = (root: Object3D, paintMap: PaintMap) => {
-	for (const [id, color] of Object.entries(paintMap)) {
+export const updateColorByColorList = (root: Object3D, colorList: ColorMap[]) => {
+	for (const { id, color } of colorList) {
 		const objectFind = root.getObjectById(Number(id))
 		if (!objectFind) continue
 
