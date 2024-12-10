@@ -42,20 +42,20 @@ describe('View Module: View Controller', () => {
 
 	it('Should create hook', async () => {
 		const { result } = renderControllerHook(configList)
-		should.not.exist(result.current.view)
+		should.not.exist(result.current.selectedView)
 	})
 
 	it('Should hook change selected view', () => {
 		const { result } = renderControllerHook(configList)
 
-		should.not.exist(result.current.view)
+		should.not.exist(result.current.selectedView)
 
 		act(() => {
 			result.current.setView('foo')
 		})
 
-		should.exist(result.current.view)
-		result.current.view!.id.should.equal('foo')
+		should.exist(result.current.selectedView)
+		result.current.selectedView!.id.should.equal('foo')
 	})
 
 	it('Should update get function when list gets updated', () => {
@@ -65,7 +65,7 @@ describe('View Module: View Controller', () => {
 		act(() => {
 			result.current.setView('bar')
 		})
-		should.not.exist(result.current.view)
+		should.not.exist(result.current.selectedView)
 
 		const barConfig = Object.assign({}, baseConfig, { id: 'bar' })
 		act(() => {
@@ -77,7 +77,7 @@ describe('View Module: View Controller', () => {
 			result.current.setView('bar')
 		})
 
-		should.exist(result.current.view)
-		result.current.view!.id.should.equal('bar')
+		should.exist(result.current.selectedView)
+		result.current.selectedView!.id.should.equal('bar')
 	})
 })

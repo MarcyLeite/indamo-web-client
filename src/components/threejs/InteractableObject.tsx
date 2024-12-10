@@ -1,20 +1,19 @@
 import { useEffect } from 'react'
 import { Object3D } from 'three'
-import { ColorMap } from '../../modules/views/factory'
 import {
 	resetObject,
 	createTransparentMaterial,
 	updateColorByColorList,
 } from '../../utils/object3d-transformers'
 import { IntersectionEvent } from '@react-three/fiber/dist/declarations/src/core/events'
+import { IndamoModel } from '../../modules/model/hook'
 
 type Props = {
-	object3d: Object3D
-	hiddenList: number[]
-	colorList: ColorMap[]
-	onUpdateSelected?: (object: Object3D) => void
+	model: IndamoModel
+	onUpdateSelected?: OnUpdateSelected
 }
 
+export type OnUpdateSelected = (object: Object3D) => void
 const baseMaterial = createTransparentMaterial('#505050')
 
 /*
@@ -22,20 +21,20 @@ TODO The solution we found to make object invisible will lead to invisible objec
 to be visible on view change. A new solution may be releated with the task of changing the <primitive /> method
 of displaying the model. It' would be nice to add a test for this behavior in the future.
 */
-const InteractableObject = ({ object3d, hiddenList, colorList, onUpdateSelected }: Props) => {
+const InteractableObject = ({ model, onUpdateSelected }: Props) => {
 	useEffect(() => {
-		resetObject(object3d, baseMaterial)
+		resetObject(model.scene, baseMaterial)
 
-		for (const hidden of hiddenList) {
-			const hiddenObject = object3d.getObjectById(hidden)
+		for (const hidden of model.hiddenList) {
+			const hiddenObject = model.scene.getObjectById(hidden)
 			if (!hiddenObject) continue
 			hiddenObject.visible = false
 		}
-	}, [object3d, hiddenList])
+	}, [model.scene, model.hiddenList])
 
 	useEffect(() => {
-		updateColorByColorList(object3d, colorList)
-	}, [object3d, colorList])
+		updateColorByColorList(model.scene, model.colorList)
+	}, [model.scene, model.colorList])
 
 	return (
 		<>
@@ -47,7 +46,7 @@ const InteractableObject = ({ object3d, hiddenList, colorList, onUpdateSelected 
 					if (onUpdateSelected) onUpdateSelected(collision)
 					event.stopPropagation()
 				}}
-				object={object3d}
+				object={model.scene}
 			></primitive>
 		</>
 	)

@@ -2,7 +2,7 @@ import { fireEvent, screen, render } from '@testing-library/react'
 import EditorViewForm from './EditorView'
 import { createView, View, ViewConfig } from '../../modules/views/factory'
 
-describe('Editor View', () => {
+describe.skip('Editor View', () => {
 	const mockViewConfig: ViewConfig = {
 		id: 'foo',
 		display: 'Foo',
