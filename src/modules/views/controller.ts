@@ -38,7 +38,7 @@ export const useViewController = (viewConfigList: ViewConfig[]) => {
 		setController(controller)
 	}, [viewConfigList])
 
-	return { view, setView: setViewById } as const
+	return { selectedView: view, viewList: controller.viewList, setView: setViewById } as const
 }
 
 export type ViewController = ReturnType<typeof useViewController>
