@@ -13,7 +13,13 @@ export const IHud = (props: Props) => {
 	return (
 		<IOverlay
 			topLeft={<FixedHud {...props}></FixedHud>}
-			topRight={props.modeController.mode.type === 'editor' ? <EditorForm /> : <></>}
+			topRight={
+				props.modeController.mode.type === 'editor' ? (
+					<EditorForm editor={props.modeController.mode} viewController={props.viewController} />
+				) : (
+					<></>
+				)
+			}
 		/>
 	)
 }

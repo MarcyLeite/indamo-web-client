@@ -1,38 +1,27 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import { View, ViewConfig } from '../../modules/views/factory'
+import { ViewConfig } from '../../modules/views/factory'
 import IButton from '../IButton'
+import { EditorMode } from '../../modules/modes/mode-editor'
+import { View } from '../../modules/views/factory'
 
 type Props = {
+	editor: EditorMode
 	view: View | null
-	onSave: (view: ViewConfig) => void
 }
 
-const emptyViewConfig: ViewConfig = {
-	id: '',
-	display: '',
-	colorMap: {
-		type: 'thermal',
-		min: 0,
-		max: 0,
-	},
-	components: [],
-}
-
-const EditorView = ({ view, onSave }: Props) => {
-	const [viewConfig, setViewConfig] = useState(emptyViewConfig)
-
-	const updateViewConfig = () => {
-		setViewConfig(structuredClone(emptyViewConfig))
-
-		if (!view) return
-		setViewConfig(structuredClone(view.config))
-	}
-
-	useEffect(updateViewConfig, [view])
+const EditorView = ({ editor, view }: Props) => {
+	const [viewConfig, setViewConfig] = useState<ViewConfig>(editor.getViewConfig(view))
 
 	const onChangeCallback = (property: Exclude<keyof ViewConfig, 'colorMap' | 'components'>) => {
-		return (e: ChangeEvent<HTMLTextAreaElement>) => (viewConfig[property] = e.target.value)
+		return (e: ChangeEvent<HTMLTextAreaElement>) => {
+			viewConfig[property] = e.target.value
+			setViewConfig({ ...viewConfig })
+		}
 	}
+
+	useEffect(() => {
+		setViewConfig(editor.getViewConfig(view))
+	}, [editor, view])
 
 	return (
 		<div className="text-light d-flex flex-column ga-4">
@@ -55,7 +44,7 @@ const EditorView = ({ view, onSave }: Props) => {
 				</select>
 			</div>
 			<div>
-				<IButton onClick={() => onSave(viewConfig)}>Save</IButton>
+				<IButton onClick={() => editor.save(viewConfig)}>Save</IButton>
 			</div>
 		</div>
 	)
