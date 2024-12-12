@@ -1,8 +1,9 @@
 import { fireEvent, screen, render } from '@testing-library/react'
 import EditorViewForm from './EditorView'
 import { createView, View, ViewConfig } from '../../modules/views/factory'
+import { createEditorMode, EditorMode } from '../../modules/modes/mode-editor'
 
-describe.skip('Editor View', () => {
+describe('Editor View', () => {
 	const mockViewConfig: ViewConfig = {
 		id: 'foo',
 		display: 'Foo',
@@ -14,6 +15,7 @@ describe.skip('Editor View', () => {
 		components: [],
 	}
 	const mockView = createView(mockViewConfig)
+	const editorMode = createEditorMode({ views: [mockViewConfig] })
 
 	let spySave = sinon.spy()
 
@@ -33,8 +35,9 @@ describe.skip('Editor View', () => {
 
 	const updateTest = (view: View | null) => {
 		spySave = sinon.spy()
+		editorMode.save = spySave as EditorMode['save']
 
-		render(<EditorViewForm view={view} onSave={spySave} />)
+		render(<EditorViewForm view={view} editor={editorMode} />)
 
 		idInput = screen.queryByTitle('Editor view ID input')
 		displayInput = screen.queryByTitle('Editor view display input')
