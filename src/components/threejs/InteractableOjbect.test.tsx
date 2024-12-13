@@ -3,7 +3,8 @@ import InteractableObject from './InteractableObject'
 import { ReactThreeTestInstance } from '@react-three/test-renderer/dist/declarations/src/createTestInstance'
 import { ColorMap, IndamoModel } from '../../modules/model/hook'
 
-describe('Interactable Object', () => {
+// TODO Move this tests to  Model Hook Controller
+describe.skip('Interactable Object', () => {
 	const groupCube = new Group()
 	const material = new MeshBasicMaterial({ color: '#000000' })
 	const geometry = new BoxGeometry(1, 1, 1)

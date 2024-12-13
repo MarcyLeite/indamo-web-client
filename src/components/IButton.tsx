@@ -10,7 +10,7 @@ type Props = {
 }
 
 const IButton = ({ children, title, state, icon, onClick }: PropsWithChildren<Props>) => {
-	const className = `i-button bg-panel pa-2 hover ${state ?? ''}`
+	const className = `i-button text-light bg-panel pa-2 hover ${state ?? ''}`
 	if (icon) {
 		return (
 			<div>

@@ -3,5 +3,6 @@
 		all: unset;
 		display: flex;
 		cursor: pointer;
+		user-select: none;
 	}
 }

@@ -23,5 +23,7 @@ export const useIndamoConfig = (configUrl: string) => {
 		fetchConfig()
 	}, [fetchConfig])
 
-	return { config, isLoaded }
+	return { config, setConfig, isLoaded }
 }
+
+export type IndamoConfigController = ReturnType<typeof useIndamoConfig>

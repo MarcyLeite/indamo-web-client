@@ -1,5 +1,8 @@
+import { useCallback, useMemo, useState } from 'react'
+import { IndamoModel } from '../model/hook'
+
 import { View, ViewConfig } from '../views/factory'
-import { IndamoConfig } from '../configurator/hook'
+import { IndamoConfig, IndamoConfigController } from '../configurator/hook'
 
 const defaultViewConfig: ViewConfig = {
 	id: '',
@@ -12,26 +15,45 @@ const defaultViewConfig: ViewConfig = {
 	components: [],
 }
 
-export const createEditorMode = (config: IndamoConfig) => {
-	const configClone = structuredClone(config)
-	const getViewConfig = (view: View | null) => {
-		if (!view) return defaultViewConfig
-		return configClone.views.find((c) => c.id === view.id) ?? defaultViewConfig
-	}
+// TODO Create tests
+
+export const useEditorMode = (
+	model: IndamoModel,
+	view: View | null,
+	configController: IndamoConfigController
+) => {
+	const original = structuredClone(configController.config)
+	const [config, setConfig] = useState<IndamoConfig>(structuredClone(configController.config))
+
+	const viewConfig = useMemo(
+		() =>
+			config.views[original.views.findIndex((v) => v.id === view?.id)] ??
+			structuredClone(defaultViewConfig),
+		[original, config.views, view]
+	)
+
+	const onModeChange = useCallback(() => {
+		setConfig(structuredClone(configController.config))
+	}, [configController.config])
+
+	const update = useCallback(() => {
+		setConfig.call({}, structuredClone(config))
+	}, [setConfig, config])
+
+	const onObjectSelectChange = useCallback(() => {
+		console.log(model.selectedObject)
+	}, [model.selectedObject])
 
 	return {
 		type: 'editor' as const,
-		config: configClone,
-		getViewConfig,
-		onViewChange: (view: View | null) => {
-			if (!view) return
-			return getViewConfig(view)
-		},
-		onUpdateSelect: () => {},
-		save: (viewConfig: ViewConfig) => {
-			console.log(viewConfig)
+		config,
+		update,
+		viewConfig,
+		events: {
+			onModeChange,
+			onObjectSelectChange,
 		},
 	}
 }
 
-export type EditorMode = ReturnType<typeof createEditorMode>
+export type EditorMode = ReturnType<typeof useEditorMode>

@@ -1,28 +1,21 @@
-import { ChangeEvent, useEffect, useState } from 'react'
-import { ViewConfig } from '../../modules/views/factory'
 import IButton from '../IButton'
 import { EditorMode } from '../../modules/modes/mode-editor'
-import { View } from '../../modules/views/factory'
+import { ViewConfig } from '../../modules/views/factory'
+import { ChangeEvent } from 'react'
 
 type Props = {
 	editor: EditorMode
-	view: View | null
 }
 
-const EditorView = ({ editor, view }: Props) => {
-	const [viewConfig, setViewConfig] = useState<ViewConfig>(editor.getViewConfig(view))
+const EditorView = ({ editor }: Props) => {
+	const viewConfig = editor.viewConfig
 
 	const onChangeCallback = (property: Exclude<keyof ViewConfig, 'colorMap' | 'components'>) => {
 		return (e: ChangeEvent<HTMLTextAreaElement>) => {
 			viewConfig[property] = e.target.value
-			setViewConfig({ ...viewConfig })
+			editor.update()
 		}
 	}
-
-	useEffect(() => {
-		setViewConfig(editor.getViewConfig(view))
-	}, [editor, view])
-
 	return (
 		<div className="text-light d-flex flex-column ga-4">
 			<div className="d-flex align-center ga-4">

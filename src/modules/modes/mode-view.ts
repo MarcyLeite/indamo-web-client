@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { IndamoModel } from '../model/hook'
 import { View } from '../views/factory'
 
@@ -24,19 +25,27 @@ const mockInput = {
 		eng: 100,
 	},
 }
+// TODO Create tests
 
-export const createViewMode = (model: IndamoModel) => {
+export const useViewMode = ({ setProperties, selectedObject }: IndamoModel, view: View | null) => {
+	const onViewChange = useCallback(() => {
+		if (!view) return
+
+		const colorMap = view.getColorList(mockInput)
+		setProperties(colorMap, view.hiddenComponentList)
+	}, [setProperties, view])
+
+	const onObjectSelect = useCallback(() => {
+		console.log(selectedObject)
+	}, [selectedObject])
+
 	return {
 		type: 'view' as const,
-		onViewChange: (view: View | null) => {
-			if (!view) {
-				model.setProperties([], [])
-				return
-			}
-			model.setProperties(view.getColorList(mockInput), view.hiddenComponentList)
+		events: {
+			onViewChange,
+			onObjectSelect,
 		},
-		onUpdateSelect: () => {},
 	}
 }
 
-export type ViewMode = ReturnType<typeof createViewMode>
+export type ViewMode = ReturnType<typeof useViewMode>
