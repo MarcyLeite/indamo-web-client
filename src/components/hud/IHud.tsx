@@ -1,8 +1,8 @@
 import { ModeController } from '../../modules/modes/controller'
 import { ViewController } from '../../modules/views/controller'
-import EditorForm from './EditorForm'
 import FixedHud from './FixedHud'
 import IOverlay from './IOverlay'
+import EditorForm from './EditorForm'
 
 type Props = {
 	viewController: ViewController

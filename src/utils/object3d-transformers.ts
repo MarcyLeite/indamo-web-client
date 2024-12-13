@@ -1,5 +1,5 @@
 import { Material, Mesh, Object3D, MeshStandardMaterial } from 'three'
-import { ColorMap } from '../modules/views/factory'
+import { ColorMap } from '../modules/model/hook'
 
 export const createTransparentMaterial = (color: string) => {
 	return new MeshStandardMaterial({
@@ -11,37 +11,51 @@ export const createTransparentMaterial = (color: string) => {
 	})
 }
 
+export const updateVisibleByHiddenList = (root: Object3D, hiddenList: number[]) => {
+	for (const hidden of hiddenList) {
+		const hiddenObject = root.getObjectById(hidden)
+		if (!hiddenObject) continue
+		hiddenObject.visible = false
+	}
+}
+
 export const updateColorByColorList = (root: Object3D, colorList: ColorMap[]) => {
 	for (const { id, color } of colorList) {
 		const objectFind = root.getObjectById(Number(id))
 		if (!objectFind) continue
 
 		const object = objectFind as Mesh
-		if (color === '!hidden') {
-			object.visible = false
-			continue
-		}
-
 		object.material = createTransparentMaterial(color)
 	}
 }
 
-export const recurseObject = (object: Object3D, callback: (object: Object3D) => void) => {
-	callback(object)
+export const recurseObject = (object: Object3D, callback: (object: Mesh) => void) => {
+	if (object.type === 'Mesh') {
+		callback(object as Mesh)
+	}
 	for (const children of object.children) {
 		recurseObject(children, callback)
 	}
 }
 
-export const resetObject = (object3d: Object3D, material: Material) => {
-	recurseObject(object3d, (object) => {
-		object3d.frustumCulled = false
+export const init = (material: Material) => (mesh: Mesh) => {
+	mesh.frustumCulled = false
+	mesh.renderOrder = 1
 
-		if (object.type !== 'Mesh') return
-		const mesh = object as Mesh
+	resetVisibility(mesh)
+	applyMaterial(material)(mesh)
+}
 
-		mesh.visible = true
-		mesh.renderOrder = 1
-		mesh.material = material
-	})
+export const resetVisibility = (mesh: Mesh) => {
+	mesh.visible = true
+}
+
+export const applyMaterial = (material: Material) => (mesh: Mesh) => {
+	mesh.material = material
+}
+
+export default {
+	init,
+	resetVisibility,
+	applyMaterial,
 }

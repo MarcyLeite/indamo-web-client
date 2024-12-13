@@ -20,11 +20,15 @@ export type IndamoData = {
 }
 
 const Indamo = () => {
-	const { config } = useIndamoConfig('http://localhost:5173/app-config-demo.json')
+	const configController = useIndamoConfig('http://localhost:5173/app-config-demo.json')
 	const model = useIndamoModel('snowman.glb')
 
-	const viewController = useViewController(config.views)
-	const modeController = useIndamoModeController(viewController.selectedView, model, config)
+	const viewController = useViewController(configController.config.views)
+	const modeController = useIndamoModeController(
+		viewController.selectedView,
+		model,
+		configController
+	)
 
 	const [selectedObject, setSelectedObject] = useState<Object3D | null>(null)
 

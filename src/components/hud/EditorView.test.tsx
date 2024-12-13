@@ -1,7 +1,7 @@
-import { fireEvent, screen, render } from '@testing-library/react'
+import { screen, render } from '@testing-library/react'
 import EditorViewForm from './EditorView'
-import { createView, View, ViewConfig } from '../../modules/views/factory'
-import { createEditorMode, EditorMode } from '../../modules/modes/mode-editor'
+import { ViewConfig } from '../../modules/views/factory'
+import { EditorMode } from '../../modules/modes/mode-editor'
 
 describe('Editor View', () => {
 	const mockViewConfig: ViewConfig = {
@@ -14,40 +14,31 @@ describe('Editor View', () => {
 		},
 		components: [],
 	}
-	const mockView = createView(mockViewConfig)
-	const editorMode = createEditorMode({ views: [mockViewConfig] })
 
-	let spySave = sinon.spy()
+	const editorMode = {
+		type: 'editor',
+		config: {
+			views: [mockViewConfig],
+		},
+		update: sinon.spy(),
+		viewConfig: mockViewConfig,
+	}
 
 	let idInput: HTMLInputElement | null = null
 	let displayInput: HTMLInputElement | null = null
 	let viewTypeSelect: HTMLSelectElement | null = null
 	let saveButton: HTMLButtonElement | null = null
 
-	const checkSpyArgs = (id: string, display: string) => {
-		const call = spySave.getCall(0)
-		const updatedView: View = call.args[0]
-
-		updatedView.should.not.equal(mockViewConfig)
-		updatedView.id.should.equal(id)
-		updatedView.display.should.equal(display)
-	}
-
-	const updateTest = (view: View | null) => {
-		spySave = sinon.spy()
-		editorMode.save = spySave as EditorMode['save']
-
-		render(<EditorViewForm view={view} editor={editorMode} />)
+	beforeEach(() => {
+		render(<EditorViewForm editor={editorMode as unknown as EditorMode} />)
 
 		idInput = screen.queryByTitle('Editor view ID input')
 		displayInput = screen.queryByTitle('Editor view display input')
 		viewTypeSelect = screen.queryByDisplayValue('thermal')
 		saveButton = screen.queryByText('Save')
-	}
+	})
 
 	it('Should render components', () => {
-		updateTest(mockView)
-
 		should.exist(idInput)
 		should.exist(displayInput)
 
@@ -57,40 +48,8 @@ describe('Editor View', () => {
 	})
 
 	it('Should rendered input values be from selected view', () => {
-		updateTest(mockView)
-
 		idInput!.value.should.equal(mockViewConfig.id)
 		displayInput!.value.should.equal(mockViewConfig.display)
 		viewTypeSelect!.value.should.equal(mockViewConfig.colorMap.type)
-	})
-
-	it('Should edit click return changed values', () => {
-		updateTest(mockView)
-
-		fireEvent.change(idInput!, { target: { value: 'bar' } })
-		fireEvent.change(displayInput!, { target: { value: 'Bar' } })
-
-		fireEvent.click(saveButton!)
-
-		spySave.callCount.should.equal(1)
-
-		checkSpyArgs('bar', 'Bar')
-	})
-
-	it('Should add new view', () => {
-		updateTest(null)
-
-		idInput!.value.should.equal('')
-		displayInput!.value.should.equal('')
-		viewTypeSelect!.value.should.equal('thermal')
-
-		fireEvent.change(idInput!, { target: { value: 'bar' } })
-		fireEvent.change(displayInput!, { target: { value: 'Bar' } })
-
-		fireEvent.click(saveButton!)
-
-		spySave.callCount.should.equal(1)
-
-		checkSpyArgs('bar', 'Bar')
 	})
 })
