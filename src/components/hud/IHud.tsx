@@ -15,7 +15,7 @@ export const IHud = (props: Props) => {
 			topLeft={<FixedHud {...props}></FixedHud>}
 			topRight={
 				props.modeController.mode.type === 'editor' ? (
-					<EditorForm editor={props.modeController.mode} viewController={props.viewController} />
+					<EditorForm editor={props.modeController.mode} modeController={props.modeController} />
 				) : (
 					<></>
 				)

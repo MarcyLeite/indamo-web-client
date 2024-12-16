@@ -1,4 +1,3 @@
-import IButton from '../IButton'
 import { EditorMode } from '../../modules/modes/mode-editor'
 import { ViewConfig } from '../../modules/views/factory'
 import { ChangeEvent } from 'react'
@@ -35,9 +34,6 @@ const EditorView = ({ editor }: Props) => {
 				<select>
 					<option>thermal</option>
 				</select>
-			</div>
-			<div>
-				<IButton onClick={() => editor.save(viewConfig)}>Save</IButton>
 			</div>
 		</div>
 	)

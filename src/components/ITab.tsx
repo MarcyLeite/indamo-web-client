@@ -1,24 +1,25 @@
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 import IButton from './IButton'
 
 type Props = {
 	elements: (ReactNode | string)[]
-	onSelected?: (index: number) => void
+	selected: number
+	setSelected: (value: number) => void
+	alwaysOne?: boolean
 }
 
-const ITab = ({ elements, onSelected }: Props) => {
-	const [selectedIndex, setSelectedIndex] = useState(-1)
+const ITab = ({ elements, selected, setSelected, alwaysOne }: Props) => {
 	return (
 		<div className="d-flex">
 			{elements.map((content, i) => (
 				<IButton
 					key={i}
 					onClick={() => {
-						const value = selectedIndex !== i ? i : -1
-						setSelectedIndex(value)
-						if (onSelected) onSelected(value)
+						const value = selected !== i ? i : -1
+						if (alwaysOne && value < 0) return
+						setSelected(value)
 					}}
-					state={selectedIndex === i ? 'selected' : 'enabled'}
+					state={selected === i ? 'selected' : 'enabled'}
 				>
 					{content}
 				</IButton>
