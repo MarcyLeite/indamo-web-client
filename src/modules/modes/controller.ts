@@ -7,10 +7,9 @@ import { useEffect, useMemo, useState } from 'react'
 
 export type IndamoMode = ViewMode | EditorMode
 
-type KeysOfUnion<T> = T extends T ? keyof T : never
-export type GenericIndamoMode = {
+type GenericIndamoMode = {
 	type: string
-	events: Record<KeysOfUnion<IndamoMode['events']>, () => void>
+	events: Record<string, () => void>
 }
 
 // TODO Create tests
@@ -22,6 +21,7 @@ export const useIndamoModeController = (
 	const viewMode = useViewMode(model, view)
 	const editorMode = useEditorMode(model, view, configController)
 	const [selectedMode, setSelectedMode] = useState<IndamoMode['type']>('view')
+
 	const mode = useMemo<IndamoMode>(
 		() => (selectedMode === 'view' ? viewMode : editorMode),
 		[selectedMode, viewMode, editorMode]
