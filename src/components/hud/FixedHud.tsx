@@ -2,16 +2,17 @@ import { mdiEye, mdiPencil } from '@mdi/js'
 import IButton from '../IButton'
 import ITab from '../ITab'
 import { ViewController } from '../../modules/views/controller'
-import { ModeController } from '../../modules/modes/controller'
 import { useEffect, useState } from 'react'
 import IClock from './IClock'
+import { IndamoModeType } from '../../modules/modes/controller'
 
 type Props = {
 	viewController: ViewController
-	modeController: ModeController
+	mode: IndamoModeType
+	setMode: (mode: IndamoModeType) => void
 }
 
-const FixedHud = ({ viewController, modeController }: Props) => {
+const FixedHud = ({ viewController, mode, setMode }: Props) => {
 	const [selectedViewIndex, setSelectedViewIndex] = useState(
 		viewController.viewList.findIndex((v) => viewController.selectedView?.id === v.id)
 	)
@@ -42,9 +43,9 @@ const FixedHud = ({ viewController, modeController }: Props) => {
 				setSelected={setSelectedViewIndex}
 			/>
 			<IButton
-				icon={modeController.mode.type === 'view' ? mdiEye : mdiPencil}
+				icon={mode === 'view' ? mdiEye : mdiPencil}
 				onClick={() => {
-					modeController.setMode(modeController.mode.type === 'view' ? 'editor' : 'view')
+					setMode(mode === 'view' ? 'editor' : 'view')
 				}}
 			/>
 		</div>

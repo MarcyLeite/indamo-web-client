@@ -1,21 +1,36 @@
-import { ModeController } from '../../modules/modes/controller'
 import { ViewController } from '../../modules/views/controller'
 import FixedHud from './FixedHud'
 import IOverlay from './IOverlay'
-import EditorForm from './EditorForm'
+import EditorHud from './EditorHud'
+import { IndamoConfigController } from '../../modules/configurator/hook'
+import { Object3D } from 'three'
+import { IndamoModeType } from '../../modules/modes/controller'
 
 type Props = {
 	viewController: ViewController
-	modeController: ModeController
+	configController: IndamoConfigController
+	selectedObject: Object3D | null
+	mode: IndamoModeType
+	setMode: (mode: IndamoModeType) => void
 }
 
-export const IHud = (props: Props) => {
+export const IHud = ({
+	viewController,
+	configController,
+	selectedObject,
+	mode,
+	setMode,
+}: Props) => {
 	return (
 		<IOverlay
-			topLeft={<FixedHud {...props}></FixedHud>}
+			topLeft={<FixedHud viewController={viewController} mode={mode} setMode={setMode} />}
 			topRight={
-				props.modeController.mode.type === 'editor' ? (
-					<EditorForm editor={props.modeController.mode} modeController={props.modeController} />
+				mode === 'editor' ? (
+					<EditorHud
+						configController={configController}
+						view={viewController.selectedView}
+						selectedObject={selectedObject}
+					/>
 				) : (
 					<></>
 				)
