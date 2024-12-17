@@ -15,6 +15,8 @@ to be visible on view change. A new solution may be releated with the task of ch
 of displaying the model. It' would be nice to add a test for this behavior in the future.
 */
 const InteractableObject = ({ model, onUpdateSelected }: Props) => {
+	const { scene } = model.values
+	const { setSelectedObject } = model.methods
 	return (
 		<>
 			<primitive
@@ -22,11 +24,11 @@ const InteractableObject = ({ model, onUpdateSelected }: Props) => {
 					const collision = event.object
 					if (!collision.visible) return
 
-					model.setSelectedObject(collision)
+					setSelectedObject(collision)
 					if (onUpdateSelected) onUpdateSelected(collision)
 					event.stopPropagation()
 				}}
-				object={model.scene}
+				object={scene}
 			></primitive>
 		</>
 	)

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
-import { GLTFLoader } from 'three/examples/jsm/Addons.js'
-import { useLoader } from '@react-three/fiber'
+import { GLTF } from 'three/examples/jsm/Addons.js'
+import { ObjectMap } from '@react-three/fiber'
 import { Object3D } from 'three'
 
 import object3dTransformers, {
@@ -13,9 +13,7 @@ const baseMaterial = createTransparentMaterial('#505050')
 
 export type ColorMap = { id: number; color: string }
 
-export const useIndamoModel = (modelUrl: string) => {
-	const model = useLoader(GLTFLoader, modelUrl)
-
+export const useIndamoModel = (model: GLTF & ObjectMap) => {
 	const [colorList, setColorList] = useState<ColorMap[]>([])
 	const [hiddenList, setHiddenList] = useState<number[]>([])
 
@@ -45,13 +43,17 @@ export const useIndamoModel = (modelUrl: string) => {
 	}, [model.scene, colorList])
 
 	return {
-		scene: model.scene,
-		reset,
-		colorList,
-		hiddenList,
-		setProperties,
-		selectedObject,
-		setSelectedObject,
+		values: {
+			scene: model.scene,
+			selectedObject,
+			colorList,
+			hiddenList,
+		},
+		methods: {
+			reset,
+			setProperties,
+			setSelectedObject,
+		},
 	}
 }
 

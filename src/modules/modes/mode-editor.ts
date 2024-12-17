@@ -1,8 +1,9 @@
-import { useCallback, useMemo, useState } from 'react'
-import { IndamoModel } from '../model/hook'
+// TODO Create tests
 
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { IndamoConfigController } from '../configurator/hook'
+import { Object3D } from 'three'
 import { ComponentViewConfig, View, ViewConfig } from '../views/factory'
-import { IndamoConfig, IndamoConfigController } from '../configurator/hook'
 
 const defaultViewConfig: ViewConfig = {
 	id: '',
@@ -10,80 +11,80 @@ const defaultViewConfig: ViewConfig = {
 	colorMap: {
 		type: 'thermal',
 		min: 0,
-		max: 1,
+		max: 0,
 	},
 	components: [],
 }
 
-const createDefaultComponentConfig = (id: number): ComponentViewConfig => ({
+const createComponentConfig = (id: number): ComponentViewConfig => ({
 	id,
 	display: '',
 	isHidden: false,
 	dataIndexers: [''],
 })
 
-// TODO Create tests
-
-export const useEditorMode = (
-	model: IndamoModel,
+export const useEditor = (
+	{ config: original, setConfig: setOriginal }: IndamoConfigController,
 	view: View | null,
-	configController: IndamoConfigController
+	selectedObject: Object3D | null
 ) => {
-	const copyConfig = useCallback(() => {
-		const copy = structuredClone(configController.config)
-		copy.views.push(structuredClone(defaultViewConfig))
-		return copy
-	}, [configController.config])
+	const [config, setConfig] = useState(structuredClone(original))
+	const [newViewConfig, setNewViewConfig] = useState(structuredClone(defaultViewConfig))
 
-	const original = structuredClone(configController.config)
-	const [config, setConfig] = useState<IndamoConfig>(copyConfig())
-
-	const viewConfig = useMemo(
-		() =>
-			config.views[original.views.findIndex((v) => v.id === view?.id)] ??
-			config.views[config.views.length - 1],
-		[original, config.views, view]
-	)
+	const viewConfig = useMemo(() => {
+		const index = original.views.findIndex((v) => v.id === view?.id)
+		return index === -1 ? newViewConfig : config.views[index]
+	}, [original, config, view, newViewConfig])
 
 	const componentConfig = useMemo(() => {
-		if (model.selectedObject === null) return null
+		if (!selectedObject) return
+		const index = viewConfig.components.findIndex((c) => c.id === selectedObject.id)
 
-		const componentConfig = viewConfig.components.find((c) => c.id === model.selectedObject!.id)
-		if (componentConfig) return componentConfig
+		if (index === -1) {
+			const newComponent = createComponentConfig(selectedObject.id)
+			viewConfig.components.push(newComponent)
+			return newComponent
+		}
 
-		const clone = createDefaultComponentConfig(model.selectedObject.id)
-		viewConfig.components.push(clone)
-		return clone
-	}, [viewConfig, model.selectedObject])
+		return viewConfig.components[index]
+	}, [selectedObject, viewConfig])
 
-	const onModeChange = useCallback(() => {
-		setConfig(copyConfig())
-	}, [copyConfig])
+	const updateView = useCallback(
+		(newView: Partial<ViewConfig>) => {
+			Object.assign(viewConfig, newView)
+		},
+		[viewConfig]
+	)
 
-	const update = useCallback(() => {
-		console.log(config)
-		setConfig.call({}, structuredClone(config))
-	}, [setConfig, config])
+	const updateComponent = useCallback(
+		(newComponent: Partial<ComponentViewConfig>) => {
+			if (!componentConfig) return
+			Object.assign(componentConfig, newComponent)
+		},
+		[componentConfig]
+	)
 
-	const save = () => {
-		const newConfig = config.views[config.views.length - 1]
-		if (newConfig.id === '') {
+	const save = useCallback(() => {
+		if (newViewConfig.id === '') {
 			config.views.pop()
 		}
-		configController.setConfig(config)
-	}
+		setOriginal(config)
+	}, [config, setOriginal, newViewConfig])
+
+	useEffect(() => {
+		const config = structuredClone(original)
+		const newViewConfig = structuredClone(defaultViewConfig)
+		config.views.push(newViewConfig)
+
+		setNewViewConfig(newViewConfig)
+		setConfig(config)
+	}, [original])
 
 	return {
-		type: 'editor' as const,
-		config,
-		update,
-		save,
 		viewConfig,
 		componentConfig,
-		events: {
-			onModeChange,
-		},
+		updateView,
+		updateComponent,
+		save,
 	}
 }
-
-export type EditorMode = ReturnType<typeof useEditorMode>
