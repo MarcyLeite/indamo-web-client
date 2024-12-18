@@ -14,7 +14,7 @@ type Props = {
 	selectedObject: Object3D | null
 }
 
-const EditorHud = ({ configController, view, selectedObject }: Props) => {
+const EditorForm = ({ configController, view, selectedObject }: Props) => {
 	const [tabIndex, setTabIndex] = useState(0)
 	const editor = useEditor(configController, view, selectedObject)
 	return (
@@ -37,4 +37,4 @@ const EditorHud = ({ configController, view, selectedObject }: Props) => {
 	)
 }
 
-export default EditorHud
+export default EditorForm

@@ -11,6 +11,7 @@ import { useIndamoModel } from '../modules/model/hook'
 import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/Addons.js'
 import { IndamoMode, IndamoModeType } from '../modules/modes/controller'
+import { useTimeControl } from '../modules/time-control/hook'
 
 // FIXME type does not belong here. Maybe When creating move to a related database connection.
 export type IndamoData = {
@@ -29,6 +30,7 @@ const Indamo = () => {
 	const model = useIndamoModel(gltf)
 
 	const view = useViewController(config.views)
+	const timeControl = useTimeControl()
 
 	const [selectedObject, setSelectedObject] = useState<Object3D | null>(null)
 
@@ -47,6 +49,7 @@ const Indamo = () => {
 				selectedObject={selectedObject}
 				mode={mode}
 				setMode={setMode}
+				timeControl={timeControl}
 			/>
 		</div>
 	)

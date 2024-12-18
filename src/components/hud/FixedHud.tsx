@@ -3,9 +3,7 @@ import IButton from '../IButton'
 import ITab from '../ITab'
 import { ViewController } from '../../modules/views/controller'
 import { useEffect, useState } from 'react'
-import IClock from './IClock'
 import { IndamoModeType } from '../../modules/modes/controller'
-import { useTimeControl } from '../../modules/time-control/hook'
 
 type Props = {
 	viewController: ViewController
@@ -26,11 +24,8 @@ const FixedHud = ({ viewController, mode, setMode }: Props) => {
 		viewController.setView(viewController.viewList[selectedViewIndex].id)
 	}, [viewController, selectedViewIndex])
 
-	const timeControl = useTimeControl()
-
 	return (
 		<div>
-			<IClock datetime={timeControl.moment} />
 			<ITab
 				elements={viewController.viewList.map((v) => v.display)}
 				selected={selectedViewIndex}
