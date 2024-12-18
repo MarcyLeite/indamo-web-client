@@ -32,7 +32,7 @@ const Indamo = () => {
 	const view = useViewController(config.views)
 	const timeControl = useTimeControl()
 
-	const [selectedObject, setSelectedObject] = useState<Object3D | null>(null)
+	const [selectedObject] = useState<Object3D | null>(null)
 
 	const [mode, setMode] = useState<IndamoModeType>('view')
 
@@ -40,8 +40,8 @@ const Indamo = () => {
 		<div className="indamo">
 			<IndamoMode mode={mode} view={view.selectedView} model={model} />
 			<Scene3D>
-				<SceneEffects selectedObject={selectedObject}></SceneEffects>
-				<InteractableObject model={model} onUpdateSelected={setSelectedObject}></InteractableObject>
+				<SceneEffects selectedObject={model.values.selectedObject}></SceneEffects>
+				<InteractableObject model={model}></InteractableObject>
 			</Scene3D>
 			<IHud
 				viewController={view}
