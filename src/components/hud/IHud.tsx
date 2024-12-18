@@ -1,7 +1,7 @@
 import { ViewController } from '../../modules/views/controller'
 import FixedHud from './FixedHud'
 import IOverlay from './IOverlay'
-import EditorHud from './EditorHud'
+import EditorForm from './EditorForm'
 import { IndamoConfigController } from '../../modules/configurator/hook'
 import { Object3D } from 'three'
 import { IndamoModeType } from '../../modules/modes/controller'
@@ -26,7 +26,7 @@ export const IHud = ({
 			topLeft={<FixedHud viewController={viewController} mode={mode} setMode={setMode} />}
 			topRight={
 				mode === 'editor' ? (
-					<EditorHud
+					<EditorForm
 						configController={configController}
 						view={viewController.selectedView}
 						selectedObject={selectedObject}

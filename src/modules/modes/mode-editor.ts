@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { IndamoConfigController } from '../configurator/hook'
 import { Object3D } from 'three'
 import { ComponentViewConfig, View, ViewConfig } from '../views/factory'
+import { IndamoModel } from '../model/hook'
 
 const defaultViewConfig: ViewConfig = {
 	id: '',
@@ -22,6 +23,17 @@ const createComponentConfig = (id: number): ComponentViewConfig => ({
 	isHidden: false,
 	dataIndexers: [''],
 })
+
+type Props = {
+	model: IndamoModel
+}
+export const EditorMode = ({ model: { methods } }: Props) => {
+	useEffect(() => {
+		methods.reset.call({})
+	}, [methods.reset])
+
+	return null
+}
 
 export const useEditor = (
 	{ config: original, setConfig: setOriginal }: IndamoConfigController,
@@ -88,3 +100,5 @@ export const useEditor = (
 		save,
 	}
 }
+
+export type IndamoEditor = ReturnType<typeof useEditor>
