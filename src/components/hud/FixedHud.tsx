@@ -5,6 +5,7 @@ import { ViewController } from '../../modules/views/controller'
 import { useEffect, useState } from 'react'
 import IClock from './IClock'
 import { IndamoModeType } from '../../modules/modes/controller'
+import { useTimeControl } from '../../modules/time-control/hook'
 
 type Props = {
 	viewController: ViewController
@@ -17,15 +18,6 @@ const FixedHud = ({ viewController, mode, setMode }: Props) => {
 		viewController.viewList.findIndex((v) => viewController.selectedView?.id === v.id)
 	)
 
-	const [datetime, setDatetime] = useState(new Date())
-
-	useEffect(() => {
-		const i = setInterval(() => {
-			setDatetime(new Date())
-		}, 500)
-		return () => clearInterval(i)
-	}, [])
-
 	useEffect(() => {
 		if (selectedViewIndex === -1) {
 			viewController.setView('')
@@ -34,9 +26,11 @@ const FixedHud = ({ viewController, mode, setMode }: Props) => {
 		viewController.setView(viewController.viewList[selectedViewIndex].id)
 	}, [viewController, selectedViewIndex])
 
+	const timeControl = useTimeControl()
+
 	return (
 		<div>
-			<IClock datetime={datetime} />
+			<IClock datetime={timeControl.moment} />
 			<ITab
 				elements={viewController.viewList.map((v) => v.display)}
 				selected={selectedViewIndex}
