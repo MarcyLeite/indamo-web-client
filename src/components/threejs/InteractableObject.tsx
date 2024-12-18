@@ -4,7 +4,6 @@ import { IndamoModel } from '../../modules/model/hook'
 
 type Props = {
 	model: IndamoModel
-	onUpdateSelected?: OnUpdateSelected
 }
 
 export type OnUpdateSelected = (object: Object3D) => void
@@ -14,7 +13,7 @@ TODO The solution we found to make object invisible will lead to invisible objec
 to be visible on view change. A new solution may be releated with the task of changing the <primitive /> method
 of displaying the model. It' would be nice to add a test for this behavior in the future.
 */
-const InteractableObject = ({ model, onUpdateSelected }: Props) => {
+const InteractableObject = ({ model }: Props) => {
 	const { scene } = model.values
 	const { setSelectedObject } = model.methods
 	return (
@@ -25,7 +24,6 @@ const InteractableObject = ({ model, onUpdateSelected }: Props) => {
 					if (!collision.visible) return
 
 					setSelectedObject(collision)
-					if (onUpdateSelected) onUpdateSelected(collision)
 					event.stopPropagation()
 				}}
 				object={scene}
