@@ -8,6 +8,7 @@ describe('Indamo Module: Consumer factory', () => {
 	const moment1 = new Date(2000, 0, 1, 10, 0, 1, 0)
 	const moment2 = new Date(2000, 0, 1, 10, 0, 2, 0)
 	const moment3 = new Date(2000, 0, 1, 10, 0, 3, 0)
+	const moment4 = new Date(2000, 0, 1, 10, 0, 4, 0)
 
 	const createMockDBData = (d: Date, m: string, v: number) => ({
 		_time: d.toISOString(),
@@ -16,10 +17,11 @@ describe('Indamo Module: Consumer factory', () => {
 	})
 
 	const connection: IndamoConnection = {
-		getInitialValues: (_) => [
-			createMockDBData(initalDate, 'A', 0),
-			createMockDBData(initalDate, 'B', 0),
-		],
+		getInitialValues: (m: Date) => {
+			if (m.getTime() === initalDate.getTime())
+				return [createMockDBData(initalDate, 'A', 0), createMockDBData(initalDate, 'B', 0)]
+			else return [createMockDBData(initalDate, 'A', 1), createMockDBData(initalDate, 'B', 0)]
+		},
 		getDifference: (d1, d2) => {
 			const l: IndamoData[] = []
 
@@ -32,6 +34,8 @@ describe('Indamo Module: Consumer factory', () => {
 			checkMoment(moment2, [createMockDBData(moment2, 'B', 1)])
 
 			checkMoment(moment3, [createMockDBData(moment3, 'A', 2), createMockDBData(moment3, 'B', 2)])
+
+			checkMoment(moment4, [createMockDBData(moment4, 'A', 0), createMockDBData(moment4, 'B', 0)])
 
 			return l
 		},
@@ -57,7 +61,7 @@ describe('Indamo Module: Consumer factory', () => {
 		],
 	})
 
-	const bufferColorMap = createBufferColorMap(initalDate, connection, view)
+	const bufferColorMap = createBufferColorMap(initalDate, connection, view, 3)
 
 	it('Should create get colormap uncluding all changes from begining', () => {
 		const colorMap = bufferColorMap.getBeginUntil(moment1)
@@ -65,7 +69,7 @@ describe('Indamo Module: Consumer factory', () => {
 		colorMap.length.should.equal(2)
 
 		colorMap[0].id.should.equal(0)
-		colorMap[0].color.should.equal(hueToHSL(240))
+		colorMap[0].color.should.equal(hueToHSL(120))
 
 		colorMap[1].id.should.equal(1)
 		colorMap[1].color.should.equal(hueToHSL(240))
@@ -96,5 +100,41 @@ describe('Indamo Module: Consumer factory', () => {
 
 		colorMap[1].id.should.equal(1)
 		colorMap[1].color.should.equal(hueToHSL(0))
+	})
+
+	it('Shoul not render more than buffer size', () => {
+		const colorMap = bufferColorMap.getBeginUntil(moment4)
+
+		colorMap.length.should.equal(2)
+
+		colorMap[0].id.should.equal(0)
+		colorMap[0].color.should.equal(hueToHSL(0))
+
+		colorMap[1].id.should.equal(1)
+		colorMap[1].color.should.equal(hueToHSL(0))
+	})
+
+	const udpatedBuffer = bufferColorMap.update(moment1)
+	it('Should update buffer to new date', () => {
+		const colorMap = udpatedBuffer.getBeginUntil(moment2)
+		colorMap.length.should.equal(2)
+
+		colorMap[0].id.should.equal(0)
+		colorMap[0].color.should.equal(hueToHSL(120))
+
+		colorMap[1].id.should.equal(1)
+		colorMap[1].color.should.equal(hueToHSL(120))
+	})
+
+	it('Should get last buffer value', () => {
+		const colorMap = udpatedBuffer.getBeginUntil(moment4)
+
+		colorMap.length.should.equal(2)
+
+		colorMap[0].id.should.equal(0)
+		colorMap[0].color.should.equal(hueToHSL(240))
+
+		colorMap[1].id.should.equal(1)
+		colorMap[1].color.should.equal(hueToHSL(240))
 	})
 })
