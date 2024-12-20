@@ -4,7 +4,7 @@ import { createViewMock } from '../../../tests/utils/mocks'
 import { IndamoModel } from '../model/hook'
 import { View } from '../views/factory'
 
-describe.only('Indamo Mode: View', () => {
+describe('Indamo Mode: View', () => {
 	const viewMock = createViewMock()
 	const modelMock = {
 		values: {},

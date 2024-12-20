@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react'
 import { useTimeControl } from './hook'
 
-describe.only('Indamo Time Control', () => {
+describe('Indamo Time Control', () => {
 	const render = () => renderHook(() => useTimeControl())
 	const compareTime = (dateTime: Date, expectedTime: Date) => {
 		const { result } = render()
