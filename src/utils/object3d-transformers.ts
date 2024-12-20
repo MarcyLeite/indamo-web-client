@@ -40,7 +40,7 @@ export const recurseObject = (object: Object3D, callback: (object: Mesh) => void
 
 export const init = (material: Material) => (mesh: Mesh) => {
 	mesh.frustumCulled = false
-	mesh.renderOrder = 1
+	mesh.renderOrder = mesh.id
 
 	resetVisibility(mesh)
 	applyMaterial(material)(mesh)
