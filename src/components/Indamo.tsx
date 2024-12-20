@@ -13,15 +13,6 @@ import { GLTFLoader } from 'three/examples/jsm/Addons.js'
 import { IndamoMode, IndamoModeType } from '../modules/modes/controller'
 import { useTimeControl } from '../modules/time-control/hook'
 
-// FIXME type does not belong here. Maybe When creating move to a related database connection.
-export type IndamoData = {
-	measurement: string
-	source: string
-	status: string
-	eng: number
-	raw: number
-}
-
 const Indamo = () => {
 	const configController = useIndamoConfig('http://localhost:5173/app-config-demo.json')
 	const config = configController.config

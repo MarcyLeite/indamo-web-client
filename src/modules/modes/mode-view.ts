@@ -2,29 +2,29 @@ import { useEffect } from 'react'
 import { IndamoModel } from '../model/hook'
 import { View } from '../views/factory'
 
-const mockInput = {
-	A: {
+const mockInput = [
+	{
 		measurement: 'A',
 		source: '',
 		status: '',
 		raw: 0,
 		eng: 0,
 	},
-	B: {
+	{
 		measurement: 'B',
 		source: '',
 		status: '',
 		raw: 50,
 		eng: 50,
 	},
-	C: {
+	{
 		measurement: 'C',
 		source: '',
 		status: '',
 		raw: 100,
 		eng: 100,
 	},
-}
+]
 // TODO Create tests
 
 type Props = {

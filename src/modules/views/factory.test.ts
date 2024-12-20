@@ -1,5 +1,4 @@
 import { hueToHSL } from '../../utils/color-converter'
-import { IndamoData } from '../../components/Indamo'
 import { createView, ViewConfig } from './factory'
 
 describe('View Module: Factory', () => {
@@ -36,22 +35,22 @@ describe('View Module: Factory', () => {
 		view.type.should.equal('thermal')
 	})
 
-	const indamoDataList: Record<string, IndamoData> = {
-		foo: {
-			measurement: 'foo',
+	const indamoDataList = [
+		{
+			_measurement: 'foo',
 			source: '',
 			status: '',
 			eng: 100,
 			raw: 90,
 		},
-		bar: {
-			measurement: 'bar',
+		{
+			_measurement: 'bar',
 			source: '',
 			status: '',
 			eng: 0,
 			raw: 10,
 		},
-	}
+	]
 
 	it('Should generate component data', () => {
 		const colorList = view.getColorList(indamoDataList)
@@ -59,10 +58,19 @@ describe('View Module: Factory', () => {
 		colorList[0].color!.should.equal(hueToHSL(0))
 		colorList[1].color!.should.equal(hueToHSL(240))
 	})
+
 	it('Should not have color for components with "isHidden: true"', () => {
 		const hiddenComponentList = view.hiddenComponentList
 
 		hiddenComponentList.should.have.length(1)
 		hiddenComponentList[0].should.equal(2)
+	})
+
+	it('Should create generate indexer list', () => {
+		const indexerList = view.indexerList
+
+		indexerList.length.should.equal(2)
+		indexerList[0].should.equal('foo')
+		indexerList[1].should.equal('bar')
 	})
 })
