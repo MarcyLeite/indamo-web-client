@@ -105,27 +105,34 @@ const createBufferBase = (
 	const difference = (moment1: Date, moment2: Date) =>
 		getDifferenceFromBuffer(bufferValues, moment1, moment2)
 
+	const lastDifference = bufferValues.differenceList.at(-1)!
 	const update = (moment: Date) => {
+		const newProps = Object.assign({}, props, { moment })
 		if (
+			lastDifference &&
 			moment.getTime() > bufferValues.initialValues.timestamp &&
-			moment.getTime() < bufferValues.differenceList.at(-1)!.timestamp
+			moment.getTime() < lastDifference.timestamp
 		) {
-			const newProps = Object.assign({}, props, { moment })
 			const newBufferValues = updateBufferValuesFoward(Object.assign({ bufferValues }, newProps))
+
 			return createBufferBase(newBufferValues, newProps)
 		}
-		return createBuffer(props)
+		return createBuffer(newProps)
 	}
 
 	const from = bufferValues.initialValues.timestamp
-	const to = bufferValues.differenceList.at(-1)!.timestamp
+	const to = lastDifference
+		? bufferValues.differenceList.at(-1)!.timestamp
+		: bufferValues.initialValues.timestamp
 
 	return { snapshot, update, difference, from, to }
 }
 
 export const createBuffer = (props: IndamoBufferProperties) => {
-	const propsWithDefault = Object.assign({}, props, { sizeInSeconds: 10 })
+	const propsWithDefault = Object.assign({ sizeInSeconds: 10 }, props)
 	const bufferValues = createBufferValues(propsWithDefault)
 
 	return createBufferBase(bufferValues, propsWithDefault)
 }
+
+export type IndamoBuffer = ReturnType<typeof createBuffer>
