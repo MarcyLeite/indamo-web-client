@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Scene3D from './threejs/Scene3D'
 import { useViewController } from '../modules/views/controller'
@@ -12,6 +12,7 @@ import { useLoader } from '@react-three/fiber'
 import { GLTFLoader } from 'three/examples/jsm/Addons.js'
 import { IndamoMode, IndamoModeType } from '../modules/modes/controller'
 import { useTimeControl } from '../modules/time-control/hook'
+import { useBuffer } from '../modules/consumer/buffer-hook'
 
 // FIXME type does not belong here. Maybe When creating move to a related database connection.
 export type IndamoData = {
@@ -32,9 +33,22 @@ const Indamo = () => {
 	const view = useViewController(config.views)
 	const timeControl = useTimeControl()
 
+	const [buffer, tick] = useBuffer()
 	const [selectedObject] = useState<Object3D | null>(null)
-
 	const [mode, setMode] = useState<IndamoModeType>('view')
+
+	useEffect(() => {
+		timeControl.goTo.call({}, new Date(2000, 0, 1, 10, 0, 0))
+	}, [timeControl.goTo])
+
+	useEffect(() => {
+		tick(timeControl.moment)
+	}, [timeControl.moment, tick])
+
+	useEffect(() => {
+		const snapshot = buffer.snapshot(timeControl.moment)
+		console.log(snapshot['A']?.value, snapshot['B']?.value)
+	}, [buffer, timeControl.moment])
 
 	return (
 		<div className="indamo">

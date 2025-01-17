@@ -266,4 +266,17 @@ describe.only('Indamo: Consumer Buffer', () => {
 		snapshot2['A'].value.should.equal(2)
 		snapshot2['B'].value.should.equal(12)
 	})
+
+	it('Should create new buffer when update to current buffer size or after', () => {
+		const buffer = createBuffer({
+			connection: createMockConnection(),
+			indexerList,
+			moment: new Date(2000, 0, 1, 10, 0, 0),
+			sizeInSeconds: 5,
+		})
+
+		const updatedBuffer = buffer.update(new Date(2000, 0, 1, 10, 0, 5))!
+
+		updatedBuffer.from.should.equal(new Date(2000, 0, 1, 10, 0, 5).getTime())
+	})
 })
