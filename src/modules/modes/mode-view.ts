@@ -1,38 +1,19 @@
 import { useEffect } from 'react'
 import { IndamoModel } from '../model/hook'
 import { View } from '../views/factory'
+import { useConsumer } from '../consumer/consumer-hook'
+import { TimeControl } from '../time-control/hook'
 
-const mockInput = {
-	A: {
-		measurement: 'A',
-		source: '',
-		status: '',
-		raw: 0,
-		eng: 0,
-	},
-	B: {
-		measurement: 'B',
-		source: '',
-		status: '',
-		raw: 50,
-		eng: 50,
-	},
-	C: {
-		measurement: 'C',
-		source: '',
-		status: '',
-		raw: 100,
-		eng: 100,
-	},
-}
 // TODO Create tests
 
 type Props = {
 	model: IndamoModel
 	view: View | null
+	timeControl: TimeControl
 }
 
-export const ViewMode = ({ model, view }: Props) => {
+export const ViewMode = ({ model, view, timeControl }: Props) => {
+	const { dataMap, resetDataMap } = useConsumer(timeControl)
 	useEffect(() => {
 		return () => {
 			model.methods.reset.call({})
@@ -40,11 +21,15 @@ export const ViewMode = ({ model, view }: Props) => {
 	}, [model.methods.reset])
 
 	useEffect(() => {
-		model.methods.reset.call({})
 		if (!view) return
+		console.log(dataMap)
+		model.methods.setProperties.call({}, view.getColorList(dataMap), view.hiddenComponentList)
+	}, [view, model.methods.setProperties, dataMap])
 
-		model.methods.setProperties.call({}, view.getColorList(mockInput), view.hiddenComponentList)
-	}, [view, model.methods.reset, model.methods.setProperties])
+	useEffect(() => {
+		model.methods.reset.call({})
+		resetDataMap.call({})
+	}, [view, resetDataMap, model.methods.reset])
 
 	return null
 }

@@ -1,4 +1,4 @@
-import { IndamoData } from '../../components/Indamo'
+import { IndamoDataMap } from '../consumer/connection'
 import { ColorMap } from '../model/hook'
 import { ColorMapThermalConfig, createThermalColorMapper } from './color-mapper-thermal'
 
@@ -37,17 +37,16 @@ export const createView = (config: ViewConfig) => {
 		.filter((c) => c.isHidden)
 		.map((c) => c.id)
 
-	const getColorList = (inputDataSet: Record<string, IndamoData>) => {
+	const getColorList = (inputDataSet: IndamoDataMap) => {
 		const colorList: ColorMap[] = []
 		for (const componentConfig of componentConfigList) {
 			if (componentConfig.isHidden || !componentConfig.dataIndexers) continue
 
 			const measuarent = componentConfig.dataIndexers[0]
-			if (inputDataSet[measuarent]?.eng === undefined) continue
 
 			colorList.push({
 				id: componentConfig.id,
-				color: mapper.getColor(inputDataSet[measuarent].eng),
+				color: mapper.getColor(inputDataSet[measuarent]?.eng ?? null),
 			})
 		}
 

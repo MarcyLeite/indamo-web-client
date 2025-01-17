@@ -279,4 +279,18 @@ describe.only('Indamo: Consumer Buffer', () => {
 
 		updatedBuffer.from.should.equal(new Date(2000, 0, 1, 10, 0, 5).getTime())
 	})
+
+	it('Should expand buffer size on update', () => {
+		const buffer = createBuffer({
+			connection: createMockConnection(),
+			indexerList,
+			moment: new Date(2000, 0, 1, 10, 0, 0),
+			sizeInSeconds: 5,
+		})
+
+		const updatedBuffer = buffer.update(new Date(2000, 0, 1, 10, 0, 5), 10)!
+
+		const snapshot = updatedBuffer.snapshot(new Date(2000, 0, 1, 10, 0, 15))
+		snapshot['A'].value.should.equal(2)
+	})
 })

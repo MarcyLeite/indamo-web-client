@@ -1,5 +1,7 @@
 import { IndamoConnection, IndamoData, IndamoDataMap, IndamoDataSnapshot } from './connection'
 
+const now = new Date().getTime()
+
 const createMockSnapshot = (
 	second: number,
 	valueA: number | null,
@@ -7,22 +9,22 @@ const createMockSnapshot = (
 ): IndamoDataSnapshot => {
 	const map: Record<string, IndamoData> = {}
 	if (valueA !== null) {
-		map['A'] = { value: valueA }
+		map['A'] = { eng: valueA }
 	}
 	if (valueB !== null) {
-		map['B'] = { value: valueB }
+		map['B'] = { eng: valueB }
 	}
 	return {
-		timestamp: new Date(2000, 0, 1, 10, 0, second).getTime(),
+		timestamp: new Date(now + second * 1000).getTime(),
 		map,
 	}
 }
 
 const snapshotList = [
-	createMockSnapshot(0, 0, 10),
-	createMockSnapshot(5, 1, null),
-	createMockSnapshot(10, null, 11),
-	createMockSnapshot(15, 2, 12),
+	createMockSnapshot(0, 0, 50),
+	createMockSnapshot(1, 50, null),
+	createMockSnapshot(2, null, 100),
+	createMockSnapshot(3, 100, 0),
 ]
 export const createMockConnection = (): IndamoConnection => {
 	return {

@@ -54,6 +54,13 @@ export const createBufferValues = ({
 	sizeInSeconds,
 }: Required<IndamoBufferProperties>) => {
 	const initialValues = connection.getLastDataFrom(moment, indexerList)
+
+	for (const indexer of indexerList) {
+		if (!initialValues.map[indexer]) {
+			initialValues.map[indexer] = null
+		}
+	}
+
 	const differenceList = connection.getDataFromRange(
 		moment,
 		new Date(moment.getTime() + sizeInSeconds * 1000),
@@ -106,8 +113,13 @@ const createBufferBase = (
 		getDifferenceFromBuffer(bufferValues, moment1, moment2)
 
 	const lastDifference = bufferValues.differenceList.at(-1)!
-	const update = (moment: Date) => {
-		const newProps = Object.assign({}, props, { moment })
+	const update = (moment?: Date, sizeInSeconds?: number) => {
+		moment = moment ?? props.moment
+		const newProps = Object.assign({}, props, {
+			moment,
+			sizeInSeconds: sizeInSeconds ?? props.sizeInSeconds,
+		})
+		if (moment === props.moment && sizeInSeconds === props.sizeInSeconds) return
 		if (
 			lastDifference &&
 			moment.getTime() > bufferValues.initialValues.timestamp &&
