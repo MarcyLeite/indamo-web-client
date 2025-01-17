@@ -1,4 +1,5 @@
 import { hueToHSL } from '../../utils/color-converter'
+import { IndamoDataBaseTypes } from '../consumer/connection'
 
 export type ColorMapThermalConfig = {
 	type: 'thermal'
@@ -16,7 +17,8 @@ export const createThermalColorMapper = ({ min, max }: ColorMapThermalConfig) =>
 
 		return Math.abs(hueValue - HUE_MAX)
 	}
-	const getColor = (value: number) => {
+	const getColor = (value: IndamoDataBaseTypes) => {
+		if (typeof value !== 'number') return '#000000'
 		return hueToHSL(getHueValue(value))
 	}
 
