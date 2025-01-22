@@ -1,0 +1,15 @@
+services:
+  influx-db:
+    image: influxdb
+    volumes:
+      - .influx/data:/var/lib/influxdb2
+      - .influx/config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=dev
+      - DOCKER_INFLUXDB_INIT_PASSWORD=dev-password
+      - DOCKER_INFLUXDB_INIT_ORG=$VITE_INFLUX_ORG
+      - DOCKER_INFLUXDB_INIT_BUCKET=dev
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=$VITE_INFLUX_TOKEN
+    ports:
+      - 8086:8086
