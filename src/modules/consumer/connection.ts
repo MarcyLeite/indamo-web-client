@@ -6,14 +6,11 @@ export type IndamoDataSnapshot = {
 	map: IndamoDataMap
 }
 
-export const createConnection = () => {
-	return {
-		getLastDataFrom: (date: Date, indexerList: string[]): IndamoDataSnapshot => ({
-			timestamp: date.getTime(),
-			map: {},
-		}),
-		getDataFromRange: (date1: Date, date2: Date, indexerList: string[]): IndamoDataSnapshot[] => [],
-	}
+export type IndamoConnection = {
+	getLastDataFrom: (date: Date, indexerList: string[]) => Promise<IndamoDataSnapshot>
+	getDataFromRange: (
+		date1: Date,
+		date2: Date,
+		indexerList: string[]
+	) => Promise<IndamoDataSnapshot[]>
 }
-
-export type IndamoConnection = ReturnType<typeof createConnection>

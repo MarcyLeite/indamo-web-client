@@ -33,6 +33,13 @@ export const createView = (config: ViewConfig) => {
 	const mapper = type === 'thermal' ? createThermalColorMapper(colorMapConfig) : null
 	if (!mapper) throw new Error('View Error: Invalid colorMap config')
 
+	const dataIndexerList = componentConfigList.reduce((list, config) => {
+		if (config.dataIndexers) {
+			list.push(...config.dataIndexers)
+		}
+		return list
+	}, [] as string[])
+
 	const hiddenComponentList: number[] = componentConfigList
 		.filter((c) => c.isHidden)
 		.map((c) => c.id)
@@ -53,7 +60,7 @@ export const createView = (config: ViewConfig) => {
 		return colorList
 	}
 
-	return { type: mapper.type, id, display, hiddenComponentList, getColorList }
+	return { type: mapper.type, id, display, hiddenComponentList, getColorList, dataIndexerList }
 }
 
 export type View = ReturnType<typeof createView>
