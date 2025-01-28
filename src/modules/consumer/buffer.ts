@@ -17,6 +17,7 @@ const getSnapshotFromBuffer = (bufferValues: IndamoBufferValues, moment: Date) =
 
 		insertIntoSnapshot(snapshot, difference.map)
 	}
+
 	return snapshot
 }
 
@@ -37,6 +38,7 @@ const getDifferenceFromBuffer = (
 
 		insertIntoSnapshot(snapshot, difference.map)
 	}
+
 	return snapshot
 }
 
@@ -47,13 +49,13 @@ type IndamoBufferProperties = {
 	sizeInSeconds?: number
 }
 
-export const createBufferValues = ({
+export const createBufferValues = async ({
 	connection,
 	indexerList,
 	moment,
 	sizeInSeconds,
 }: Required<IndamoBufferProperties>) => {
-	const initialValues = connection.getLastDataFrom(moment, indexerList)
+	const initialValues = await connection.getLastDataFrom(moment, indexerList)
 
 	for (const indexer of indexerList) {
 		if (!initialValues.map[indexer]) {
@@ -61,7 +63,7 @@ export const createBufferValues = ({
 		}
 	}
 
-	const differenceList = connection.getDataFromRange(
+	const differenceList = await connection.getDataFromRange(
 		moment,
 		new Date(moment.getTime() + sizeInSeconds * 1000),
 		indexerList
@@ -72,9 +74,9 @@ export const createBufferValues = ({
 		differenceList,
 	}
 }
-export type IndamoBufferValues = ReturnType<typeof createBufferValues>
+export type IndamoBufferValues = Awaited<ReturnType<typeof createBufferValues>>
 
-export const updateBufferValuesFoward = ({
+export const updateBufferValuesFoward = async ({
 	moment,
 	connection,
 	indexerList,
@@ -94,17 +96,22 @@ export const updateBufferValuesFoward = ({
 
 	const lastDifference = differenceList.at(-1)!
 	differenceList.push(
-		...connection.getDataFromRange(
+		...(await connection.getDataFromRange(
 			new Date(lastDifference.timestamp),
 			new Date(moment.getTime() + sizeInSeconds * 1000),
 			indexerList
-		)
+		))
 	)
 
 	return { initialValues, differenceList }
 }
 
-const createBufferBase = (
+export type UpdateProps = {
+	moment?: Date
+	sizeInSeconds?: number
+}
+
+const createBufferWorker = async (
 	bufferValues: IndamoBufferValues,
 	props: Required<IndamoBufferProperties>
 ) => {
@@ -112,24 +119,42 @@ const createBufferBase = (
 	const difference = (moment1: Date, moment2: Date) =>
 		getDifferenceFromBuffer(bufferValues, moment1, moment2)
 
-	const lastDifference = bufferValues.differenceList.at(-1)!
-	const update = (moment?: Date, sizeInSeconds?: number) => {
-		moment = moment ?? props.moment
-		const newProps = Object.assign({}, props, {
-			moment,
-			sizeInSeconds: sizeInSeconds ?? props.sizeInSeconds,
-		})
-		if (moment === props.moment && sizeInSeconds === props.sizeInSeconds) return
-		if (
-			lastDifference &&
-			moment.getTime() > bufferValues.initialValues.timestamp &&
-			moment.getTime() < lastDifference.timestamp
-		) {
-			const newBufferValues = updateBufferValuesFoward(Object.assign({ bufferValues }, newProps))
+	const { differenceList } = bufferValues
+	const lastDifference = differenceList.at(-1)!
 
-			return createBufferBase(newBufferValues, newProps)
+	const updateFoward = async (newProps: Required<IndamoBufferProperties>) => {
+		const newBufferValues = await updateBufferValuesFoward(
+			Object.assign({ bufferValues }, newProps)
+		)
+
+		return await createBufferWorker(newBufferValues, newProps)
+	}
+
+	const update = async (options: UpdateProps) => {
+		const newProps = Object.assign({}, props, {
+			moment: options.moment ?? props.sizeInSeconds,
+			sizeInSeconds: options.sizeInSeconds ?? props.sizeInSeconds,
+		})
+
+		if (
+			newProps.moment.getTime() === props.moment.getTime() &&
+			newProps.sizeInSeconds === props.sizeInSeconds
+		) {
+			return buffer
 		}
-		return createBuffer(newProps)
+
+		if (
+			!lastDifference ||
+			newProps.moment.getTime() >= lastDifference.timestamp ||
+			newProps.moment.getTime() < bufferValues.initialValues.timestamp
+		) {
+			return await createBuffer(newProps)
+		}
+		if (newProps.moment.getTime() > props.moment.getTime()) {
+			return updateFoward(newProps)
+		}
+
+		return await createBuffer(newProps)
 	}
 
 	const from = bufferValues.initialValues.timestamp
@@ -137,14 +162,16 @@ const createBufferBase = (
 		? bufferValues.differenceList.at(-1)!.timestamp
 		: bufferValues.initialValues.timestamp
 
-	return { snapshot, update, difference, from, to }
+	const buffer = { snapshot, update, difference, from, to }
+
+	return buffer
 }
 
-export const createBuffer = (props: IndamoBufferProperties) => {
+export const createBuffer = async (props: IndamoBufferProperties) => {
 	const propsWithDefault = Object.assign({ sizeInSeconds: 10 }, props)
-	const bufferValues = createBufferValues(propsWithDefault)
+	const bufferValues = await createBufferValues(propsWithDefault)
 
-	return createBufferBase(bufferValues, propsWithDefault)
+	return createBufferWorker(bufferValues, propsWithDefault)
 }
 
-export type IndamoBuffer = ReturnType<typeof createBuffer>
+export type IndamoBuffer = Awaited<ReturnType<typeof createBuffer>>
