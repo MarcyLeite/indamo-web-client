@@ -3,6 +3,8 @@ import { ViewMode } from './mode-view'
 import { createViewMock } from '../../../tests/utils/mocks'
 import { IndamoModel } from '../model/hook'
 import { View } from '../views/factory'
+import { TimeControl } from '../time-control/hook'
+import { IndamoConnection } from '../consumer/connection'
 
 describe('Indamo Mode: View', () => {
 	const viewMock = createViewMock()
@@ -19,13 +21,35 @@ describe('Indamo Mode: View', () => {
 		modelMock.methods.reset = sinon.spy()
 	})
 
-	const renderModeHook = () =>
-		renderHook(({ model, view }) => ViewMode({ model, view }), {
-			initialProps: {
-				model: modelMock as unknown as IndamoModel,
-				view: viewMock as View | null,
-			},
-		})
+	const mock = () => {}
+
+	const timeControlMock: TimeControl = {
+		moment: new Date(0),
+		isPaused: true,
+		togglePlay: mock,
+		speed: 1,
+		setSpeed: mock,
+		goTo: mock,
+		goToward: mock,
+	}
+
+	const connectionMock: IndamoConnection = {
+		getLastDataFrom: async () => ({ map: {}, timestamp: 0 }),
+		getDataFromRange: async () => [],
+	}
+
+	const renderModeHook = () => {
+		return renderHook(
+			({ model, view }) =>
+				ViewMode({ model, view, timeControl: timeControlMock, connection: connectionMock }),
+			{
+				initialProps: {
+					model: modelMock as unknown as IndamoModel,
+					view: viewMock as View | null,
+				},
+			}
+		)
+	}
 
 	it('Should update model color', () => {
 		renderModeHook()

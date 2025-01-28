@@ -1,33 +1,30 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { TimeControl } from '../time-control/hook'
-import { createInfluxConnection } from './influx-connection'
 import { createBuffer, IndamoBuffer } from './buffer'
 import { View } from '../views/factory'
-import { IndamoDataMap } from './connection'
+import { IndamoConnection, IndamoDataMap } from './connection'
 
 const BACKWARD_MAX = 15
 const FORWARD_MAX = 30
 
 const shiftMoment = (moment: Date, shift: number) => new Date(moment.getTime() - shift * 1000)
 
-export const useConsumer = (timeControl: TimeControl, view: View | null) => {
+export const useConsumer = (
+	timeControl: TimeControl,
+	view: View | null,
+	connection: IndamoConnection
+) => {
 	const backwardSize = useRef(1)
 	const forwardSize = useRef(1)
 
 	const momentRef = useRef(timeControl.moment)
 
-	const connection = useRef(
-		createInfluxConnection(
-			import.meta.env.VITE_INFLUX_URL,
-			import.meta.env.VITE_INFLUX_TOKEN,
-			import.meta.env.VITE_INFLUX_ORG
-		)
-	)
-
 	const buffer = useRef<IndamoBuffer | null>(null)
 	const [dataMap, setDatamap] = useState<IndamoDataMap>({})
 
 	const timeoutRef = useRef<NodeJS.Timeout>()
+
+	const isTicking = useRef(true)
 
 	const tick = useCallback(async () => {
 		if (buffer.current) {
@@ -44,18 +41,20 @@ export const useConsumer = (timeControl: TimeControl, view: View | null) => {
 			})
 		}
 
-		timeoutRef.current = setTimeout(tick, 250)
+		if (isTicking.current) {
+			timeoutRef.current = setTimeout(tick, 250)
+		}
 	}, [])
 
 	const recreateBuffer = useCallback(async () => {
 		if (!view) return
 		buffer.current = await createBuffer({
-			connection: connection.current,
+			connection,
 			indexerList: view.dataIndexerList,
 			moment: shiftMoment(momentRef.current, backwardSize.current),
 			sizeInSeconds: backwardSize.current + forwardSize.current,
 		})
-	}, [view])
+	}, [view, connection])
 
 	useEffect(() => {
 		recreateBuffer()
@@ -72,5 +71,9 @@ export const useConsumer = (timeControl: TimeControl, view: View | null) => {
 		momentRef.current = timeControl.moment
 	}, [timeControl.moment, setDatamap])
 
-	return dataMap
+	const toggle = useCallback((value: boolean) => {
+		isTicking.current = value
+	}, [])
+
+	return [dataMap, toggle] as const
 }
