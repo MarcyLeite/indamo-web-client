@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { IndamoModel } from '../model/hook'
 import { View } from '../views/factory'
 import { useConsumer } from '../consumer/consumer'
@@ -16,6 +16,17 @@ type Props = {
 
 export const ViewMode = ({ model, view, timeControl, connection }: Props) => {
 	const [dataMap, toggle] = useConsumer(timeControl, view, connection)
+	const dataMapRef = useRef(dataMap)
+
+	const updateModel = useCallback(() => {
+		if (!view) return
+		model.methods.setProperties.call(
+			{},
+			view.getColorList(dataMapRef.current),
+			view.hiddenComponentList
+		)
+	}, [model.methods.setProperties, view])
+
 	useEffect(() => {
 		return () => {
 			model.methods.reset.call({})
@@ -23,22 +34,21 @@ export const ViewMode = ({ model, view, timeControl, connection }: Props) => {
 	}, [model.methods.reset])
 
 	useEffect(() => {
-		console.log('hi')
 		toggle.call({}, true)
 		return () => {
-			console.log('bye')
 			toggle.call({}, false)
 		}
 	}, [toggle])
 
 	useEffect(() => {
-		if (!view) return
-		model.methods.setProperties.call({}, view.getColorList(dataMap), view.hiddenComponentList)
-	}, [view, model.methods.setProperties, dataMap])
+		dataMapRef.current = dataMap
+		updateModel()
+	}, [updateModel, dataMap])
 
 	useEffect(() => {
 		model.methods.reset.call({})
-	}, [view, model.methods.reset])
+		updateModel()
+	}, [view, model.methods.reset, updateModel])
 
 	return null
 }

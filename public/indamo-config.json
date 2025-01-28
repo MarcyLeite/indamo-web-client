@@ -1,4 +1,14 @@
 {
+	"model-path": "snowman.glb",
+	"connection": {
+		"type": "influx",
+		"options": {
+			"url": "http://localhost:8086",
+			"org": "dev",
+			"token": "dev-token",
+			"bucket": "dev"
+		}
+	},
 	"views": [
 		{
 			"id": "thermal-demo",
