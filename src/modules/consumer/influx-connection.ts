@@ -7,10 +7,21 @@ import {
 } from './connection'
 import { InfluxDB } from '@influxdata/influxdb-client'
 
+export type IndamoInfluxConnectionConfig = {
+	type: 'influx'
+	options: {
+		url: string
+		org: string
+		token: string
+		bucket: string
+	}
+}
+
 export const createInfluxConnection = (
 	url: string,
 	token: string,
-	org: string
+	org: string,
+	bucket: string
 ): IndamoConnection => {
 	const queryApi = new InfluxDB({ url: url, token }).getQueryApi({ org })
 
@@ -19,7 +30,7 @@ export const createInfluxConnection = (
 	const getLastQuery = (date: Date, indexerList: string[]) => {
 		const dateSeconds = fixTime(date)
 		return `
-	from(bucket: "dev")
+	from(bucket: "${bucket}")
 		|> range(start: ${dateSeconds - 432000}, stop: ${dateSeconds})
 		|> filter(fn: (r) => ${indexerList.map((indexer) => `r["_measurement"] == "${indexer}"`).join(' or ')})
 		|> group(columns: ["_measurement"], mode: "by")
@@ -33,7 +44,7 @@ export const createInfluxConnection = (
 		date1: Date,
 		date2: Date,
 		indexerList: string[]
-	) => `from(bucket: "dev")
+	) => `from(bucket: "${bucket}")
 		|> range(start: ${fixTime(date1)}, stop: ${fixTime(date2)})
 		|> filter(fn: (r) => ${indexerList.map((indexer) => `r["_measurement"] == "${indexer}"`).join(' or ')})
 		|> group(columns: ["_measurement"], mode: "by")
