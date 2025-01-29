@@ -4,6 +4,7 @@ import axios from 'axios'
 import { IndamoConnectionConfig } from '../consumer/connection'
 
 export type IndamoConfig = {
+	url: string
 	modelPath: string
 	connection?: IndamoConnectionConfig
 	views: ViewConfig[]
@@ -11,6 +12,7 @@ export type IndamoConfig = {
 
 export const useIndamoConfig = (configUrl: string) => {
 	const [config, setConfig] = useState<IndamoConfig>({
+		url: '',
 		modelPath: '',
 		views: [],
 	})
@@ -19,8 +21,11 @@ export const useIndamoConfig = (configUrl: string) => {
 
 	const fetchConfig = useCallback(async () => {
 		const response = await axios.get(configUrl)
-		response.data.modelPath = response.data['model-path']
-		setConfig(response.data)
+		const data = response.data
+		data.modelPath = data['model-path']
+		data.url = configUrl
+
+		setConfig(data)
 		setisLoaded(true)
 	}, [configUrl])
 

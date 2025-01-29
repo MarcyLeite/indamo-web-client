@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IndamoModel } from '../../modules/model/hook'
 import { IndamoConfig } from '../../modules/configurator/hook'
 import IndamoModeView from './ModeView'
+import IndamoModeEditor from './ModeEditor'
 
 export type IndamoModeProps = {
 	model: IndamoModel
@@ -10,7 +11,16 @@ export type IndamoModeProps = {
 
 const IndamoMode = (props: IndamoModeProps) => {
 	const [mode, setMode] = useState('view')
-	return mode === 'view' ? <IndamoModeView {...props} setMode={setMode}></IndamoModeView> : null
+
+	useEffect(() => {
+		props.model.reset.call({})
+	}, [mode, props.model.reset])
+
+	return mode === 'editor' ? (
+		<IndamoModeEditor {...props} setMode={setMode} />
+	) : (
+		<IndamoModeView {...props} setMode={setMode} />
+	)
 }
 
 export default IndamoMode

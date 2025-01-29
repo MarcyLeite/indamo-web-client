@@ -68,6 +68,7 @@ export const createView = (config: ViewConfig) => {
 
 	return {
 		type: mapper.type,
+		colorMapConfig: config.colorMap,
 		id,
 		display,
 		hiddenComponentList,

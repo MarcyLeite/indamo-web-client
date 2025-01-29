@@ -9,7 +9,7 @@ type Props = {
 	component: Object3D | null
 }
 
-const ViewObjectInfoPanel = ({ view, dataMap, component }: Props) => {
+const ViewComponentInfo = ({ view, dataMap, component }: Props) => {
 	const [data, setData] = useState<ComponentViewConfig | null>(null)
 	useEffect(() => {
 		setData(view?.getComponentConfig(component?.id) ?? null)
@@ -32,4 +32,4 @@ const ViewObjectInfoPanel = ({ view, dataMap, component }: Props) => {
 		<></>
 	)
 }
-export default ViewObjectInfoPanel
+export default ViewComponentInfo
