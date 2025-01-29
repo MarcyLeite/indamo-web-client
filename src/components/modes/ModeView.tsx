@@ -13,7 +13,7 @@ import { useTimeControl } from '../../modules/time-control/hook'
 import { useView } from '../../modules/views/controller'
 import { createInfluxConnection } from '../../modules/consumer/influx-connection'
 import { useConsumer } from '../../modules/consumer/consumer'
-import ViewObjectInfoPanel from '../hud/ViewObjectInfoPanel'
+import ViewComponentInfo from '../hud/ViewComponentInfo'
 
 const IndamoModeView = ({
 	model,
@@ -76,7 +76,7 @@ const IndamoModeView = ({
 				</div>
 			}
 			topRight={
-				<ViewObjectInfoPanel view={view} dataMap={dataMap} component={model.selectedObject} />
+				<ViewComponentInfo view={view} dataMap={dataMap} component={model.selectedObject} />
 			}
 			bottom={<ViewTimeControl timeControl={timeControl} />}
 		/>
