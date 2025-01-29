@@ -35,7 +35,9 @@ export const createView = (config: ViewConfig) => {
 
 	const dataIndexerList = componentConfigList.reduce((list, config) => {
 		if (config.dataIndexers) {
-			list.push(...config.dataIndexers)
+			for (const indexer of config.dataIndexers) {
+				if (!list.includes(indexer)) list.push(indexer)
+			}
 		}
 		return list
 	}, [] as string[])
@@ -43,6 +45,10 @@ export const createView = (config: ViewConfig) => {
 	const hiddenComponentList: number[] = componentConfigList
 		.filter((c) => c.isHidden)
 		.map((c) => c.id)
+
+	const getComponentConfig = (componentId?: number) => {
+		return config.components.find((c) => c.id === componentId)
+	}
 
 	const getColorList = (inputDataSet: IndamoDataMap) => {
 		const colorList: ColorMap[] = []
@@ -60,7 +66,15 @@ export const createView = (config: ViewConfig) => {
 		return colorList
 	}
 
-	return { type: mapper.type, id, display, hiddenComponentList, getColorList, dataIndexerList }
+	return {
+		type: mapper.type,
+		id,
+		display,
+		hiddenComponentList,
+		getColorList,
+		getComponentConfig,
+		dataIndexerList,
+	}
 }
 
 export type View = ReturnType<typeof createView>

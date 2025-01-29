@@ -14,8 +14,7 @@ to be visible on view change. A new solution may be releated with the task of ch
 of displaying the model. It' would be nice to add a test for this behavior in the future.
 */
 const InteractableObject = ({ model }: Props) => {
-	const { scene } = model.values
-	const { setSelectedObject } = model.methods
+	const { scene, setSelectedObject } = model
 	return (
 		<>
 			<primitive

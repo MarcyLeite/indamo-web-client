@@ -43,17 +43,13 @@ export const useIndamoModel = (model: GLTF & ObjectMap) => {
 	}, [model.scene, colorList])
 
 	return {
-		values: {
-			scene: model.scene,
-			selectedObject,
-			colorList,
-			hiddenList,
-		},
-		methods: {
-			reset,
-			setProperties,
-			setSelectedObject,
-		},
+		scene: model.scene,
+		selectedObject,
+		colorList,
+		hiddenList,
+		reset,
+		setProperties,
+		setSelectedObject,
 	}
 }
 

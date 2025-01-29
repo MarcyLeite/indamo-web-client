@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-export const useTimeControl = () => {
-	const [moment, setMoment] = useState(
-		import.meta.env?.DEV ? new Date(import.meta.env.VITE_DEV_DATE) : new Date()
-	)
+export const useTimeControl = (initialDate: Date) => {
+	const [moment, setMoment] = useState(initialDate)
 	const [isPaused, setIsPaused] = useState(true)
 
 	const [speed, setSpeed] = useState(1)
