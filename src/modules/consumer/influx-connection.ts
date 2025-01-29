@@ -7,22 +7,24 @@ import {
 } from './connection'
 import { InfluxDB } from '@influxdata/influxdb-client'
 
-export type IndamoInfluxConnectionConfig = {
-	type: 'influx'
-	options: {
-		url: string
-		org: string
-		token: string
-		bucket: string
-	}
+export type IndamoInfluxConnectionOptions = {
+	url: string
+	token: string
+	org: string
+	bucket: string
 }
 
-export const createInfluxConnection = (
-	url: string,
-	token: string,
-	org: string,
-	bucket: string
-): IndamoConnection => {
+export type IndamoInfluxConnectionConfig = {
+	type: 'influx'
+	options: IndamoInfluxConnectionOptions
+}
+
+export const createInfluxConnection = ({
+	url,
+	token,
+	org,
+	bucket,
+}: IndamoInfluxConnectionOptions): IndamoConnection => {
 	const queryApi = new InfluxDB({ url: url, token }).getQueryApi({ org })
 
 	const fixTime = (date: Date) => Math.floor(date.getTime() / 1000)

@@ -20,14 +20,24 @@ export const createViewController = (viewConfigList: ViewConfig[]) => {
 	return { viewList, getViewById }
 }
 
-export const useViewController = (viewConfigList: ViewConfig[]) => {
+export const useView = (viewConfigList: ViewConfig[]) => {
 	const [controller, setController] = useState(createViewController(viewConfigList))
 	const [view, setView] = useState<View | null>(null)
+	const [viewIndex, setViewIndex] = useState(-1)
 
 	const setViewById = useCallback(
 		(id: string) => {
 			const view = controller.getViewById(id) ?? null
+			setViewIndex(controller.viewList.findIndex((v) => v.id === view?.id))
 			setView(view)
+		},
+		[controller]
+	)
+
+	const setViewByIndex = useCallback(
+		(index: number) => {
+			setViewIndex(index)
+			setView(controller.viewList[index])
 		},
 		[controller]
 	)
@@ -38,7 +48,13 @@ export const useViewController = (viewConfigList: ViewConfig[]) => {
 		setController(controller)
 	}, [viewConfigList])
 
-	return { selectedView: view, viewList: controller.viewList, setView: setViewById } as const
+	return {
+		view,
+		viewIndex,
+		viewList: controller.viewList,
+		setView: setViewById,
+		setViewByIndex,
+	} as const
 }
 
-export type ViewController = ReturnType<typeof useViewController>
+export type IndamoViewHook = ReturnType<typeof useView>
