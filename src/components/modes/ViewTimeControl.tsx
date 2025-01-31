@@ -8,7 +8,7 @@ import {
 	mdiRewind5,
 	mdiSpeedometerSlow,
 } from '@mdi/js'
-import IButton from '../IButton'
+import IButton from '../hud/IButton'
 import { TimeControl } from '../../modules/time-control/hook'
 
 type Props = {
