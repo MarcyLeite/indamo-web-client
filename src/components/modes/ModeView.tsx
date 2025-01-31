@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { mdiPencil } from '@mdi/js'
 
-import ITab from '../ITab'
+import ITab from '../hud/ITab'
 import IClock from '../hud/IClock'
-import IButton from '../IButton'
+import IButton from '../hud/IButton'
 import IOverlay from '../hud/IOverlay'
-import ViewTimeControl from '../hud/ViewTimeControl'
+import ViewTimeControl from './ViewTimeControl'
 
 import { IndamoModeProps } from './ModeController'
 
@@ -13,7 +13,7 @@ import { useTimeControl } from '../../modules/time-control/hook'
 import { useView } from '../../modules/views/controller'
 import { createInfluxConnection } from '../../modules/consumer/influx-connection'
 import { useConsumer } from '../../modules/consumer/consumer'
-import ViewComponentInfo from '../hud/ViewComponentInfo'
+import ViewComponentInfo from './ViewComponentInfo'
 
 const IndamoModeView = ({
 	model,

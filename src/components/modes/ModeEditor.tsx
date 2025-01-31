@@ -1,13 +1,13 @@
 import { mdiEye } from '@mdi/js'
 
-import ITab from '../ITab'
-import IButton from '../IButton'
+import ITab from '../hud/ITab'
+import IButton from '../hud/IButton'
 import IOverlay from '../hud/IOverlay'
 
 import { IndamoModeProps } from './ModeController'
 import { useEffect, useRef, useState } from 'react'
-import EditorViewInfo from '../hud/EditorViewInfo'
-import EditorComponentInfo from '../hud/EditorComponentInfo'
+import EditorViewInfo from './EditorViewInfo'
+import EditorComponentInfo from './EditorComponentInfo'
 
 const newView = {
 	id: 'new',
