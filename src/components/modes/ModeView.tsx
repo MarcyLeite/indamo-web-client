@@ -60,7 +60,7 @@ const IndamoModeView = ({
 	return (
 		<IOverlay
 			topLeft={
-				<div>
+				<>
 					<IClock datetime={timeControl.moment} />
 					<ITab
 						elements={viewList.map((v) => v.display)}
@@ -73,7 +73,7 @@ const IndamoModeView = ({
 							setMode('editor')
 						}}
 					/>
-				</div>
+				</>
 			}
 			topRight={
 				<ViewComponentInfo view={view} dataMap={dataMap} component={model.selectedObject} />

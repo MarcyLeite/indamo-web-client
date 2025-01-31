@@ -10,15 +10,33 @@
 	.justify-baseline {
 		justify-content: baseline;
 	}
-
+	.justify-space-between {
+		justify-content: space-between;
+	}
+	.justify-start {
+		justify-content: start;
+	}
 	.justify-center {
 		justify-content: center;
+	}
+	.justify-strech {
+		justify-content: stretch;
 	}
 
 	.align-baseline {
 		align-items: baseline;
 	}
+	.align-start {
+		align-items: start;
+	}
 	.align-center {
 		align-items: center;
+	}
+	.align-strech {
+		align-content: stretch;
+	}
+
+	.align-self-baseline {
+		align-self: baseline;
 	}
 }

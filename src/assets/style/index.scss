@@ -3,8 +3,10 @@
 @use 'reset';
 @use 'container';
 @use 'components/index' as components;
+@use 'fonts.scss';
 
 .indamo {
+	@include fonts.main;
 	@include reset.main;
 	@include palette.main;
 	@include composition.main;

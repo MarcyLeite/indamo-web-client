@@ -1,10 +1,11 @@
 type Props = {
 	path: string
+	size?: string
 }
 
-const Icon = ({ path }: Props) => {
+const Icon = ({ path, size }: Props) => {
 	return (
-		<svg viewBox="0 0 24 24" style={{ width: '1.5rem', height: '1.5rem' }} role="presentation">
+		<svg viewBox="0 0 24 24" style={{ height: `${size ?? '1.5em'}` }} role="presentation">
 			<path d={path} fill="currentColor"></path>
 		</svg>
 	)
