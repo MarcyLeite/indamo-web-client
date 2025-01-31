@@ -5,6 +5,8 @@
 @use 'flex';
 @use 'rounded';
 @use 'colors';
+@use 'text';
+@use 'elevation';
 
 @mixin main {
 	@include events.main;
@@ -14,4 +16,6 @@
 	@include flex.main;
 	@include rounded.main;
 	@include colors.main;
+	@include text.main;
+	@include elevation.main;
 }

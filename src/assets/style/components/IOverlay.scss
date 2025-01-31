@@ -1,6 +1,9 @@
 @mixin main {
 	.i-overlay-element {
 		position: absolute;
+		display: flex;
+		flex-direction: column;
+		align-items: start;
 	}
 
 	.i-overlay-top-left {
