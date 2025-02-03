@@ -16,18 +16,42 @@ type Props = {
 }
 
 const ViewTimeControl = ({ timeControl }: Props) => {
+	const buttonClass = 'pa-2 rounded-circle'
 	return (
-		<div className="bg-panel text-light d-flex">
-			<IButton icon={mdiRewind10} onClick={() => timeControl.goToward(-10)} />
-			<IButton icon={mdiRewind5} onClick={() => timeControl.goToward(-5)} />
-			<IButton
-				icon={timeControl.isPaused ? mdiPlay : mdiPause}
-				onClick={() => timeControl.togglePlay()}
-			/>
-			<IButton icon={mdiFastForward5} onClick={() => timeControl.goToward(5)} />
-			<IButton icon={mdiFastForward10} onClick={() => timeControl.goToward(10)} />
-			<IButton icon={mdiDebugStepOver} />
-			<IButton icon={mdiSpeedometerSlow} />
+		<div>
+			<div className="d-flex ga-8 justify-center">
+				<div className="d-flex">
+					<IButton
+						className={buttonClass}
+						icon={mdiRewind10}
+						onClick={() => timeControl.goToward(-10)}
+					/>
+					<IButton
+						className={buttonClass}
+						icon={mdiRewind5}
+						onClick={() => timeControl.goToward(-5)}
+					/>
+					<IButton
+						className={buttonClass}
+						icon={timeControl.isPaused ? mdiPlay : mdiPause}
+						onClick={() => timeControl.togglePlay()}
+					/>
+					<IButton
+						className={buttonClass}
+						icon={mdiFastForward5}
+						onClick={() => timeControl.goToward(5)}
+					/>
+					<IButton
+						className={buttonClass}
+						icon={mdiFastForward10}
+						onClick={() => timeControl.goToward(10)}
+					/>
+				</div>
+				<div className="d-flex">
+					<IButton className={buttonClass} icon={mdiDebugStepOver} />
+					<IButton className={buttonClass} icon={mdiSpeedometerSlow} />
+				</div>
+			</div>
 		</div>
 	)
 }

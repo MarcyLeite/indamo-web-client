@@ -54,48 +54,6 @@
 					"dataIndexers": ["C"]
 				}
 			]
-		},
-		{
-			"id": "thermal-demo-2",
-			"display": "Other",
-			"colorMap": {
-				"type": "thermal",
-				"min": 0,
-				"max": 20
-			},
-			"components": [
-				{
-					"id": 17,
-					"isHidden": true
-				},
-				{
-					"id": 18,
-					"isHidden": true
-				},
-				{
-					"id": 21,
-					"isHidden": true
-				},
-				{
-					"id": 23,
-					"isHidden": true
-				},
-				{
-					"id": 19,
-					"display": "Nose",
-					"dataIndexers": ["A"]
-				},
-				{
-					"id": 20,
-					"display": "Left Arm",
-					"dataIndexers": ["A"]
-				},
-				{
-					"id": 22,
-					"display": "Right Arm",
-					"dataIndexers": ["A"]
-				}
-			]
 		}
 	]
 }
