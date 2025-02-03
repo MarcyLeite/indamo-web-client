@@ -18,7 +18,7 @@ const IClock = ({ datetime }: Props) => {
 	return (
 		<IPanel>
 			<div className="d-flex flex-column pa-3">
-				<div className="d-flex ga-2 text-subtitle-1 justify-space-between">
+				<div className="d-flex ga-2 text-subtitle-1 justify-center">
 					<div className="text-capitalize">{month}</div>
 					<div>{day}</div>
 					<div>{year}</div>

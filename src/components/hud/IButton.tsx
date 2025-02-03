@@ -1,28 +1,33 @@
 import Icon from '../Icon'
 import { MouseEventHandler, PropsWithChildren } from 'react'
 
-type ButtonState = 'enabled' | 'hover' | 'focus' | 'selected' | 'activated'
 type Props = {
+	className?: string
 	title?: string
-	state?: ButtonState
 	icon?: string
 	onClick?: MouseEventHandler<HTMLButtonElement>
+	enabled?: boolean
+	focus?: boolean
 }
 
-const IButton = ({ children, title, state, icon, onClick }: PropsWithChildren<Props>) => {
-	const className = `i-button text-light text-button bg-panel pa-2 hover ${state ?? ''}`
-	if (icon) {
-		return (
-			<div>
-				<button title={title} className={className + ' rounded-pill'} onClick={onClick}>
-					<Icon path={icon}></Icon>
-				</button>
-			</div>
-		)
-	}
+const IButton = ({
+	className,
+	children,
+	title,
+	icon,
+	onClick,
+	focus,
+}: PropsWithChildren<Props>) => {
+	const joinClassName = (s: string) => (className ? [className, s] : [s]).join(' ')
 	return (
-		<button title={title} className={className + ' rounded'} onClick={onClick}>
-			{children}
+		<button title={title} className={joinClassName('pa-2 p-relative')} onClick={onClick}>
+			<div className={'p-relative d-flex pointer-events-none'}>
+				{icon ? <Icon path={icon}></Icon> : children}
+			</div>
+			<span style={{ zIndex: 0 }} className="bg-layer state hover" />
+			{focus ? (
+				<span style={{ zIndex: 1 }} className="pointer-events-none bg-layer state focus" />
+			) : null}
 		</button>
 	)
 }

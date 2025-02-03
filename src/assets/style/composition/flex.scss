@@ -13,6 +13,9 @@
 	.justify-space-between {
 		justify-content: space-between;
 	}
+	.justify-space-around {
+		justify-content: space-around;
+	}
 	.justify-start {
 		justify-content: start;
 	}
@@ -34,6 +37,9 @@
 	}
 	.align-strech {
 		align-content: stretch;
+	}
+	.align-space-around {
+		align-content: space-around;
 	}
 
 	.align-self-baseline {
