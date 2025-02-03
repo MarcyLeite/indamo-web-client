@@ -61,42 +61,54 @@ const IndamoModeView = ({
 	return (
 		<IOverlay
 			topLeft={
-				<div className="d-flex flex-column align-start pa-4">
-					<div className="d-flex flex-colun align-start ga-4">
-						<IClock datetime={timeControl.moment} />
-						<IPanel>
-							<div className="d-flex pa-2 ga-3 align-center">
-								<div className="d-flex align-center ga-2">
-									<span className="text-subtitle-1">View: </span>
-									<ITab
-										elements={viewList.map((v) => v.display)}
-										selected={viewIndex}
-										setSelected={setViewByIndex}
-									/>
-								</div>
-								<div className="d-flex align-center ga-2">
-									<span className="text-subtitle-1">Mode:</span>
-									<IButton
-										className="bg-panel-alpha-80 text-light rounded-circle elevation-1"
-										icon={mdiPencil}
-										onClick={() => {
-											setMode('editor')
-										}}
-									/>
-								</div>
+				<div className="pa-4">
+					<IPanel className="pa-4">
+						<div className="d-flex ga-8 align-baseline">
+							<div className="d-flex ga-2 align-center">
+								<span>View</span>
+								<ITab
+									elements={viewList.map((v) => v.display)}
+									selected={viewIndex}
+									setSelected={setViewByIndex}
+								/>
 							</div>
-						</IPanel>
-					</div>
+							<div className="d-flex ga-2 align-center">
+								<span>Mode</span>
+								<IButton
+									className="bg-panel-alpha-80 border-light-alpha-50 text-light rounded-circle pa-1"
+									icon={mdiPencil}
+									onClick={() => {
+										setMode('editor')
+									}}
+								/>
+							</div>
+						</div>
+					</IPanel>
 				</div>
 			}
 			topRight={
-				<div className="pa-4">
+				<div className="ma-4">
 					<ViewComponentInfo view={view} dataMap={dataMap} component={model.selectedObject} />
 				</div>
 			}
 			bottom={
-				<div className="pa-4">
-					<ViewTimeControl timeControl={timeControl} />
+				<div className="w-100 pa-4">
+					<div className="d-flex w-100 justify-space-between align-end">
+						<IPanel>
+							<div className="w-100 align-start d-flex flex-column">
+								<div className="d-flex align-strech pa-4 ga-8">
+									<IClock datetime={timeControl.moment} />
+									<div className="d-flex flex-column justify-center ga-6">
+										<div
+											className="elevation-1 bg-primary rounded-pill"
+											style={{ width: '100%', height: '4px' }}
+										></div>
+										<ViewTimeControl timeControl={timeControl} />
+									</div>
+								</div>
+							</div>
+						</IPanel>
+					</div>
 				</div>
 			}
 		/>

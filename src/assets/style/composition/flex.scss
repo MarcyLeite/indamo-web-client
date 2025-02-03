@@ -32,6 +32,10 @@
 	.align-start {
 		align-items: start;
 	}
+
+	.align-end {
+		align-items: end;
+	}
 	.align-center {
 		align-items: center;
 	}
@@ -44,5 +48,15 @@
 
 	.align-self-baseline {
 		align-self: baseline;
+	}
+	.justify-self-center {
+		justify-self: center;
+	}
+	.grow-0 {
+		flex-grow: 0;
+	}
+
+	.grow-1 {
+		flex-grow: 1;
 	}
 }

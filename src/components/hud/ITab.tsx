@@ -11,10 +11,11 @@ type Props = {
 
 const ITab = ({ elements, selected, setSelected, alwaysOne }: Props) => {
 	return (
-		<IPanel elevation={1}>
+		<IPanel elevation={0}>
 			<div className="d-flex text-button">
 				{elements.map((content, i) => (
 					<IButton
+						className="px-2"
 						key={i}
 						onClick={() => {
 							const value = selected !== i ? i : -1
