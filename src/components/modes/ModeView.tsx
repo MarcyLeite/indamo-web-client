@@ -14,6 +14,7 @@ import { useView } from '../../modules/views/controller'
 import { createInfluxConnection } from '../../modules/consumer/influx-connection'
 import { useConsumer } from '../../modules/consumer/consumer'
 import ViewComponentInfo from './ViewComponentInfo'
+import IPanel from '../hud/IPanel'
 
 const IndamoModeView = ({
 	model,
@@ -60,25 +61,44 @@ const IndamoModeView = ({
 	return (
 		<IOverlay
 			topLeft={
-				<>
-					<IClock datetime={timeControl.moment} />
-					<ITab
-						elements={viewList.map((v) => v.display)}
-						selected={viewIndex}
-						setSelected={setViewByIndex}
-					/>
-					<IButton
-						icon={mdiPencil}
-						onClick={() => {
-							setMode('editor')
-						}}
-					/>
-				</>
+				<div className="d-flex flex-column align-start pa-4">
+					<div className="d-flex flex-colun align-start ga-4">
+						<IClock datetime={timeControl.moment} />
+						<IPanel>
+							<div className="d-flex pa-2 ga-3 align-center">
+								<div className="d-flex align-center ga-2">
+									<span className="text-subtitle-1">View: </span>
+									<ITab
+										elements={viewList.map((v) => v.display)}
+										selected={viewIndex}
+										setSelected={setViewByIndex}
+									/>
+								</div>
+								<div className="d-flex align-center ga-2">
+									<span className="text-subtitle-1">Mode:</span>
+									<IButton
+										className="bg-panel-alpha-80 text-light rounded-circle elevation-1"
+										icon={mdiPencil}
+										onClick={() => {
+											setMode('editor')
+										}}
+									/>
+								</div>
+							</div>
+						</IPanel>
+					</div>
+				</div>
 			}
 			topRight={
-				<ViewComponentInfo view={view} dataMap={dataMap} component={model.selectedObject} />
+				<div className="pa-4">
+					<ViewComponentInfo view={view} dataMap={dataMap} component={model.selectedObject} />
+				</div>
 			}
-			bottom={<ViewTimeControl timeControl={timeControl} />}
+			bottom={
+				<div className="pa-4">
+					<ViewTimeControl timeControl={timeControl} />
+				</div>
+			}
 		/>
 	)
 }

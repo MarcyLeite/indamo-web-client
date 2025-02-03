@@ -2,8 +2,36 @@
 @use 'sass:map';
 
 @mixin main {
-	color: #{map.get(palette.$colors, 'text')};
-	background: #{map.get(palette.$colors, 'bg')};
+	& {
+		color: #{map.get(palette.$colors, 'text')};
+		background: #{map.get(palette.$colors, 'bg')};
+	}
+
+	.bg-layer {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+
+		top: 0;
+		left: 0;
+
+		border-radius: inherit;
+
+		&.state {
+			background: white;
+			transition: opacity 0.25s;
+
+			opacity: 0;
+			&.hover:hover {
+				opacity: 0.08;
+			}
+
+			&.focus {
+				opacity: 0.1;
+			}
+		}
+	}
+
 	@each $index, $color in palette.$colors {
 		.text-#{$index} {
 			color: $color;
@@ -16,7 +44,7 @@
 
 		@for $i from 0 through 10 {
 			.border-#{$index}-alpha-#{$i*10} {
-				border-color: rgba($color, $i / 10);
+				border-color: rgba($color, calc($i / 10));
 				border-style: solid;
 				border-width: 1px;
 			}
@@ -24,20 +52,11 @@
 
 		.bg-#{$index} {
 			background: $color;
-
-			&.hover {
-				&:hover {
-					background: color-mix(in srgb, $color, currentColor 8%);
-				}
-			}
-			&.selected {
-				background: color-mix(in srgb, $color, var(--color-primary) 24%);
-			}
 		}
 
 		@for $i from 0 through 10 {
 			.bg-#{$index}-alpha-#{$i*10} {
-				background: rgba($color, $i / 10);
+				background: rgba($color, calc($i / 10));
 			}
 		}
 	}
