@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef } from 'react'
-import { mdiPencil } from '@mdi/js'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { mdiInformation, mdiPencil } from '@mdi/js'
 
 import ITab from '../hud/ITab'
 import IClock from '../hud/IClock'
@@ -15,6 +15,7 @@ import { createInfluxConnection } from '../../modules/consumer/influx-connection
 import { useConsumer } from '../../modules/consumer/consumer'
 import ViewComponentInfo from './ViewComponentInfo'
 import IPanel from '../hud/IPanel'
+import ViewViewInfo from './ViewViewInfo'
 
 const IndamoModeView = ({
 	model,
@@ -57,32 +58,35 @@ const IndamoModeView = ({
 		updateModel()
 	}, [dataMap, updateModel, view])
 
+	const [expandInfo, toggleExpandInfo] = useState(false)
+
 	return (
 		<IOverlay
 			topLeft={
-				<div className="pa-4">
+				<div className="pa-4 d-flex flex-column align-start ga-6">
 					<IPanel className="pa-4">
-						<div className="d-flex flex-column ga-8">
+						<div className="d-flex flex-column">
 							<div className="d-flex ga-8 align-center">
 								<div className="d-flex ga-2 align-center">
-									<span>View</span>
-									<ITab
-										elements={viewList.map((v) => v.display)}
-										selected={viewIndex}
-										setSelected={setViewByIndex}
-									/>
-								</div>
-								<div className="d-flex ga-2 align-center">
-									<span>Mode</span>
 									<IButton
-										className="bg-panel-alpha-80 border-light-alpha-50 text-light rounded-circle pa-1"
-										icon={mdiPencil}
+										className="text-subtitle-2 rounded-circle"
 										onClick={() => {
-											setMode('editor')
+											toggleExpandInfo(!expandInfo)
 										}}
+										icon={mdiInformation}
+										focus={expandInfo}
 									/>
+									<span>View:</span>
+									<IPanel elevation={0} rounded="lg">
+										<ITab
+											elements={viewList.map((v) => v.display)}
+											selected={viewIndex}
+											setSelected={setViewByIndex}
+										/>
+									</IPanel>
 								</div>
 							</div>
+							{expandInfo ? <ViewViewInfo view={view} /> : null}
 						</div>
 					</IPanel>
 				</div>
@@ -99,7 +103,7 @@ const IndamoModeView = ({
 							<div className="w-100 align-start d-flex flex-column">
 								<div className="d-flex align-strech pa-4 ga-8">
 									<IClock datetime={timeControl.moment} />
-									<div className="d-flex flex-column justify-center ga-6">
+									<div className="d-flex flex-column justify-space-around">
 										<div
 											className="elevation-1 bg-primary rounded-pill"
 											style={{ width: '100%', height: '4px' }}

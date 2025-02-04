@@ -43,7 +43,7 @@ const ViewComponentInfo = ({ view, dataMap, component }: Props) => {
 					className="ga-4"
 					title={
 						!component
-							? 'No selection'
+							? 'Component Info'
 							: !config || config.display === undefined
 								? component.name
 								: config.display
