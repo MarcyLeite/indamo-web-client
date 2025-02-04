@@ -7,9 +7,10 @@ type Props = PropsWithChildren<{
 	options: Option[]
 	selectedId?: string
 	setSelectedId?: (id: string) => void
+	position?: 'top' | 'bottom'
 }>
 
-const ISelection = ({ children, selectedId, setSelectedId, options }: Props) => {
+const ISelection = ({ children, selectedId, setSelectedId, options, position }: Props) => {
 	const [isActive, toggleActive] = useState(false)
 	const optionList = options.map((option) => {
 		if (typeof option === 'string') return { id: option, display: option }
@@ -34,11 +35,12 @@ const ISelection = ({ children, selectedId, setSelectedId, options }: Props) => 
 				{children}
 			</div>
 			{isActive ? (
-				<div className="p-absolute text-button left-0">
+				<div className={'p-absolute text-button left-0 ' + (!position ? 'top-0' : `${position}-0`)}>
 					<IPanel rounded="lg" noBorder={true} alpha={9}>
 						<div className="d-flex flex-column align-strech">
-							{optionList.map((option) => (
+							{optionList.map((option, i) => (
 								<IButton
+									key={i}
 									className="rounded-lg px-4"
 									focus={selectedId === option.id}
 									onClick={() => {
