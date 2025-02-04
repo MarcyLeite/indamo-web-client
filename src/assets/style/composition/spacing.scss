@@ -22,9 +22,9 @@
 	@for $i from 0 through 16 {
 		$space: var(--space-#{$i});
 		@each $mode-prefix, $mode-attr in $modes {
-			@each $direction-prefix, $direction-attr in directions {
+			@each $direction-prefix, $direction-attr in $directions {
 				.#{$mode-prefix}#{$direction-prefix}-#{$i} {
-					#{$mode-attr}-#{$direction-attr}: $space;
+					#{$mode-attr}-#{$direction-attr}: #{$space};
 				}
 			}
 			.#{$mode-prefix}a-#{$i} {
