@@ -54,7 +54,6 @@ const IndamoModeView = ({
 
 	useEffect(() => {
 		dataMapRef.current = dataMap
-		console.log(dataMap)
 		updateModel()
 	}, [dataMap, updateModel, view])
 
@@ -63,24 +62,26 @@ const IndamoModeView = ({
 			topLeft={
 				<div className="pa-4">
 					<IPanel className="pa-4">
-						<div className="d-flex ga-8 align-baseline">
-							<div className="d-flex ga-2 align-center">
-								<span>View</span>
-								<ITab
-									elements={viewList.map((v) => v.display)}
-									selected={viewIndex}
-									setSelected={setViewByIndex}
-								/>
-							</div>
-							<div className="d-flex ga-2 align-center">
-								<span>Mode</span>
-								<IButton
-									className="bg-panel-alpha-80 border-light-alpha-50 text-light rounded-circle pa-1"
-									icon={mdiPencil}
-									onClick={() => {
-										setMode('editor')
-									}}
-								/>
+						<div className="d-flex flex-column ga-8">
+							<div className="d-flex ga-8 align-center">
+								<div className="d-flex ga-2 align-center">
+									<span>View</span>
+									<ITab
+										elements={viewList.map((v) => v.display)}
+										selected={viewIndex}
+										setSelected={setViewByIndex}
+									/>
+								</div>
+								<div className="d-flex ga-2 align-center">
+									<span>Mode</span>
+									<IButton
+										className="bg-panel-alpha-80 border-light-alpha-50 text-light rounded-circle pa-1"
+										icon={mdiPencil}
+										onClick={() => {
+											setMode('editor')
+										}}
+									/>
+								</div>
 							</div>
 						</div>
 					</IPanel>

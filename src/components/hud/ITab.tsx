@@ -15,6 +15,7 @@ const ITab = ({ elements, selected, setSelected, alwaysOne }: Props) => {
 			<div className="d-flex text-button">
 				{elements.map((content, i) => (
 					<IButton
+						color="primary"
 						className="px-2"
 						key={i}
 						onClick={() => {

@@ -16,10 +16,6 @@ const EditorComponentInfo = ({ viewIndex, component, configRef }: Props) => {
 	const [dataIndexers, setDataIndexers] = useState('')
 
 	useEffect(() => {
-		console.log('out: ' + component?.id)
-	}, [component])
-
-	useEffect(() => {
 		if (!component) return
 		const viewConfig = configRef.current.views[viewIndex]
 
@@ -29,9 +25,6 @@ const EditorComponentInfo = ({ viewIndex, component, configRef }: Props) => {
 		}
 
 		const _componentConfig = viewConfig.components.find((c) => c.id === component.id)
-		console.log('in: ' + component?.id)
-		console.log(viewConfig.components)
-		console.log(_componentConfig)
 		if (!_componentConfig) {
 			const defaultComponent = {
 				id: component.id,
