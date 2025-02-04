@@ -76,11 +76,18 @@
 			text-transform: uppercase;
 		}
 
+		.font-secondary {
+			font-family: 'Ubuntu';
+		}
+
 		.text-capitalize {
 			text-transform: capitalize;
 		}
 		.text-uppercase {
 			text-transform: uppercase;
+		}
+		.text-bold {
+			font-weight: bold;
 		}
 		.text-outline {
 			text-shadow:

@@ -18,16 +18,15 @@
 		border-radius: inherit;
 
 		&.state {
-			background: white;
 			transition: opacity 0.25s;
 
 			opacity: 0;
 			&.hover:hover {
-				opacity: 0.08;
+				opacity: 0.14;
 			}
 
 			&.focus {
-				opacity: 0.1;
+				opacity: 0.25;
 			}
 		}
 	}
