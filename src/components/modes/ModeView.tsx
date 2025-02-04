@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { mdiInformation, mdiPencil } from '@mdi/js'
+import { mdiInformation } from '@mdi/js'
 
-import ITab from '../hud/ITab'
 import IClock from '../hud/IClock'
 import IButton from '../hud/IButton'
 import IOverlay from '../hud/IOverlay'
@@ -16,14 +15,11 @@ import { useConsumer } from '../../modules/consumer/consumer'
 import ViewComponentInfo from './ViewComponentInfo'
 import IPanel from '../hud/IPanel'
 import ViewViewInfo from './ViewViewInfo'
+import ISelection from '../hud/ISelection'
 
-const IndamoModeView = ({
-	model,
-	config,
-	setMode,
-}: IndamoModeProps & { setMode: (s: string) => void }) => {
+const IndamoModeView = ({ model, config }: IndamoModeProps & { setMode: (s: string) => void }) => {
 	const { views: ViewConfig, connection: connectionConfig } = config
-	const { view, viewIndex, viewList, setViewByIndex } = useView(ViewConfig)
+	const { view, viewList, setView } = useView(ViewConfig)
 
 	const timeControl = useTimeControl(
 		import.meta.env?.DEV ? new Date(import.meta.env.VITE_DEV_DATE) : new Date()
@@ -77,13 +73,17 @@ const IndamoModeView = ({
 										focus={expandInfo}
 									/>
 									<span>View:</span>
-									<IPanel elevation={0} rounded="lg">
-										<ITab
-											elements={viewList.map((v) => v.display)}
-											selected={viewIndex}
-											setSelected={setViewByIndex}
-										/>
-									</IPanel>
+									<ISelection
+										options={[{ id: '', display: 'None' }, ...viewList]}
+										selectedId={view?.id ?? ''}
+										setSelectedId={(id) => {
+											setView(id)
+										}}
+									>
+										<IPanel elevation={0} rounded="lg">
+											<IButton className="px-4 rounded-lg">{view?.display ?? 'None'}</IButton>
+										</IPanel>
+									</ISelection>
 								</div>
 							</div>
 							{expandInfo ? <ViewViewInfo view={view} /> : null}
