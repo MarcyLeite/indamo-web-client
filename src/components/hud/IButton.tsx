@@ -22,7 +22,7 @@ const IButton = ({
 }: PropsWithChildren<Props>) => {
 	const joinClassName = (s: string) => (className ? [className, s] : [s]).join(' ')
 	return (
-		<button title={title} className={joinClassName('p-relative rounded-lg')} onClick={onClick}>
+		<button title={title} className={joinClassName('p-relative')} onClick={onClick}>
 			<div className={'p-relative d-flex pointer-events-none'}>
 				{icon ? <Icon path={icon}></Icon> : children}
 			</div>
