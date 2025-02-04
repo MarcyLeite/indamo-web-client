@@ -10,6 +10,7 @@ import {
 } from '@mdi/js'
 import IButton from '../hud/IButton'
 import { TimeControl } from '../../modules/time-control/hook'
+import ISelection from '../hud/ISelection'
 
 type Props = {
 	timeControl: TimeControl
@@ -49,7 +50,20 @@ const ViewTimeControl = ({ timeControl }: Props) => {
 				</div>
 				<div className="d-flex">
 					<IButton className={buttonClass} icon={mdiDebugStepOver} />
-					<IButton className={buttonClass} icon={mdiSpeedometerSlow} />
+					<ISelection
+						options={[
+							{ id: '1', display: '1x' },
+							{ id: '2', display: '2x' },
+							{ id: '4', display: '4x' },
+						]}
+						selectedId={timeControl.speed.toString()}
+						setSelectedId={(id) => {
+							timeControl.setSpeed(Number(id))
+						}}
+						position="bottom"
+					>
+						<IButton className={buttonClass} icon={mdiSpeedometerSlow} />
+					</ISelection>
 				</div>
 			</div>
 		</div>
