@@ -35,6 +35,13 @@
 		.text-#{$index} {
 			color: $color;
 		}
+
+		@for $i from 0 through 10 {
+			.text-#{$index}-alpha-#{$i*10} {
+				color: rgba($color, calc($i / 10));
+			}
+		}
+
 		.border-#{$index} {
 			border-color: $color;
 			border-style: solid;
