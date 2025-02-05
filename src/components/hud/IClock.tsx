@@ -25,8 +25,14 @@ const IClock = ({ datetime }: Props) => {
 				</div>
 				<div className="text-h4">{time}</div>
 				<div className="d-flex justify-center">
-					<div className="d-flex align-center ga-1">
-						<div className="text-not-live d-flex" style={{ fontSize: '0.5em' }}>
+					<div className="d-flex align-center ga-3">
+						<div
+							className="text-not-live d-flex"
+							style={{
+								fontSize: '0.5em',
+								color: datetime.getTime() + 5000 >= Date.now() ? 'crimson' : '',
+							}}
+						>
 							<Icon path={mdiCircle}></Icon>
 						</div>
 						<span>Live</span>

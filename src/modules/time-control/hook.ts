@@ -7,11 +7,6 @@ export const useTimeControl = (initialDate: Date) => {
 	const [speed, setSpeed] = useState(1)
 
 	const goTo = useCallback((date: Date) => {
-		const now = new Date()
-		if (date.getTime() > now.getTime()) {
-			setMoment(now)
-			return
-		}
 		setMoment(date)
 	}, [])
 	const goToward = useCallback(
@@ -36,6 +31,12 @@ export const useTimeControl = (initialDate: Date) => {
 
 			if (!isPaused) {
 				setMoment(new Date(moment.getTime() + delta * speed))
+			}
+
+			const now = new Date()
+			if (moment.getTime() > now.getTime()) {
+				setSpeed(1)
+				setMoment(now)
 			}
 
 			frameId.current = requestAnimationFrame(animate)

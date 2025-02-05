@@ -1,7 +1,9 @@
 @use 'IOverlay';
 @use 'IButton';
+@use 'ICalendar';
 
 @mixin main {
 	@include IOverlay.main;
 	@include IButton.main;
+	@include ICalendar.main;
 }
