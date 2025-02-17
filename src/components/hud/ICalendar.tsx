@@ -64,6 +64,8 @@ const ICalendar = ({ date, onDateChange }: Props) => {
 			<div className="d-flex justify-center">
 				<div className="d-flex ga-2 align-center">
 					<ITextarea
+						cols={8}
+						rows={1}
 						value={hour.toLocaleString('en-US', { minimumIntegerDigits: 2 })}
 						onChange={(e) => {
 							const valueString = e.target.value
@@ -77,6 +79,7 @@ const ICalendar = ({ date, onDateChange }: Props) => {
 					/>
 					<span>H</span>
 					<ITextarea
+						cols={8}
 						value={minute.toLocaleString('en-US', { minimumIntegerDigits: 2 })}
 						onChange={(e) => {
 							const valueString = e.target.value
@@ -90,6 +93,7 @@ const ICalendar = ({ date, onDateChange }: Props) => {
 					/>
 					<span>M</span>
 					<ITextarea
+						cols={8}
 						value={second.toLocaleString('en-US', { minimumIntegerDigits: 2 })}
 						onChange={(e) => {
 							const valueString = e.target.value
@@ -128,7 +132,7 @@ const ICalendar = ({ date, onDateChange }: Props) => {
 				/>
 			</div>
 			<div className="i-calendar-days-grid text-subtitle-2">
-				{['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((i) => (
+				{['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((i) => (
 					<div key={i} className="d-flex justify-center w-100 text-primary text-bold">
 						{i}
 					</div>
