@@ -3,14 +3,22 @@ import { ChangeEvent } from 'react'
 type Props = {
 	value?: string
 	onChange?: (e: ChangeEvent<HTMLTextAreaElement>) => void
+	cols?: number
+	rows?: number
+	width?: string
 }
 
-const ITextarea = ({ value, onChange }: Props) => {
+const ITextarea = ({ value, onChange, cols, rows, width }: Props) => {
 	return (
 		<textarea
-			cols={4}
-			rows={1}
-			style={{ lineHeight: '1rem', height: '1.5rem', textAlign: 'center' }}
+			cols={cols}
+			rows={rows}
+			style={{
+				lineHeight: '1rem',
+				height: '1.5rem',
+				textAlign: 'center',
+				width,
+			}}
 			className="border-light-alpha-60 bg-panel text-light rounded-lg"
 			value={value}
 			onChange={(e) => {
