@@ -15,19 +15,19 @@ const ViewViewInfo = ({ view }: Props) => {
 			<div className="d-flex flex-column ga-2">
 				{view ? (
 					<>
-						<div className="d-flex justify-end">
-							<IButton
-								className="py-1 px-4 rounded-lg"
-								onClick={isEditing ? () => updateEditing(false) : () => updateEditing(true)}
-							>
-								{isEditing ? 'Save' : 'Edit'}
-							</IButton>
-						</div>
-						<ISeparator className="bg-light-alpha-20" />
 						{isEditing ? (
 							<ViewInfoEdit view={view} />
 						) : (
 							<>
+								<div className="d-flex justify-end">
+									<IButton
+										className="py-1 px-4 rounded-lg"
+										onClick={isEditing ? () => updateEditing(false) : () => updateEditing(true)}
+									>
+										{isEditing ? 'Save' : 'Edit'}
+									</IButton>
+								</div>
+								<ISeparator className="bg-light-alpha-20" />
 								<span>
 									<span className="text-bold">ID: </span>
 									<span>{view.id}</span>
