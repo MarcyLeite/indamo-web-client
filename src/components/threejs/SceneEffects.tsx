@@ -3,14 +3,14 @@ import { BlendFunction, KernelSize } from 'postprocessing'
 import { Object3D } from 'three'
 
 type Props = {
-	selectedObject: Object3D | null
+	selected: Object3D | null
 }
 
-const SceneEffects = ({ selectedObject }: Props) => {
+const SceneEffects = ({ selected }: Props) => {
 	return (
 		<EffectComposer autoClear={false} multisampling={0}>
 			<Outline
-				selection={selectedObject ?? undefined}
+				selection={selected ?? undefined}
 				blendFunction={BlendFunction.ALPHA}
 				edgeStrength={2}
 				kernelSize={KernelSize.SMALL}

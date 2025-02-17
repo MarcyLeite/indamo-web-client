@@ -9,7 +9,7 @@ import object3dTransformers, {
 	updateVisibleByHiddenList,
 	recurseObject,
 } from '../../utils/object3d-transformers'
-const baseMaterial = createTransparentMaterial('#505050')
+export const baseMaterial = createTransparentMaterial('#505050')
 
 export type ColorMap = { id: number; color: string }
 
