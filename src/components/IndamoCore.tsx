@@ -14,10 +14,7 @@ const IndamoCore = ({ config }: { config: IndamoConfig }) => {
 
 	return (
 		<div className="indamo">
-			<Scene3D>
-				<SceneEffects selectedObject={model.selectedObject}></SceneEffects>
-				<InteractableObject model={model}></InteractableObject>
-			</Scene3D>
+			<Scene3D modelUrl={config.modelPath}></Scene3D>
 			<IndamoMode model={model} config={config}></IndamoMode>
 		</div>
 	)

@@ -1,34 +1,46 @@
-import { Object3D } from 'three'
-import { IntersectionEvent } from '@react-three/fiber/dist/declarations/src/core/events'
-import { IndamoModel } from '../../modules/model/hook'
+import { View } from '../../modules/views/factory'
+import { GLTF } from 'three/examples/jsm/Addons.js'
+import { Group, Mesh, Object3D, Object3DEventMap } from 'three'
+import { baseMaterial } from '../../modules/model/hook'
+import { MeshProps } from '@react-three/fiber'
+import { Dispatch } from 'react'
 
-type Props = {
-	model: IndamoModel
+type SetSelected = Dispatch<Object3D | null>
+
+type ComponentProps = {
+	base: Object3D<Object3DEventMap>
+	setSelected: SetSelected
+}
+const Component = (props: ComponentProps) => {
+	const { base, setSelected } = props
+	const groupBase = base as Group<Object3DEventMap>
+	const meshBase = base as Mesh
+
+	return groupBase.isGroup ? (
+		<group dispose={null}>
+			{groupBase.children.map((children, i) => (
+				<Component {...props} base={children} key={i} />
+			))}
+		</group>
+	) : (
+		<mesh
+			{...(meshBase as unknown as MeshProps)}
+			material={baseMaterial}
+			onClick={(e) => {
+				setSelected(e.eventObject)
+				e.stopPropagation()
+			}}
+		/>
+	)
 }
 
-export type OnUpdateSelected = (object: Object3D) => void
-
-/*
-TODO The solution we found to make object invisible will lead to invisible objects from the GLTF file
-to be visible on view change. A new solution may be releated with the task of changing the <primitive /> method
-of displaying the model. It' would be nice to add a test for this behavior in the future.
-*/
-const InteractableObject = ({ model }: Props) => {
-	const { scene, setSelectedObject } = model
-	return (
-		<>
-			<primitive
-				onClick={(event: IntersectionEvent<Event>) => {
-					const collision = event.object
-					if (!collision.visible) return
-
-					setSelectedObject(collision)
-					event.stopPropagation()
-				}}
-				object={scene}
-			></primitive>
-		</>
-	)
+type Props = {
+	model: GLTF
+	view: View | null
+	setSelected: SetSelected
+}
+const InteractableObject = ({ model, setSelected }: Props) => {
+	return <Component base={model.scene} setSelected={setSelected} />
 }
 
 export default InteractableObject
