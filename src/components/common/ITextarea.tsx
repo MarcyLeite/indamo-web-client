@@ -12,10 +12,9 @@ const ITextarea = ({ value, onChange, cols, rows, width }: Props) => {
 	return (
 		<textarea
 			cols={cols}
-			rows={rows}
+			rows={rows ?? 1}
 			style={{
 				lineHeight: '1rem',
-				height: '1.5rem',
 				textAlign: 'center',
 				width,
 			}}
