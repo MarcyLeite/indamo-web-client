@@ -5,7 +5,7 @@ import { baseMaterial } from '../../modules/model/hook'
 import { MeshProps } from '@react-three/fiber'
 import { Dispatch } from 'react'
 
-type SetSelected = Dispatch<Object3D | null>
+export type SetSelected = Dispatch<Object3D | null>
 
 type ComponentProps = {
 	base: Object3D<Object3DEventMap>
