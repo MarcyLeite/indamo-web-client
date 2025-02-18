@@ -12,7 +12,7 @@ const IndamoCore = () => {
 			{modelUrl !== null ? (
 				<>
 					<IndamoScene modelUrl={modelUrl} />
-					<IndamoUI store={store} />
+					<IndamoUI {...store} />
 				</>
 			) : (
 				<span>LOADING ...</span>

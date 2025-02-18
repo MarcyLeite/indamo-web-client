@@ -42,6 +42,4 @@ export const useIndamoStore = () => {
 }
 
 export type IndamoStore = ReturnType<typeof useIndamoStore>
-export type PropsWithIndamoStore<T = object> = {
-	store: IndamoStore
-} & T
+export type PropsWithIndamoStore<T = object> = IndamoStore & T
