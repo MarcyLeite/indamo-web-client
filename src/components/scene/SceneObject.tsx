@@ -40,6 +40,7 @@ const Component = (props: ComponentProps) => {
 			material={createTransparentMaterial(colorMap[meshBase.name] ?? '#505050')}
 			visible={view ? !view.hiddenComponentList.includes(meshBase.name) : true}
 			onClick={(e) => {
+				if (!e.eventObject.visible) return
 				setSelected(e.eventObject)
 				e.stopPropagation()
 			}}
