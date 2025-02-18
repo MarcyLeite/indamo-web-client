@@ -1,9 +1,11 @@
-import { mdiInformation } from '@mdi/js'
+import { mdiInformation, mdiPencil } from '@mdi/js'
 import IButton from '../hud/IButton'
 import IPanel from '../hud/IPanel'
 import ISelection from '../hud/ISelection'
 import { useState } from 'react'
 import { PropsWithIndamoStore } from '../../store'
+import ISeparator from '../hud/ISeparator'
+import ViewPanelInfo from './ViewPanelInfo'
 
 const ViewPanel = ({
 	store: {
@@ -13,22 +15,22 @@ const ViewPanel = ({
 		setView,
 	},
 }: PropsWithIndamoStore) => {
-	const [isInfoShowing, setInfoShowing] = useState(false)
+	const [isExpended, setExpended] = useState(false)
 
 	const viewDisplayList = viewList?.map((view, i) => ({ id: i, display: view.display })) ?? []
 
 	return (
 		<div className="pa-4 d-flex flex-column align-start ga-6">
 			<IPanel className="pa-4">
-				<div className="d-flex flex-column">
+				<div className="d-flex flex-column ga-4">
 					<div className="d-flex ga-8 align-center">
 						<div className="d-flex ga-2 align-center">
 							<IButton
 								className="text-subtitle-2 rounded-circle"
 								color="primary"
 								icon={mdiInformation}
-								focus={isInfoShowing}
-								onClick={() => setInfoShowing(!isInfoShowing)}
+								focus={isExpended}
+								onClick={() => setExpended(!isExpended)}
 							/>
 
 							<span>View:</span>
@@ -41,8 +43,19 @@ const ViewPanel = ({
 									<IButton className="px-4 rounded-lg">{view?.display ?? 'None'}</IButton>
 								</IPanel>
 							</ISelection>
+							{isExpended ? (
+								<div className="d-flex justify-end">
+									<IButton className=" pa-2 rounded-circle" icon={mdiPencil} />
+								</div>
+							) : null}
 						</div>
 					</div>
+					{isExpended && view ? (
+						<>
+							<ISeparator className="bg-light-alpha-20" />
+							<ViewPanelInfo index={viewIndex!} view={view} />
+						</>
+					) : null}
 				</div>
 			</IPanel>
 		</div>
