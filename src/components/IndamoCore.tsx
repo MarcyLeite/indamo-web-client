@@ -11,7 +11,7 @@ const IndamoCore = () => {
 		<div className="indamo">
 			{modelUrl !== null ? (
 				<>
-					<IndamoScene modelUrl={modelUrl} />
+					<IndamoScene {...store.scene} modelUrl={modelUrl} />
 					<IndamoUI {...store} />
 				</>
 			) : (
