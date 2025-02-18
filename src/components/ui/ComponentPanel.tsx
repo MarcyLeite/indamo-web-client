@@ -1,68 +1,66 @@
-import { useEffect, useState } from 'react'
-import { IndamoData } from '../../modules/consumer/connection'
-import { IndamoComponentConfig } from '../../modules/views/factory'
+import { useState } from 'react'
+import IButton from '../common/IButton'
 import IPanel from '../common/IPanel'
-import IExpandPanel from '../common/IExpandPanel'
-import ITable from '../common/ITable'
+import { mdiCancel, mdiChevronDown, mdiPencil } from '@mdi/js'
 import { PropsWithIndamoStore } from '../../store'
+import ISeparator from '../common/ISeparator'
+import ComponentPanelInfo from './ComponentPanelInfo'
+import ComponentPanelEdit from './ComponentPanelEdit'
 
-const ComponentPanel = ({ view, dataMap, scene: { selected } }: PropsWithIndamoStore) => {
-	const [config, setConfig] = useState<IndamoComponentConfig | null>(null)
-	const [data, setData] = useState<IndamoData[] | null>(null)
-
-	useEffect(() => {
-		const _config = view?.getComponentConfig(selected?.name) ?? null
-		setConfig(_config)
-		const _data =
-			_config?.dataIndexers?.map((indexer) => {
-				const value = Object.assign({}, dataMap[indexer])
-
-				value.index = indexer
-				delete value._measurement
-				delete value._start
-				delete value._stop
-				delete value._time
-				delete value.result
-				delete value.table
-				return value
-			}) ?? null
-
-		setData(_data)
-	}, [view, selected, dataMap])
+const ComponentPanel = (props: PropsWithIndamoStore) => {
+	const {
+		configuration: { updateComponentConfig },
+		view,
+		viewIndex,
+		scene: { selected },
+	} = props
+	const [isExpended, setExpended] = useState(false)
+	const [isEditing, setEditing] = useState(false)
+	const config = view?.getComponentConfig(selected?.name)
 
 	return (
-		<div className="ma-4">
-			<IPanel>
-				<div className="pa-4">
-					<IExpandPanel
-						className="ga-4"
-						title={
-							!selected
-								? 'Component Info'
-								: !config || config.display === undefined
-									? selected.name
-									: config.display
-						}
-					>
-						{!selected || !view ? null : !config ? (
-							<div>Add</div>
-						) : (
-							<div className="d-flex flex-column ga-2">
-								<div>
-									<span>
-										Eng:{' '}
-										<span className="text-bold">{data ? (data[0]?.eng ?? 'None') : 'None'}</span>
-									</span>
-								</div>
-								<IExpandPanel className="ga-2" title="Map" hasSeparator={false}>
-									{<ITable dataList={data ?? []} order={['index']} />}
-								</IExpandPanel>
-							</div>
-						)}
-					</IExpandPanel>
+		<div className="pa-4 d-flex flex-column align-start ga-6">
+			<IPanel className="pa-4">
+				<div className="d-flex flex-column ga-4 w-100">
+					<div className="d-flex ga-8 align-center justify-space-between w-100">
+						<span>{config?.display ?? selected?.name}</span>
+						<div className="d-flex ga-2 align-center">
+							{isExpended && view ? (
+								<IButton
+									className="text-subtitle-2 rounded-circle"
+									icon={isEditing ? mdiCancel : mdiPencil}
+									onClick={() => setEditing(!isEditing)}
+								/>
+							) : null}
+							<IButton
+								className="text-subtitle-2 rounded-circle"
+								icon={mdiChevronDown}
+								focus={isExpended}
+								onClick={() => setExpended(!isExpended)}
+							/>
+						</div>
+					</div>
+					{isExpended && config ? (
+						<>
+							<ISeparator className="bg-light-alpha-20" />
+							{!isEditing ? (
+								<ComponentPanelInfo {...props} config={config} />
+							) : (
+								<ComponentPanelEdit
+									{...props}
+									config={config}
+									onSave={(componentConfig) => {
+										updateComponentConfig(viewIndex!, componentConfig)
+										setEditing(false)
+									}}
+								/>
+							)}
+						</>
+					) : null}
 				</div>
 			</IPanel>
 		</div>
 	)
 }
+
 export default ComponentPanel
