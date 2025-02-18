@@ -11,7 +11,7 @@ const shiftMoment = (dateTime: Date, shift: number) => new Date(dateTime.getTime
 export const useConsumer = (
 	dateTime: Date,
 	view: IndamoView | null,
-	connection: IndamoConnection
+	connection: IndamoConnection | null
 ) => {
 	const backwardSize = useRef(1)
 	const forwardSize = useRef(1)
@@ -76,5 +76,5 @@ export const useConsumer = (
 		isTicking.current = value
 	}, [])
 
-	return [dataMap, setActive] as const
+	return { dataMap, isActive: isTicking, setActive } as const
 }
