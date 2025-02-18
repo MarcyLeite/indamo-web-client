@@ -1,5 +1,5 @@
 import { useIndamoStore } from '../store'
-import IndamoScene from './threejs/IndamoScene'
+import IndamoScene from './scene/IndamoScene'
 
 import IndamoUI from './ui/IndamoUI'
 

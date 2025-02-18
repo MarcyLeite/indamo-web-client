@@ -1,5 +1,5 @@
 import { mdiCircle } from '@mdi/js'
-import Icon from '../Icon'
+import Icon from './Icon'
 import IPanel from './IPanel'
 
 type Props = {

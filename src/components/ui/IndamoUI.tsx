@@ -1,5 +1,5 @@
 import { PropsWithIndamoStore } from '../../store'
-import IOverlay from '../hud/IOverlay'
+import IOverlay from '../common/IOverlay'
 import ComponentPanel from './ComponentPanel'
 import TimeControlPanel from './TimeControlPanel'
 import ViewPanel from './ViewPanel'

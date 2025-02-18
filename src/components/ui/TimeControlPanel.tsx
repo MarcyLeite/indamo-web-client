@@ -1,5 +1,5 @@
-import IPanel from '../hud/IPanel'
-import IClock from '../hud/IClock'
+import IPanel from '../common/IPanel'
+import IClock from '../common/IClock'
 import TimeControlBar from './TimeControlBar'
 import { PropsWithIndamoStore } from '../../store'
 

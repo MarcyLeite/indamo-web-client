@@ -9,14 +9,14 @@ import {
 	mdiRewind5,
 	mdiSpeedometerSlow,
 } from '@mdi/js'
-import IButton from '../hud/IButton'
+import IButton from '../common/IButton'
 import { TimeControl } from '../../modules/time-control/hook'
-import ISelection from '../hud/ISelection'
-import IHoverElement from '../hud/IHoverElement'
-import IPanel from '../hud/IPanel'
-import ICalendar from '../hud/ICalendar'
-import ISeparator from '../hud/ISeparator'
-import Icon from '../Icon'
+import ISelection from '../common/ISelection'
+import IHoverElement from '../common/IHoverElement'
+import IPanel from '../common/IPanel'
+import ICalendar from '../common/ICalendar'
+import ISeparator from '../common/ISeparator'
+import Icon from '../common/Icon'
 import { useEffect, useRef } from 'react'
 
 type Props = {
