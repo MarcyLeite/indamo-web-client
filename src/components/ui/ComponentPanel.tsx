@@ -6,13 +6,7 @@ import IExpandPanel from '../hud/IExpandPanel'
 import ITable from '../hud/ITable'
 import { PropsWithIndamoStore } from '../../store'
 
-const ComponentPanel = ({
-	store: {
-		view,
-		dataMap,
-		scene: { selected },
-	},
-}: PropsWithIndamoStore) => {
+const ComponentPanel = ({ view, dataMap, scene: { selected } }: PropsWithIndamoStore) => {
 	const [config, setConfig] = useState<IndamoComponentConfig | null>(null)
 	const [data, setData] = useState<IndamoData[] | null>(null)
 

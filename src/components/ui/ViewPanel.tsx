@@ -8,12 +8,10 @@ import ISeparator from '../hud/ISeparator'
 import ViewPanelInfo from './ViewPanelInfo'
 
 const ViewPanel = ({
-	store: {
-		configuration: { views: viewList },
-		view,
-		viewIndex,
-		setView,
-	},
+	configuration: { views: viewList },
+	view,
+	viewIndex,
+	setView,
 }: PropsWithIndamoStore) => {
 	const [isExpended, setExpended] = useState(false)
 

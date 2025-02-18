@@ -3,7 +3,7 @@ import IClock from '../hud/IClock'
 import TimeControlBar from './TimeControlBar'
 import { PropsWithIndamoStore } from '../../store'
 
-const TimeControlPanel = ({ store: { timeControl } }: PropsWithIndamoStore) => {
+const TimeControlPanel = ({ timeControl }: PropsWithIndamoStore) => {
 	return (
 		<div className="w-100 pa-4">
 			<div className="d-flex w-100 justify-space-between align-end">
