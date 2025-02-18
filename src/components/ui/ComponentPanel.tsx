@@ -40,11 +40,13 @@ const ComponentPanel = (props: PropsWithIndamoStore) => {
 							/>
 						</div>
 					</div>
-					{isExpended && config ? (
+					{isExpended ? (
 						<>
 							<ISeparator className="bg-light-alpha-20" />
 							{!isEditing ? (
-								<ComponentPanelInfo {...props} config={config} />
+								config ? (
+									<ComponentPanelInfo {...props} config={config} />
+								) : null
 							) : (
 								<ComponentPanelEdit
 									{...props}

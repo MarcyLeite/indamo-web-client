@@ -5,15 +5,15 @@ import ITextarea from '../common/ITextarea'
 import IButton from '../common/IButton'
 
 type Props = PropsWithIndamoStore<{
-	config: IndamoComponentConfig
+	config?: IndamoComponentConfig
 	onSave: (componentConfig: IndamoComponentConfig) => void
 }>
 
-const ComponentPanelEdit = ({ config, onSave }: Props) => {
-	const [id] = useState(config.id)
-	const [display, setDisplay] = useState(config.display ?? '')
-	const [isHidden, setHidden] = useState(config.isHidden ?? false)
-	const [indexersString, setindexersString] = useState(config.dataIndexers?.join(' - ') ?? '')
+const ComponentPanelEdit = ({ config, scene: { selected }, onSave }: Props) => {
+	const [id] = useState(selected!.name)
+	const [display, setDisplay] = useState(config?.display ?? '')
+	const [isHidden, setHidden] = useState(config?.isHidden ?? false)
+	const [indexersString, setindexersString] = useState(config?.dataIndexers?.join(' - ') ?? '')
 
 	return (
 		<div className="d-flex flex-column w-fit-content ga-2">
