@@ -44,7 +44,21 @@ export const useConfiguration = (configUrl: string) => {
 		setViews(newViews)
 	}
 
-	return { modelPath, views, connection, updateViewConfig, isLoaded }
+	const createViewConfig = (newView: Omit<IndamoViewConfig, 'components'>) => {
+		if (!views) {
+			throw new Error('Runtime Error: No views loaded')
+		}
+		const newViews = [...views]
+		newViews.push(Object.assign({ components: [] }, newView))
+
+		setViews(newViews)
+	}
+
+	useEffect(() => {
+		console.log(views)
+	}, [views])
+
+	return { modelPath, views, connection, updateViewConfig, createViewConfig, isLoaded }
 }
 
 export type IndamoConfiguration = ReturnType<typeof useConfiguration>

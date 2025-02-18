@@ -2,7 +2,13 @@ import { useState } from 'react'
 import ITextarea from '../common/ITextarea'
 import { PropsWithIndamoStore } from '../../store'
 import IButton from '../common/IButton'
-const ViewPanelEdit = ({ configuration, viewIndex, view }: PropsWithIndamoStore) => {
+import { IndamoViewConfig } from '../../modules/views/factory'
+
+type Props = PropsWithIndamoStore<{
+	onSave: (view: Omit<IndamoViewConfig, 'components'>) => void
+}>
+
+const ViewPanelEdit = ({ view, onSave }: Props) => {
 	const [display, setDisplay] = useState(view?.display ?? '')
 	const [type, setType] = useState(view?.type ?? 'thermal')
 	const [min, setMin] = useState(view?.colorMapConfig.min ?? 0)
@@ -46,7 +52,7 @@ const ViewPanelEdit = ({ configuration, viewIndex, view }: PropsWithIndamoStore)
 				<IButton
 					className="rounded-lg px-4"
 					onClick={() =>
-						configuration.updateViewConfig(viewIndex!, {
+						onSave({
 							display,
 							colorMap: {
 								type: 'thermal',

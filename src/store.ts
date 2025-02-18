@@ -27,7 +27,7 @@ export const useIndamoStore = () => {
 
 	const [component, setComponent] = useState<Object3D | null>(null)
 	const [colorMap, updateColorMap] = useReducer((state: Record<string, string>) => {
-		if (!viewHook.view) return state
+		if (!viewHook.view) return {}
 		const newState = Object.assign({}, state)
 		for (const { id, color } of viewHook.view.getColorList(consumer.dataMap)) {
 			newState[id] = color
