@@ -1,9 +1,8 @@
 import { IndamoDataMap } from '../consumer/connection'
-import { ColorMap } from '../model/hook'
 import { ColorMapThermalConfig, createThermalColorMapper } from './color-mapper-thermal'
 
 export type IndamoComponentConfig = {
-	id: number
+	id: string
 	display?: string
 	isHidden?: boolean
 	dataIndexers?: string[]
@@ -18,6 +17,8 @@ export type IndamoViewConfig = {
 	colorMap: ColorMapThermalConfig
 	components: IndamoComponentConfig[]
 }
+
+export type ColorMap = { id: string; color: string }
 
 export const createIndamoView = (config: IndamoViewConfig) => {
 	const { display, colorMap: colorMapConfig, components: componentConfigList } = config
@@ -34,11 +35,11 @@ export const createIndamoView = (config: IndamoViewConfig) => {
 		return list
 	}, [] as string[])
 
-	const hiddenComponentList: number[] = componentConfigList
+	const hiddenComponentList: string[] = componentConfigList
 		.filter((c) => c.isHidden)
 		.map((c) => c.id)
 
-	const getComponentConfig = (componentId?: number) => {
+	const getComponentConfig = (componentId?: string) => {
 		return config.components.find((c) => c.id === componentId)
 	}
 
