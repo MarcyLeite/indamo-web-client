@@ -11,7 +11,7 @@ const ComponentPanel = ({ view, dataMap, scene: { selected } }: PropsWithIndamoS
 	const [data, setData] = useState<IndamoData[] | null>(null)
 
 	useEffect(() => {
-		const _config = view?.getComponentConfig(selected?.id) ?? null
+		const _config = view?.getComponentConfig(selected?.name) ?? null
 		setConfig(_config)
 		const _data =
 			_config?.dataIndexers?.map((indexer) => {

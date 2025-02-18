@@ -20,36 +20,36 @@
 			},
 			"components": [
 				{
-					"id": 19,
+					"id": "Nose",
 					"isHidden": true
 				},
 				{
-					"id": 17,
+					"id": "EyeLeft",
 					"display": "Left Eye",
 					"dataIndexers": ["A", "B"]
 				},
 				{
-					"id": 18,
+					"id": "EyeRight",
 					"display": "Right Eye",
 					"dataIndexers": ["A"]
 				},
 				{
-					"id": 20,
+					"id": "ArmStickLeft",
 					"display": "Left Arm",
 					"dataIndexers": ["B"]
 				},
 				{
-					"id": 22,
+					"id": "ArmStickRight",
 					"display": "Right Arm",
 					"dataIndexers": ["B"]
 				},
 				{
-					"id": 21,
+					"id": "HandLeft",
 					"display": "Left Hand",
 					"dataIndexers": ["C"]
 				},
 				{
-					"id": 23,
+					"id": "HandRight",
 					"display": "Right Hand",
 					"dataIndexers": ["C"]
 				}
