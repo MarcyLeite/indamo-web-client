@@ -45,7 +45,7 @@ export const useConsumer = (
 	}, [])
 
 	const recreateBuffer = useCallback(async () => {
-		if (!view || !connection) {
+		if (!view || view.dataIndexerList.length === 0 || !connection) {
 			buffer.current = null
 			return
 		}

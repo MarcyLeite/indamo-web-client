@@ -10,7 +10,7 @@ import ViewPanelEdit from './ViewPanelEdit'
 
 const ViewPanel = (props: PropsWithIndamoStore) => {
 	const {
-		configuration: { views: viewList },
+		configuration: { views: viewList, updateViewConfig, createViewConfig },
 		view,
 		viewIndex,
 		setView,
@@ -40,12 +40,14 @@ const ViewPanel = (props: PropsWithIndamoStore) => {
 
 							<span>View:</span>
 							<ISelection
-								options={[{ id: -1, display: 'None' }, ...viewDisplayList]}
+								options={[{ id: -1, display: isEditing ? 'new' : 'None' }, ...viewDisplayList]}
 								selectedId={viewIndex !== null ? viewIndex : -1}
 								setSelectedId={(value) => setView(value)}
 							>
 								<IPanel elevation={0} rounded="lg">
-									<IButton className="px-4 rounded-lg">{view?.display ?? 'None'}</IButton>
+									<IButton className="px-4 rounded-lg">
+										{view?.display ?? (isEditing ? 'new' : 'None')}
+									</IButton>
 								</IPanel>
 							</ISelection>
 							{isExpended ? (
@@ -59,14 +61,24 @@ const ViewPanel = (props: PropsWithIndamoStore) => {
 							) : null}
 						</div>
 					</div>
-					{isExpended && view ? (
+					{isExpended ? (
 						<>
 							<ISeparator className="bg-light-alpha-20" />{' '}
 							{isEditing ? (
-								<ViewPanelEdit {...props} />
-							) : (
+								<ViewPanelEdit
+									{...props}
+									onSave={(newView) => {
+										if (viewIndex === null) {
+											createViewConfig(newView)
+										} else {
+											updateViewConfig(viewIndex ?? -1, newView)
+										}
+										setEditing(false)
+									}}
+								/>
+							) : view ? (
 								<ViewPanelInfo index={viewIndex!} view={view} />
-							)}
+							) : null}
 						</>
 					) : null}
 				</div>
