@@ -2,7 +2,7 @@ import { IndamoDataMap } from '../consumer/connection'
 import { ColorMap } from '../model/hook'
 import { ColorMapThermalConfig, createThermalColorMapper } from './color-mapper-thermal'
 
-export type ComponentViewConfig = {
+export type IndamoComponentConfig = {
 	id: number
 	display?: string
 	isHidden?: boolean
@@ -13,22 +13,14 @@ export type ComponentViewConfig = {
 	}
 }
 
-export type ViewConfig = {
-	id: string
+export type IndamoViewConfig = {
 	display: string
 	colorMap: ColorMapThermalConfig
-	components: ComponentViewConfig[]
+	components: IndamoComponentConfig[]
 }
 
-export type IndamoComponentData = {
-	id: number
-	display?: string
-	isHidden?: boolean
-	color?: string
-}
-
-export const createView = (config: ViewConfig) => {
-	const { id, display, colorMap: colorMapConfig, components: componentConfigList } = config
+export const createIndamoView = (config: IndamoViewConfig) => {
+	const { display, colorMap: colorMapConfig, components: componentConfigList } = config
 	const type = colorMapConfig.type
 	const mapper = type === 'thermal' ? createThermalColorMapper(colorMapConfig) : null
 	if (!mapper) throw new Error('View Error: Invalid colorMap config')
@@ -69,7 +61,6 @@ export const createView = (config: ViewConfig) => {
 	return {
 		type: mapper.type,
 		colorMapConfig: config.colorMap,
-		id,
 		display,
 		hiddenComponentList,
 		getColorList,
@@ -78,4 +69,4 @@ export const createView = (config: ViewConfig) => {
 	}
 }
 
-export type View = ReturnType<typeof createView>
+export type IndamoView = ReturnType<typeof createIndamoView>

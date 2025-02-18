@@ -9,7 +9,7 @@ import ViewTimeControl from './ViewTimeControl'
 import { IndamoModeProps } from './ModeController'
 
 import { useTimeControl } from '../../modules/time-control/hook'
-import { useView } from '../../modules/views/controller'
+import { useView } from '../../modules/views/hook'
 import { createInfluxConnection } from '../../modules/consumer/influx-connection'
 import { useConsumer } from '../../modules/consumer/consumer'
 import ViewComponentInfo from './ViewComponentInfo'

@@ -1,5 +1,5 @@
 import { MutableRefObject, useEffect, useState } from 'react'
-import { IndamoConfig } from '../../modules/configurator/hook'
+import { IndamoConfig } from '../../modules/configuration/hook'
 import { ViewConfig } from '../../modules/views/factory'
 
 type Props = {

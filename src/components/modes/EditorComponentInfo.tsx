@@ -1,6 +1,6 @@
 import { MutableRefObject, useEffect, useState } from 'react'
 import { Object3D } from 'three'
-import { IndamoConfig } from '../../modules/configurator/hook'
+import { IndamoConfig } from '../../modules/configuration/hook'
 import { ComponentViewConfig } from '../../modules/views/factory'
 
 type Props = {
