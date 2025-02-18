@@ -2,24 +2,22 @@ import { Canvas, useLoader } from '@react-three/fiber'
 import SceneAmbiant from './SceneAmbiant'
 import { OrbitControls } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/Addons.js'
-import { Object3D } from 'three'
 import SceneEffects from './SceneEffects'
-import SceneObject, { SetSelected } from './SceneObject'
+import SceneObject from './SceneObject'
+import { PropsWithIndamoStore } from '../../store'
 
-type Props = {
+type Props = PropsWithIndamoStore<{
 	modelUrl: string
-	selected: Object3D | null
-	setSelected: SetSelected
-}
+}>
 
-const Scene3D = ({ modelUrl, selected, setSelected }: Props) => {
+const Scene3D = ({ modelUrl, view, colorMap, scene: { selected, setSelected } }: Props) => {
 	const model = useLoader(GLTFLoader, modelUrl)
 
 	return (
 		<Canvas>
 			<SceneAmbiant />
 			<SceneEffects selected={selected} />
-			<SceneObject model={model} view={null} setSelected={setSelected} />
+			<SceneObject model={model} view={view} colorMap={colorMap} setSelected={setSelected} />
 			<OrbitControls />
 		</Canvas>
 	)

@@ -1,18 +1,21 @@
 import { IndamoView } from '../../modules/views/factory'
 import { GLTF } from 'three/examples/jsm/Addons.js'
 import { Group, Mesh, Object3D, Object3DEventMap } from 'three'
-import { baseMaterial } from '../../modules/model/hook'
 import { MeshProps } from '@react-three/fiber'
 import { Dispatch } from 'react'
+import { createTransparentMaterial } from '../../utils/object3d-transformers'
 
 export type SetSelected = Dispatch<Object3D | null>
 
 type ComponentProps = {
 	base: Object3D<Object3DEventMap>
+	view: IndamoView | null
+	colorMap: Record<string, string>
 	setSelected: SetSelected
 }
+
 const Component = (props: ComponentProps) => {
-	const { base, setSelected } = props
+	const { base, setSelected, view, colorMap } = props
 	const groupBase = base as Group<Object3DEventMap>
 	const meshBase = base as Mesh
 
@@ -25,7 +28,8 @@ const Component = (props: ComponentProps) => {
 	) : (
 		<mesh
 			{...(meshBase as unknown as MeshProps)}
-			material={baseMaterial}
+			material={createTransparentMaterial(colorMap[meshBase.name] ?? '#505050')}
+			visible={view ? !view.hiddenComponentList.includes(meshBase.name) : true}
 			onClick={(e) => {
 				setSelected(e.eventObject)
 				e.stopPropagation()
@@ -37,10 +41,11 @@ const Component = (props: ComponentProps) => {
 type Props = {
 	model: GLTF
 	view: IndamoView | null
+	colorMap: Record<string, string>
 	setSelected: SetSelected
 }
-const InteractableObject = ({ model, setSelected }: Props) => {
-	return <Component base={model.scene} setSelected={setSelected} />
+const InteractableObject = ({ model, view, colorMap, setSelected }: Props) => {
+	return <Component base={model.scene} view={view} colorMap={colorMap} setSelected={setSelected} />
 }
 
 export default InteractableObject
