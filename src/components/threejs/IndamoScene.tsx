@@ -5,7 +5,7 @@ import { GLTFLoader } from 'three/examples/jsm/Addons.js'
 import { useState } from 'react'
 import { Object3D } from 'three'
 import SceneEffects from './SceneEffects'
-import InteractableObject from './InteractableObject'
+import SceneObject from './SceneObject'
 
 type Props = {
 	modelUrl: string
@@ -18,8 +18,8 @@ const Scene3D = ({ modelUrl }: Props) => {
 	return (
 		<Canvas>
 			<SceneAmbiant />
-			<SceneEffects selected={selected}></SceneEffects>
-			<InteractableObject model={model} view={null} setSelected={setSelected}></InteractableObject>
+			<SceneEffects selected={selected} />
+			<SceneObject model={model} view={null} setSelected={setSelected} />
 			<OrbitControls />
 		</Canvas>
 	)

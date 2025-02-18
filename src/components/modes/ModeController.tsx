@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { IndamoModel } from '../../modules/model/hook'
-import { IndamoConfig } from '../../modules/configurator/hook'
+import { IndamoConfig } from '../../modules/configuration/hook'
 import IndamoModeView from './ModeView'
 import IndamoModeEditor from './ModeEditor'
 

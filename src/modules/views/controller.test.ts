@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { act, renderHook } from '@testing-library/react'
 
 import { ViewConfig } from './factory'
-import { createViewController, useViewController } from './controller'
+import { createViewController, useViewController } from './hook'
 
 describe('View Module: View Controller', () => {
 	const colorMapConfig = {

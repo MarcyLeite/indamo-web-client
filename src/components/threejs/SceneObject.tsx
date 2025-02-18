@@ -1,4 +1,4 @@
-import { View } from '../../modules/views/factory'
+import { IndamoView } from '../../modules/views/factory'
 import { GLTF } from 'three/examples/jsm/Addons.js'
 import { Group, Mesh, Object3D, Object3DEventMap } from 'three'
 import { baseMaterial } from '../../modules/model/hook'
@@ -36,7 +36,7 @@ const Component = (props: ComponentProps) => {
 
 type Props = {
 	model: GLTF
-	view: View | null
+	view: IndamoView | null
 	setSelected: SetSelected
 }
 const InteractableObject = ({ model, setSelected }: Props) => {
