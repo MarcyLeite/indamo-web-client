@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { createIndamoView, IndamoView, IndamoViewConfig } from './factory'
 
 export const useView = (viewConfigList: IndamoViewConfig[] | null) => {
@@ -20,6 +20,10 @@ export const useView = (viewConfigList: IndamoViewConfig[] | null) => {
 		},
 		[viewConfigList]
 	)
+
+	useEffect(() => {
+		setViewByIndex(index ?? -1)
+	}, [index, viewConfigList, setViewByIndex])
 
 	return {
 		view,

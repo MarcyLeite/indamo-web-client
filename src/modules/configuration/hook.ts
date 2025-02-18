@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { ViewConfig } from '../views/factory'
+import { IndamoViewConfig } from '../views/factory'
 import axios from 'axios'
 import { IndamoConnectionConfig } from '../consumer/connection'
 
@@ -7,12 +7,12 @@ export type IndamoConfig = {
 	url: string
 	'model-path': string
 	connection: IndamoConnectionConfig
-	views: ViewConfig[]
+	views: IndamoViewConfig[]
 }
 
 export const useConfiguration = (configUrl: string) => {
 	const [modelPath, setModelPath] = useState<string | null>(null)
-	const [views, setViews] = useState<ViewConfig[] | null>(null)
+	const [views, setViews] = useState<IndamoViewConfig[] | null>(null)
 	const [connection, setConnection] = useState<IndamoConnectionConfig | null>(null)
 
 	const [isLoaded, setIsLoaded] = useState(false)
@@ -32,7 +32,19 @@ export const useConfiguration = (configUrl: string) => {
 		fetchConfig()
 	}, [fetchConfig])
 
-	return { modelPath, views, connection, isLoaded }
+	const updateViewConfig = (index: number, newView: Omit<IndamoViewConfig, 'components'>) => {
+		if (!views) {
+			throw new Error('Runtime Error: No views loaded')
+		}
+		const newViews = [...views]
+		const originalView = newViews[index]
+		const updateView = Object.assign({ components: originalView.components }, newView)
+		newViews[index] = updateView
+
+		setViews(newViews)
+	}
+
+	return { modelPath, views, connection, updateViewConfig, isLoaded }
 }
 
 export type IndamoConfiguration = ReturnType<typeof useConfiguration>
