@@ -4,7 +4,6 @@ import axios from 'axios'
 import { IndamoConnectionConfig } from '../consumer/connection'
 
 export type IndamoConfig = {
-	url: string
 	'model-path': string
 	connection: IndamoConnectionConfig
 	views: IndamoViewConfig[]
@@ -62,8 +61,6 @@ export const useConfiguration = (configUrl: string) => {
 			throw new Error('Runtime Error: View out of index')
 		}
 
-		console.log(newComponent)
-
 		const newViews = [...views]
 		const updateView = Object.assign({}, newViews[viewIndex])
 		const components = [...updateView.components]
@@ -81,6 +78,10 @@ export const useConfiguration = (configUrl: string) => {
 		setViews(newViews)
 	}
 
+	const toJson = () => {
+		return JSON.stringify({ 'model-path': modelPath, connection, views }, null, 2)
+	}
+
 	useEffect(() => {
 		console.log(views)
 	}, [views])
@@ -92,6 +93,7 @@ export const useConfiguration = (configUrl: string) => {
 		updateViewConfig,
 		createViewConfig,
 		updateComponentConfig,
+		toJson,
 		isLoaded,
 	}
 }
