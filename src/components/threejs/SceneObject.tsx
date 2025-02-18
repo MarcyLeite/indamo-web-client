@@ -1,9 +1,8 @@
 import { IndamoView } from '../../modules/views/factory'
 import { GLTF } from 'three/examples/jsm/Addons.js'
-import { Group, Mesh, Object3D, Object3DEventMap } from 'three'
+import { Group, Mesh, MeshStandardMaterial, Object3D, Object3DEventMap } from 'three'
 import { MeshProps } from '@react-three/fiber'
 import { Dispatch } from 'react'
-import { createTransparentMaterial } from '../../utils/object3d-transformers'
 
 export type SetSelected = Dispatch<Object3D | null>
 
@@ -12,6 +11,16 @@ type ComponentProps = {
 	view: IndamoView | null
 	colorMap: Record<string, string>
 	setSelected: SetSelected
+}
+
+const createTransparentMaterial = (color: string) => {
+	return new MeshStandardMaterial({
+		color,
+		transparent: true,
+		roughness: 0.75,
+		opacity: 0.4,
+		depthWrite: false,
+	})
 }
 
 const Component = (props: ComponentProps) => {
