@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { IndamoData } from '../../modules/consumer/connection'
 import { IndamoComponentConfig } from '../../modules/views/factory'
-import IPanel from '../hud/IPanel'
-import IExpandPanel from '../hud/IExpandPanel'
-import ITable from '../hud/ITable'
+import IPanel from '../common/IPanel'
+import IExpandPanel from '../common/IExpandPanel'
+import ITable from '../common/ITable'
 import { PropsWithIndamoStore } from '../../store'
 
 const ComponentPanel = ({ view, dataMap, scene: { selected } }: PropsWithIndamoStore) => {

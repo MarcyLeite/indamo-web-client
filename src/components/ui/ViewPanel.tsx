@@ -1,10 +1,10 @@
 import { mdiInformation, mdiPencil } from '@mdi/js'
-import IButton from '../hud/IButton'
-import IPanel from '../hud/IPanel'
-import ISelection from '../hud/ISelection'
+import IButton from '../common/IButton'
+import IPanel from '../common/IPanel'
+import ISelection from '../common/ISelection'
 import { useState } from 'react'
 import { PropsWithIndamoStore } from '../../store'
-import ISeparator from '../hud/ISeparator'
+import ISeparator from '../common/ISeparator'
 import ViewPanelInfo from './ViewPanelInfo'
 
 const ViewPanel = ({
