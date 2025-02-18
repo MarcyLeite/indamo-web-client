@@ -23,7 +23,7 @@ type Props = {
 	timeControl: TimeControl
 }
 
-const ViewTimeControl = ({ timeControl }: Props) => {
+const TimeControlBar = ({ timeControl }: Props) => {
 	const buttonClass = 'pa-2 rounded-circle'
 	const newDateRef = useRef(timeControl.moment)
 
@@ -110,11 +110,11 @@ const ViewTimeControl = ({ timeControl }: Props) => {
 
 					<ISelection
 						options={[
-							{ id: '1', display: '1x' },
-							{ id: '2', display: '2x' },
-							{ id: '4', display: '4x' },
+							{ id: 1, display: '1x' },
+							{ id: 2, display: '2x' },
+							{ id: 4, display: '4x' },
 						]}
-						selectedId={timeControl.speed.toString()}
+						selectedId={timeControl.speed}
 						setSelectedId={(id) => {
 							timeControl.setSpeed(Number(id))
 						}}
@@ -128,4 +128,4 @@ const ViewTimeControl = ({ timeControl }: Props) => {
 	)
 }
 
-export default ViewTimeControl
+export default TimeControlBar
