@@ -1,7 +1,7 @@
 {
 	"name": "indamo-web-client",
 	"private": true,
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"type": "module",
 	"scripts": {
 		"up": "./scripts/dev-up.sh",
@@ -51,6 +51,8 @@
 		"mocha": "^10.8.2",
 		"prettier": "^3.3.3",
 		"sass": "^1.80.6",
+		"semantic-release": "^24.2.3",
+		"semantic-release-gitmoji": "^1.6.8",
 		"sinon": "^19.0.2",
 		"ts-node": "^10.9.2",
 		"tsx": "^4.19.2",
