@@ -42,7 +42,12 @@ const ComponentPanelEdit = ({ config, scene: { selected }, onSave }: Props) => {
 				<IButton
 					className="rounded-lg px-4"
 					onClick={() => {
-						onSave({ id, display, isHidden, dataIndexers: indexersString.split(' - ') })
+						onSave({
+							id,
+							display: display !== '' ? display : undefined,
+							isHidden,
+							dataIndexers: indexersString !== '' ? indexersString.split(' - ') : undefined,
+						})
 					}}
 				>
 					Save
