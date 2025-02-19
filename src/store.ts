@@ -8,7 +8,7 @@ import { useConsumer } from './modules/consumer'
 import { Object3D } from 'three'
 
 export const useIndamoStore = () => {
-	const configuration = useConfiguration(`${window.location.origin}/indamo-config.json`)
+	const configuration = useConfiguration(`${window.location.origin}/indamo/indamo-config.json`)
 	const viewHook = useView(configuration.views)
 
 	const initialDate = import.meta.env?.DEV ? new Date(import.meta.env.VITE_DEV_DATE) : new Date()

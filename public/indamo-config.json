@@ -1,5 +1,5 @@
 {
-	"model-path": "snowman.glb",
+	"model-path": "indamo/snowman.glb",
 	"connection": {
 		"type": "influx",
 		"options": {
