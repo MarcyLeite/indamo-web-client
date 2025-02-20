@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { IndamoComponentConfig } from '../../modules/views/factory'
-import { PropsWithIndamoStore } from '../../store'
+import { YaraComponentConfig } from '../../modules/views/factory'
+import { PropsWithYaraStore } from '../../store'
 import ITextarea from '../common/ITextarea'
 import IButton from '../common/IButton'
 
-type Props = PropsWithIndamoStore<{
-	config?: IndamoComponentConfig
-	onSave: (componentConfig: IndamoComponentConfig) => void
+type Props = PropsWithYaraStore<{
+	config?: YaraComponentConfig
+	onSave: (componentConfig: YaraComponentConfig) => void
 }>
 
 const ComponentPanelEdit = ({ config, scene: { selected }, onSave }: Props) => {

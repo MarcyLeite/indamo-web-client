@@ -5,7 +5,7 @@
 @use 'components/index' as components;
 @use 'fonts.scss';
 
-.indamo {
+.yara {
 	@include fonts.main;
 	@include reset.main;
 	@include palette.main;

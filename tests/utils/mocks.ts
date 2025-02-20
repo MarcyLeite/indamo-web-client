@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react'
 import { createView, View } from '../../src/modules/views/factory'
-import { useIndamoModel } from '../../src/modules/model/hook'
+import { useYaraModel } from '../../src/modules/model/hook'
 import { BoxGeometry, Mesh, MeshBasicMaterial, Scene } from 'three'
 import { GLTF } from 'three/examples/jsm/Addons.js'
 import { ObjectMap } from '@react-three/fiber'
@@ -36,4 +36,4 @@ export const createViewMock = (): View =>
 	})
 
 export const renderModelHook = () =>
-	renderHook(() => useIndamoModel({ scene } as unknown as GLTF & ObjectMap))
+	renderHook(() => useYaraModel({ scene } as unknown as GLTF & ObjectMap))

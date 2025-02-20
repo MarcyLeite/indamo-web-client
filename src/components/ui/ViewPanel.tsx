@@ -3,12 +3,12 @@ import IButton from '../common/IButton'
 import IPanel from '../common/IPanel'
 import ISelection from '../common/ISelection'
 import { useEffect, useState } from 'react'
-import { PropsWithIndamoStore } from '../../store'
+import { PropsWithYaraStore } from '../../store'
 import ISeparator from '../common/ISeparator'
 import ViewPanelInfo from './ViewPanelInfo'
 import ViewPanelEdit from './ViewPanelEdit'
 
-const ViewPanel = (props: PropsWithIndamoStore) => {
+const ViewPanel = (props: PropsWithYaraStore) => {
 	const {
 		configuration: { views: viewList, updateViewConfig, createViewConfig },
 		view,

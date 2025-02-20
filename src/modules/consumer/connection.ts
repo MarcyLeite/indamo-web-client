@@ -1,20 +1,16 @@
-import { IndamoInfluxConnectionConfig } from './influx-connection'
+import { YaraInfluxConnectionConfig } from './influx-connection'
 
-export type IndamoDataBaseTypes = string | number | boolean | null
-export type IndamoData = Record<string, IndamoDataBaseTypes>
-export type IndamoDataMap = Record<string, IndamoData | null>
-export type IndamoDataSnapshot = {
+export type YaraDataBaseTypes = string | number | boolean | null
+export type YaraData = Record<string, YaraDataBaseTypes>
+export type YaraDataMap = Record<string, YaraData | null>
+export type YaraDataSnapshot = {
 	timestamp: number
-	map: IndamoDataMap
+	map: YaraDataMap
 }
 
-export type IndamoConnectionConfig = IndamoInfluxConnectionConfig
+export type YaraConnectionConfig = YaraInfluxConnectionConfig
 
-export type IndamoConnection = {
-	getLastDataFrom: (date: Date, indexerList: string[]) => Promise<IndamoDataSnapshot>
-	getDataFromRange: (
-		date1: Date,
-		date2: Date,
-		indexerList: string[]
-	) => Promise<IndamoDataSnapshot[]>
+export type YaraConnection = {
+	getLastDataFrom: (date: Date, indexerList: string[]) => Promise<YaraDataSnapshot>
+	getDataFromRange: (date1: Date, date2: Date, indexerList: string[]) => Promise<YaraDataSnapshot[]>
 }

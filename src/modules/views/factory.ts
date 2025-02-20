@@ -1,7 +1,7 @@
-import { IndamoDataMap } from '../consumer/connection'
+import { YaraDataMap } from '../consumer/connection'
 import { ColorMapThermalConfig, createThermalColorMapper } from './color-mapper-thermal'
 
-export type IndamoComponentConfig = {
+export type YaraComponentConfig = {
 	id: string
 	display?: string
 	isHidden?: boolean
@@ -12,15 +12,15 @@ export type IndamoComponentConfig = {
 	}
 }
 
-export type IndamoViewConfig = {
+export type YaraViewConfig = {
 	display: string
 	colorMap: ColorMapThermalConfig
-	components: IndamoComponentConfig[]
+	components: YaraComponentConfig[]
 }
 
 export type ColorMap = { id: string; color: string }
 
-export const createIndamoView = (config: IndamoViewConfig) => {
+export const createYaraView = (config: YaraViewConfig) => {
 	const { display, colorMap: colorMapConfig, components: componentConfigList } = config
 	const type = colorMapConfig.type
 	const mapper = type === 'thermal' ? createThermalColorMapper(colorMapConfig) : null
@@ -43,7 +43,7 @@ export const createIndamoView = (config: IndamoViewConfig) => {
 		return config.components.find((c) => c.id === componentId)
 	}
 
-	const getColorList = (inputDataSet: IndamoDataMap) => {
+	const getColorList = (inputDataSet: YaraDataMap) => {
 		const colorList: ColorMap[] = []
 		for (const componentConfig of componentConfigList) {
 			if (componentConfig.isHidden || !componentConfig.dataIndexers) continue
@@ -70,4 +70,4 @@ export const createIndamoView = (config: IndamoViewConfig) => {
 	}
 }
 
-export type IndamoView = ReturnType<typeof createIndamoView>
+export type YaraView = ReturnType<typeof createYaraView>

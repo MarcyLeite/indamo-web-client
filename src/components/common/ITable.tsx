@@ -1,7 +1,7 @@
-import { IndamoDataBaseTypes } from '../../modules/consumer/connection'
+import { YaraDataBaseTypes } from '../../modules/consumer/connection'
 
 type Props = {
-	dataList: Record<string, IndamoDataBaseTypes>[]
+	dataList: Record<string, YaraDataBaseTypes>[]
 	order?: string[]
 }
 
@@ -16,7 +16,7 @@ const ITable = ({ dataList, order }: Props) => {
 			}
 			return record
 		},
-		{} as Record<string, IndamoDataBaseTypes[]>
+		{} as Record<string, YaraDataBaseTypes[]>
 	)
 
 	return (
