@@ -1,15 +1,15 @@
 import { createBuffer, createBufferValues, updateBufferValuesFoward } from './buffer'
-import { IndamoConnection, IndamoData, IndamoDataMap, IndamoDataSnapshot } from './connection'
+import { YaraConnection, YaraData, YaraDataMap, YaraDataSnapshot } from './connection'
 
-describe('Indamo: Buffer', () => {
+describe('Yara: Buffer', () => {
 	const indexerList = ['A', 'B']
 
 	const createMockSnapshot = (
 		second: number,
 		valueA: number | null,
 		valueB: number | null
-	): IndamoDataSnapshot => {
-		const map: Record<string, IndamoData> = {}
+	): YaraDataSnapshot => {
+		const map: Record<string, YaraData> = {}
 		if (valueA !== null) {
 			map['A'] = { value: valueA }
 		}
@@ -28,11 +28,11 @@ describe('Indamo: Buffer', () => {
 		createMockSnapshot(10, null, 11),
 		createMockSnapshot(15, 2, 12),
 	]
-	const createMockConnection = (): IndamoConnection => {
+	const createMockConnection = (): YaraConnection => {
 		return {
 			getLastDataFrom: async (date: Date, _indexerList: string[]) => {
 				let timestamp = date.getTime()
-				const map: IndamoDataMap = {}
+				const map: YaraDataMap = {}
 				for (const snapshot of snapshotList) {
 					if (snapshot.timestamp > date.getTime()) {
 						return {
@@ -54,7 +54,7 @@ describe('Indamo: Buffer', () => {
 				}
 			},
 			getDataFromRange: async (date1: Date, date2: Date, _indexerList: string[]) => {
-				const list: IndamoDataSnapshot[] = []
+				const list: YaraDataSnapshot[] = []
 				for (const snapshot of snapshotList) {
 					if (snapshot.timestamp <= date1.getTime()) {
 						continue

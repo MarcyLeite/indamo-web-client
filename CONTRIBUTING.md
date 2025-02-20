@@ -1,6 +1,6 @@
-# Contributing to Indamo Web Client
+# Contributing to Yara Web Client
 
-Thanks for contributing with Indamo Web Client!
+Thanks for contributing with Yara Web Client!
 
 ## 👨‍💻 Development Environment
 

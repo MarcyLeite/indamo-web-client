@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import ITextarea from '../common/ITextarea'
-import { PropsWithIndamoStore } from '../../store'
+import { PropsWithYaraStore } from '../../store'
 import IButton from '../common/IButton'
-import { IndamoViewConfig } from '../../modules/views/factory'
+import { YaraViewConfig } from '../../modules/views/factory'
 
-type Props = PropsWithIndamoStore<{
-	onSave: (view: Omit<IndamoViewConfig, 'components'>) => void
+type Props = PropsWithYaraStore<{
+	onSave: (view: Omit<YaraViewConfig, 'components'>) => void
 }>
 
 const ViewPanelEdit = ({ view, onSave }: Props) => {

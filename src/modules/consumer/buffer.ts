@@ -1,12 +1,12 @@
-import { IndamoConnection, IndamoDataMap } from './connection'
+import { YaraConnection, YaraDataMap } from './connection'
 
-const insertIntoSnapshot = (snapshot: IndamoDataMap, difference: IndamoDataMap) => {
+const insertIntoSnapshot = (snapshot: YaraDataMap, difference: YaraDataMap) => {
 	for (const [indexer, dataset] of Object.entries(difference)) {
 		snapshot[indexer] = dataset
 	}
 }
 
-const getSnapshotFromBuffer = (bufferValues: IndamoBufferValues, moment: Date) => {
+const getSnapshotFromBuffer = (bufferValues: YaraBufferValues, moment: Date) => {
 	if (moment.getTime() < bufferValues.initialValues.timestamp) return {}
 	const snapshot = structuredClone(bufferValues.initialValues.map)
 
@@ -21,12 +21,8 @@ const getSnapshotFromBuffer = (bufferValues: IndamoBufferValues, moment: Date) =
 	return snapshot
 }
 
-const getDifferenceFromBuffer = (
-	bufferValues: IndamoBufferValues,
-	moment1: Date,
-	moment2: Date
-) => {
-	const snapshot: IndamoDataMap = {}
+const getDifferenceFromBuffer = (bufferValues: YaraBufferValues, moment1: Date, moment2: Date) => {
+	const snapshot: YaraDataMap = {}
 
 	for (const difference of bufferValues.differenceList) {
 		if (difference.timestamp <= moment1.getTime()) {
@@ -42,8 +38,8 @@ const getDifferenceFromBuffer = (
 	return snapshot
 }
 
-type IndamoBufferProperties = {
-	connection: IndamoConnection
+type YaraBufferProperties = {
+	connection: YaraConnection
 	indexerList: string[]
 	moment: Date
 	sizeInSeconds?: number
@@ -54,7 +50,7 @@ export const createBufferValues = async ({
 	indexerList,
 	moment,
 	sizeInSeconds,
-}: Required<IndamoBufferProperties>) => {
+}: Required<YaraBufferProperties>) => {
 	const initialValues = await connection.getLastDataFrom(moment, indexerList)
 
 	for (const indexer of indexerList) {
@@ -74,7 +70,7 @@ export const createBufferValues = async ({
 		differenceList,
 	}
 }
-export type IndamoBufferValues = Awaited<ReturnType<typeof createBufferValues>>
+export type YaraBufferValues = Awaited<ReturnType<typeof createBufferValues>>
 
 export const updateBufferValuesFoward = async ({
 	moment,
@@ -82,8 +78,8 @@ export const updateBufferValuesFoward = async ({
 	indexerList,
 	sizeInSeconds,
 	bufferValues,
-}: Required<IndamoBufferProperties> & {
-	bufferValues: IndamoBufferValues
+}: Required<YaraBufferProperties> & {
+	bufferValues: YaraBufferValues
 }) => {
 	const initialValues = structuredClone(bufferValues.initialValues)
 	const differenceList = structuredClone(bufferValues.differenceList)
@@ -112,8 +108,8 @@ export type UpdateProps = {
 }
 
 const createBufferWorker = async (
-	bufferValues: IndamoBufferValues,
-	props: Required<IndamoBufferProperties>
+	bufferValues: YaraBufferValues,
+	props: Required<YaraBufferProperties>
 ) => {
 	const snapshot = (moment: Date) => getSnapshotFromBuffer(bufferValues, moment)
 	const difference = (moment1: Date, moment2: Date) =>
@@ -122,7 +118,7 @@ const createBufferWorker = async (
 	const { differenceList } = bufferValues
 	const lastDifference = differenceList.at(-1)!
 
-	const updateFoward = async (newProps: Required<IndamoBufferProperties>) => {
+	const updateFoward = async (newProps: Required<YaraBufferProperties>) => {
 		const newBufferValues = await updateBufferValuesFoward(
 			Object.assign({ bufferValues }, newProps)
 		)
@@ -167,11 +163,11 @@ const createBufferWorker = async (
 	return buffer
 }
 
-export const createBuffer = async (props: IndamoBufferProperties) => {
+export const createBuffer = async (props: YaraBufferProperties) => {
 	const propsWithDefault = Object.assign({ sizeInSeconds: 10 }, props)
 	const bufferValues = await createBufferValues(propsWithDefault)
 
 	return createBufferWorker(bufferValues, propsWithDefault)
 }
 
-export type IndamoBuffer = Awaited<ReturnType<typeof createBuffer>>
+export type YaraBuffer = Awaited<ReturnType<typeof createBuffer>>

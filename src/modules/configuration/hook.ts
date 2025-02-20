@@ -1,24 +1,24 @@
 import { useCallback, useEffect, useState } from 'react'
-import { IndamoComponentConfig, IndamoViewConfig } from '../views/factory'
+import { YaraComponentConfig, YaraViewConfig } from '../views/factory'
 import axios from 'axios'
-import { IndamoConnectionConfig } from '../consumer/connection'
+import { YaraConnectionConfig } from '../consumer/connection'
 
-export type IndamoConfig = {
+export type YaraConfig = {
 	'model-path': string
-	connection: IndamoConnectionConfig
-	views: IndamoViewConfig[]
+	connection: YaraConnectionConfig
+	views: YaraViewConfig[]
 }
 
 export const useConfiguration = (configUrl: string) => {
 	const [modelPath, setModelPath] = useState<string | null>(null)
-	const [views, setViews] = useState<IndamoViewConfig[] | null>(null)
-	const [connection, setConnection] = useState<IndamoConnectionConfig | null>(null)
+	const [views, setViews] = useState<YaraViewConfig[] | null>(null)
+	const [connection, setConnection] = useState<YaraConnectionConfig | null>(null)
 
 	const [isLoaded, setIsLoaded] = useState(false)
 
 	const fetchConfig = useCallback(async () => {
 		const response = await axios.get(configUrl)
-		const data: IndamoConfig = response.data
+		const data: YaraConfig = response.data
 
 		setModelPath(data['model-path'])
 		setViews(data.views)
@@ -31,7 +31,7 @@ export const useConfiguration = (configUrl: string) => {
 		fetchConfig()
 	}, [fetchConfig])
 
-	const updateViewConfig = (index: number, newView: Omit<IndamoViewConfig, 'components'>) => {
+	const updateViewConfig = (index: number, newView: Omit<YaraViewConfig, 'components'>) => {
 		if (!views) {
 			throw new Error('Runtime Error: No views loaded')
 		}
@@ -43,7 +43,7 @@ export const useConfiguration = (configUrl: string) => {
 		setViews(newViews)
 	}
 
-	const createViewConfig = (newView: Omit<IndamoViewConfig, 'components'>) => {
+	const createViewConfig = (newView: Omit<YaraViewConfig, 'components'>) => {
 		if (!views) {
 			throw new Error('Runtime Error: No views loaded')
 		}
@@ -53,7 +53,7 @@ export const useConfiguration = (configUrl: string) => {
 		setViews(newViews)
 	}
 
-	const updateComponentConfig = (viewIndex: number, newComponent: IndamoComponentConfig) => {
+	const updateComponentConfig = (viewIndex: number, newComponent: YaraComponentConfig) => {
 		if (!views) {
 			throw new Error('Runtime Error: No views loaded')
 		}
@@ -98,4 +98,4 @@ export const useConfiguration = (configUrl: string) => {
 	}
 }
 
-export type IndamoConfiguration = ReturnType<typeof useConfiguration>
+export type YaraConfiguration = ReturnType<typeof useConfiguration>

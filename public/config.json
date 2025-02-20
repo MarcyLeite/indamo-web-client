@@ -1,5 +1,5 @@
 {
-	"model-path": "indamo/snowman.glb",
+	"model-path": "yara/snowman.glb",
 	"connection": {
 		"type": "influx",
 		"options": {

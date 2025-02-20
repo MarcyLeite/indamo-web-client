@@ -1,4 +1,4 @@
-import { IndamoView } from '../../modules/views/factory'
+import { YaraView } from '../../modules/views/factory'
 import { GLTF } from 'three/examples/jsm/Addons.js'
 import { Group, Mesh, MeshStandardMaterial, Object3D, Object3DEventMap } from 'three'
 import { MeshProps } from '@react-three/fiber'
@@ -8,7 +8,7 @@ export type SetSelected = Dispatch<Object3D | null>
 
 type ComponentProps = {
 	base: Object3D<Object3DEventMap>
-	view: IndamoView | null
+	view: YaraView | null
 	colorMap: Record<string, string>
 	setSelected: SetSelected
 }
@@ -50,7 +50,7 @@ const Component = (props: ComponentProps) => {
 
 type Props = {
 	model: GLTF
-	view: IndamoView | null
+	view: YaraView | null
 	colorMap: Record<string, string>
 	setSelected: SetSelected
 }

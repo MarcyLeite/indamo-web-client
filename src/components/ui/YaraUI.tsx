@@ -1,5 +1,5 @@
 import { mdiContentCopy } from '@mdi/js'
-import { PropsWithIndamoStore } from '../../store'
+import { PropsWithYaraStore } from '../../store'
 import IButton from '../common/IButton'
 import IOverlay from '../common/IOverlay'
 import ComponentPanel from './ComponentPanel'
@@ -10,7 +10,7 @@ import IPopup from '../common/IPopup'
 import ITextarea from '../common/ITextarea'
 import { useState } from 'react'
 
-const IndamoUI = (props: PropsWithIndamoStore) => {
+const YaraUI = (props: PropsWithYaraStore) => {
 	const { configuration } = props
 	const [showConfig, toggleConfig] = useState(false)
 	return (
@@ -52,4 +52,4 @@ const IndamoUI = (props: PropsWithIndamoStore) => {
 	)
 }
 
-export default IndamoUI
+export default YaraUI

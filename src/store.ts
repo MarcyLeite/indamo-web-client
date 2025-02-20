@@ -1,20 +1,20 @@
 import { useEffect, useReducer, useState } from 'react'
 import { useConfiguration } from './modules/configuration/hook'
-import { IndamoConnection } from './modules/consumer/connection'
+import { YaraConnection } from './modules/consumer/connection'
 import { useTimeControl } from './modules/time-control/hook'
 import { useView } from './modules/views/hook'
 import { createInfluxConnection } from './modules/consumer/influx-connection'
 import { useConsumer } from './modules/consumer'
 import { Object3D } from 'three'
 
-export const useIndamoStore = () => {
-	const configuration = useConfiguration(`${window.location.origin}/indamo/indamo-config.json`)
+export const useYaraStore = () => {
+	const configuration = useConfiguration(`${window.location.origin}/yara/config.json`)
 	const viewHook = useView(configuration.views)
 
 	const initialDate = import.meta.env?.DEV ? new Date(import.meta.env.VITE_DEV_DATE) : new Date()
 	const timeControl = useTimeControl(initialDate)
 
-	const [connection, setConnection] = useState<IndamoConnection | null>(null)
+	const [connection, setConnection] = useState<YaraConnection | null>(null)
 	const consumer = useConsumer(timeControl.moment, viewHook.view, connection)
 
 	useEffect(() => {
@@ -53,5 +53,5 @@ export const useIndamoStore = () => {
 	}
 }
 
-export type IndamoStore = ReturnType<typeof useIndamoStore>
-export type PropsWithIndamoStore<T = object> = IndamoStore & T
+export type YaraStore = ReturnType<typeof useYaraStore>
+export type PropsWithYaraStore<T = object> = YaraStore & T

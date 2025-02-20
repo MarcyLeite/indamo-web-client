@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { createBuffer, IndamoBuffer } from './buffer'
-import { IndamoView } from '../views/factory'
-import { IndamoConnection, IndamoDataMap } from './connection'
+import { createBuffer, YaraBuffer } from './buffer'
+import { YaraView } from '../views/factory'
+import { YaraConnection, YaraDataMap } from './connection'
 
 const BACKWARD_MAX = 15
 const FORWARD_MAX = 30
@@ -10,8 +10,8 @@ const shiftMoment = (dateTime: Date, shift: number) => new Date(dateTime.getTime
 
 export const useConsumer = (
 	dateTime: Date,
-	view: IndamoView | null,
-	connection: IndamoConnection | null
+	view: YaraView | null,
+	connection: YaraConnection | null
 ) => {
 	const backwardSize = useRef(1)
 	const forwardSize = useRef(1)
@@ -19,8 +19,8 @@ export const useConsumer = (
 
 	const momentRef = useRef(dateTime)
 
-	const buffer = useRef<IndamoBuffer | null>(null)
-	const [dataMap, setDatamap] = useState<IndamoDataMap>({})
+	const buffer = useRef<YaraBuffer | null>(null)
+	const [dataMap, setDatamap] = useState<YaraDataMap>({})
 
 	const timeoutRef = useRef<NodeJS.Timeout>()
 

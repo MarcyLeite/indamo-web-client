@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
-import { createIndamoView, IndamoView, IndamoViewConfig } from './factory'
+import { createYaraView, YaraView, YaraViewConfig } from './factory'
 
-export const useView = (viewConfigList: IndamoViewConfig[] | null) => {
-	const [view, setView] = useState<IndamoView | null>(null)
+export const useView = (viewConfigList: YaraViewConfig[] | null) => {
+	const [view, setView] = useState<YaraView | null>(null)
 	const [index, setIndex] = useState<number | null>(null)
 
 	const setViewByIndex = useCallback(
@@ -15,7 +15,7 @@ export const useView = (viewConfigList: IndamoViewConfig[] | null) => {
 				return
 			}
 
-			setView(createIndamoView(viewConfig))
+			setView(createYaraView(viewConfig))
 			setIndex(index)
 		},
 		[viewConfigList]
@@ -32,4 +32,4 @@ export const useView = (viewConfigList: IndamoViewConfig[] | null) => {
 	} as const
 }
 
-export type IndamoViewHook = ReturnType<typeof useView>
+export type YaraViewHook = ReturnType<typeof useView>
