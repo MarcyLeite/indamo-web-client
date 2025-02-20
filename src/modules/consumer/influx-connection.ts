@@ -1,22 +1,22 @@
 import {
-	IndamoConnection,
-	IndamoData,
-	IndamoDataBaseTypes,
-	IndamoDataMap,
-	IndamoDataSnapshot,
+	YaraConnection,
+	YaraData,
+	YaraDataBaseTypes,
+	YaraDataMap,
+	YaraDataSnapshot,
 } from './connection'
 import { InfluxDB } from '@influxdata/influxdb-client'
 
-export type IndamoInfluxConnectionOptions = {
+export type YaraInfluxConnectionOptions = {
 	url: string
 	token: string
 	org: string
 	bucket: string
 }
 
-export type IndamoInfluxConnectionConfig = {
+export type YaraInfluxConnectionConfig = {
 	type: 'influx'
-	options: IndamoInfluxConnectionOptions
+	options: YaraInfluxConnectionOptions
 }
 
 export const createInfluxConnection = ({
@@ -24,7 +24,7 @@ export const createInfluxConnection = ({
 	token,
 	org,
 	bucket,
-}: IndamoInfluxConnectionOptions): IndamoConnection => {
+}: YaraInfluxConnectionOptions): YaraConnection => {
 	const queryApi = new InfluxDB({ url: url, token }).getQueryApi({ org })
 
 	const fixTime = (date: Date) => Math.floor(date.getTime() / 1000)
@@ -58,7 +58,7 @@ export const createInfluxConnection = ({
 	`
 
 	const query = async (queryString: string) => {
-		const result: IndamoData[] = []
+		const result: YaraData[] = []
 		for await (const { values, tableMeta } of queryApi.iterateRows(queryString)) {
 			const o = tableMeta.toObject(values)
 			result.push(o)
@@ -67,9 +67,9 @@ export const createInfluxConnection = ({
 		return result
 	}
 
-	const influxResultToSnapshot = (resultList: Record<string, IndamoDataBaseTypes>[]) => {
+	const influxResultToSnapshot = (resultList: Record<string, YaraDataBaseTypes>[]) => {
 		let timestamp = 0
-		const map: IndamoDataMap = {}
+		const map: YaraDataMap = {}
 
 		for (const result of resultList) {
 			const resultTime = new Date(result._time as string).getTime()
@@ -80,8 +80,8 @@ export const createInfluxConnection = ({
 		return { timestamp, map }
 	}
 
-	const influxResultToDifference = (resultList: Record<string, IndamoDataBaseTypes>[]) => {
-		const snapshotMap: Record<number, IndamoDataMap> = {}
+	const influxResultToDifference = (resultList: Record<string, YaraDataBaseTypes>[]) => {
+		const snapshotMap: Record<number, YaraDataMap> = {}
 		for (const result of resultList) {
 			const resultTime = new Date(result._time as string).getTime()
 
@@ -92,7 +92,7 @@ export const createInfluxConnection = ({
 		}
 
 		return Object.entries(snapshotMap).map(
-			([key, value]) => ({ timestamp: Number(key), map: value }) as IndamoDataSnapshot
+			([key, value]) => ({ timestamp: Number(key), map: value }) as YaraDataSnapshot
 		)
 	}
 

@@ -1,10 +1,10 @@
-import { IndamoComponentConfig } from '../../modules/views/factory'
+import { YaraComponentConfig } from '../../modules/views/factory'
 import IExpandPanel from '../common/IExpandPanel'
 import ITable from '../common/ITable'
-import { PropsWithIndamoStore } from '../../store'
+import { PropsWithYaraStore } from '../../store'
 
-type Props = PropsWithIndamoStore<{
-	config: IndamoComponentConfig
+type Props = PropsWithYaraStore<{
+	config: YaraComponentConfig
 }>
 
 const ComponentPanelInfo = ({ config, dataMap }: Props) => {

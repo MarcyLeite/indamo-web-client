@@ -2,12 +2,12 @@ import { useState } from 'react'
 import IButton from '../common/IButton'
 import IPanel from '../common/IPanel'
 import { mdiCancel, mdiChevronDown, mdiPencil } from '@mdi/js'
-import { PropsWithIndamoStore } from '../../store'
+import { PropsWithYaraStore } from '../../store'
 import ISeparator from '../common/ISeparator'
 import ComponentPanelInfo from './ComponentPanelInfo'
 import ComponentPanelEdit from './ComponentPanelEdit'
 
-const ComponentPanel = (props: PropsWithIndamoStore) => {
+const ComponentPanel = (props: PropsWithYaraStore) => {
 	const {
 		configuration: { updateComponentConfig },
 		view,

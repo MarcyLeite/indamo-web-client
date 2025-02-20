@@ -1,5 +1,5 @@
 import { hueToHSL } from '../../utils/color-converter'
-import { IndamoData } from '../consumer/connection'
+import { YaraData } from '../consumer/connection'
 import { createView, ViewConfig } from './factory'
 
 describe('View Module: Factory', () => {
@@ -36,7 +36,7 @@ describe('View Module: Factory', () => {
 		view.type.should.equal('thermal')
 	})
 
-	const indamoDataList: Record<string, IndamoData> = {
+	const yaraDataList: Record<string, YaraData> = {
 		foo: {
 			measurement: 'foo',
 			source: '',
@@ -54,7 +54,7 @@ describe('View Module: Factory', () => {
 	}
 
 	it('Should generate component data', () => {
-		const colorList = view.getColorList(indamoDataList)
+		const colorList = view.getColorList(yaraDataList)
 		colorList.should.have.length(2)
 		colorList[0].color!.should.equal(hueToHSL(0))
 		colorList[1].color!.should.equal(hueToHSL(240))

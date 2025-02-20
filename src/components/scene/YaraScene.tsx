@@ -4,9 +4,9 @@ import { OrbitControls } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/Addons.js'
 import SceneEffects from './SceneEffects'
 import SceneObject from './SceneObject'
-import { PropsWithIndamoStore } from '../../store'
+import { PropsWithYaraStore } from '../../store'
 
-type Props = PropsWithIndamoStore<{
+type Props = PropsWithYaraStore<{
 	modelUrl: string
 }>
 

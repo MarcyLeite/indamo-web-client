@@ -1,9 +1,9 @@
 import IPanel from '../common/IPanel'
 import IClock from '../common/IClock'
 import TimeControlBar from './TimeControlBar'
-import { PropsWithIndamoStore } from '../../store'
+import { PropsWithYaraStore } from '../../store'
 
-const TimeControlPanel = ({ timeControl }: PropsWithIndamoStore) => {
+const TimeControlPanel = ({ timeControl }: PropsWithYaraStore) => {
 	return (
 		<div className="w-100 pa-4">
 			<div className="d-flex w-100 justify-space-between align-end">

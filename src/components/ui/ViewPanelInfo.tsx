@@ -1,8 +1,8 @@
-import { IndamoView } from '../../modules/views/factory'
+import { YaraView } from '../../modules/views/factory'
 
 type Props = {
 	index: number
-	view: IndamoView
+	view: YaraView
 }
 
 const ViewPanelInfo = ({ index, view }: Props) => {
